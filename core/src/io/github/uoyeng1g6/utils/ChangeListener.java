@@ -1,7 +1,6 @@
 package io.github.uoyeng1g6.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
 import java.util.function.BiConsumer;
 
 public class ChangeListener extends com.badlogic.gdx.scenes.scene2d.utils.ChangeListener {
