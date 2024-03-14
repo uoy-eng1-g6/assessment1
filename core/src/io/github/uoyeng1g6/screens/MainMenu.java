@@ -24,7 +24,7 @@ public class MainMenu implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        var viewport = new FitViewport(30, 20, camera);
+        var viewport = new FitViewport(800, 600, camera);
 
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);

@@ -21,7 +21,10 @@ public class HeslingtonHustle extends Game {
     public final boolean debug;
 
     public Skin skin;
+
     public TextureAtlas playerTextureAtlas;
+    public TextureAtlas buildingTextureAtlas;
+
     public TiledMap tiledMap;
 
     public SpriteBatch spriteBatch;
@@ -53,14 +56,13 @@ public class HeslingtonHustle extends Game {
         currentState = state;
     }
 
-    public State getCurrentState() {
-        return this.currentState;
-    }
-
     @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("skins/default/uiskin.json"));
+
         playerTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player.txt"));
+        buildingTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/buildings.txt"));
+
         tiledMap = new TmxMapLoader().load("maps/campus-east.tmx");
 
         spriteBatch = new SpriteBatch();
@@ -68,7 +70,7 @@ public class HeslingtonHustle extends Game {
         mainMenu = new MainMenu(this);
         playing = new Playing(this);
 
-        this.setScreen(playing);
+        this.setScreen(mainMenu);
     }
 
     @Override
