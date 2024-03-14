@@ -22,7 +22,6 @@ public class MapRenderingSystem extends EntitySystem {
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         renderer.setView(camera);
-        renderer.render(new int[] {0});
-        renderer.render(new int[] {1, 2});
+        renderer.render();
     }
 }
