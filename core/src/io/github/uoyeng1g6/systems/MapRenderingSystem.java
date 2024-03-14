@@ -1,10 +1,10 @@
 package io.github.uoyeng1g6.systems;
 
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MapRenderingSystem extends EntitySystem {
     private final OrthographicCamera camera;
@@ -13,15 +13,16 @@ public class MapRenderingSystem extends EntitySystem {
 
     public MapRenderingSystem(TiledMap tiledMap, OrthographicCamera camera) {
         this.camera = camera;
-        this.renderer = new OrthogonalTiledMapRenderer(tiledMap, 1/32f);
 
-        System.out.println(Gdx.graphics.getWidth());
-        System.out.println(Gdx.graphics.getHeight());
+        this.renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 16f);
     }
 
     @Override
     public void update(float deltaTime) {
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+
         renderer.setView(camera);
-        renderer.render();
+        renderer.render(new int[] {0});
+        renderer.render(new int[] {1, 2});
     }
 }

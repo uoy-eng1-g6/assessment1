@@ -19,7 +19,5 @@ public class RenderingSystem extends IteratingSystem {
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTime) {
-
-    }
+    protected void processEntity(Entity entity, float deltaTime) {}
 }
