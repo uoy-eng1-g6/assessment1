@@ -37,8 +37,6 @@ public class AnimationSystem extends IteratingSystem {
         var sprite = animation.getKeyFrame(ac.time);
 
         var pc = pm.get(entity);
-        sprite.setPosition(pc.x, pc.y);
-        sprite.setScale(ac.spriteScale);
-        sprite.draw(batch);
+        batch.draw(sprite, pc.x, pc.y, sprite.getWidth() * ac.spriteScale, sprite.getHeight() * ac.spriteScale);
     }
 }

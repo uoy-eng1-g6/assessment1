@@ -3,13 +3,16 @@ package io.github.uoyeng1g6;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import io.github.uoyeng1g6.screens.MainMenu;
 import io.github.uoyeng1g6.screens.Playing;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class HeslingtonHustle extends Game {
     public enum State {
@@ -24,10 +27,12 @@ public class HeslingtonHustle extends Game {
 
     public TextureAtlas playerTextureAtlas;
     public TextureAtlas buildingTextureAtlas;
+    public Texture whitePixel;
 
     public TiledMap tiledMap;
 
     public SpriteBatch spriteBatch;
+    public ShapeDrawer shapeDrawer;
 
     Screen mainMenu;
     Screen playing;
@@ -67,6 +72,9 @@ public class HeslingtonHustle extends Game {
 
         spriteBatch = new SpriteBatch();
 
+        whitePixel = new Texture(Gdx.files.internal("white_pixel.png"));
+        shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(whitePixel, 0, 0, 1, 1));
+
         mainMenu = new MainMenu(this);
         playing = new Playing(this);
 
@@ -82,9 +90,15 @@ public class HeslingtonHustle extends Game {
     public void dispose() {
         mainMenu.dispose();
         playing.dispose();
+
         skin.dispose();
+
         playerTextureAtlas.dispose();
+        buildingTextureAtlas.dispose();
+        whitePixel.dispose();
+
         tiledMap.dispose();
+
         spriteBatch.dispose();
     }
 }

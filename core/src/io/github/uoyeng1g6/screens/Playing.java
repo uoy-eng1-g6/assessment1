@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -19,13 +20,17 @@ import io.github.uoyeng1g6.components.VelocityComponent;
 import io.github.uoyeng1g6.enums.MoveDirection;
 import io.github.uoyeng1g6.models.GameState;
 import io.github.uoyeng1g6.systems.AnimationSystem;
-import io.github.uoyeng1g6.systems.InteractionSystem;
+import io.github.uoyeng1g6.systems.DebugSystem;
 import io.github.uoyeng1g6.systems.MapRenderingSystem;
 import io.github.uoyeng1g6.systems.MovementSystem;
 import io.github.uoyeng1g6.systems.PlayerInputSystem;
+import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
 import io.github.uoyeng1g6.systems.RenderingSystem;
 
 public class Playing implements Screen {
+    private static final int WORLD_WIDTH = 57;
+    private static final int WORLD_HEIGHT = 59;
+
     final HeslingtonHustle game;
 
     final OrthographicCamera camera;
@@ -40,30 +45,28 @@ public class Playing implements Screen {
         this.gameState = new GameState();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 100, 80);
-        viewport = new FitViewport(100, 80, camera);
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
         engine.addEntity(initPlayer(engine));
-
-        var library = engine.createEntity()
-                .add(new PositionComponent(2, 2))
-                .add(new TextureComponent(game.buildingTextureAtlas.findRegion("B01"), 0.05f).show())
-                .add(new InteractionComponent(state -> System.out.println("INTERACTED"), new Rectangle(2, 2, 5, 5)));
-        engine.addEntity(library);
+        engine.addEntity(initBuilding(engine, game.buildingTextureAtlas.findRegion("B01"), 2, 2, 0.05f));
 
         engine.addSystem(new PlayerInputSystem());
         engine.addSystem(new MovementSystem());
-        engine.addSystem(new InteractionSystem(gameState));
+        engine.addSystem(new PlayerInteractionSystem(gameState));
         engine.addSystem(new MapRenderingSystem(game.tiledMap, camera));
         engine.addSystem(new RenderingSystem(game.spriteBatch));
         engine.addSystem(new AnimationSystem(game.spriteBatch));
+        if (game.debug) {
+            engine.addSystem(new DebugSystem(game.shapeDrawer));
+        }
     }
 
     Entity initPlayer(Engine engine) {
-        var playerAnimations = new AnimationComponent(0.125f);
+        var playerAnimations = new AnimationComponent(0.075f);
         playerAnimations.animations.put(
                 MoveDirection.STATIONARY,
-                new Animation<>(0.12f, game.playerTextureAtlas.createSprites("walk_down"), Animation.PlayMode.LOOP));
+                new Animation<>(1f, game.playerTextureAtlas.createSprites("stationary"), Animation.PlayMode.LOOP));
         playerAnimations.animations.put(
                 MoveDirection.UP,
                 new Animation<>(0.12f, game.playerTextureAtlas.createSprites("walk_up"), Animation.PlayMode.LOOP));
@@ -84,8 +87,20 @@ public class Playing implements Screen {
                 .add(playerAnimations);
     }
 
+    Entity initBuilding(Engine engine, TextureRegion textureRegion, float x, float y, float scale) {
+        var collisionRect =
+                new Rectangle(x, y, textureRegion.getRegionWidth() * scale, textureRegion.getRegionHeight() * scale);
+
+        var building = engine.createEntity()
+                .add(new PositionComponent(x, y))
+                .add(new TextureComponent(textureRegion, scale).show())
+                .add(new InteractionComponent(state -> System.out.println("INTERACTED"), collisionRect));
+        return building;
+    }
+
     @Override
     public void render(float delta) {
+        game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
         engine.update(delta);
         game.spriteBatch.end();

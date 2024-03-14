@@ -17,7 +17,6 @@ public class GameState {
     private int energy = MAX_ENERGY;
     private Day currentDay = new Day();
 
-
     public void advanceDay() {
         daysRemaining--;
         energy = MAX_ENERGY;

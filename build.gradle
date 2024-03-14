@@ -74,6 +74,7 @@ project(":core") {
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        implementation "com.badlogicgames.ashley:ashley:1.7.3"
+        implementation "com.badlogicgames.ashley:ashley:1.7.4"
+        implementation "space.earlygrey:shapedrawer:2.6.0"
     }
 }

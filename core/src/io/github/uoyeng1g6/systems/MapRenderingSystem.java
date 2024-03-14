@@ -14,7 +14,7 @@ public class MapRenderingSystem extends EntitySystem {
     public MapRenderingSystem(TiledMap tiledMap, OrthographicCamera camera) {
         this.camera = camera;
 
-        this.renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 16f);
+        this.renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 32f);
     }
 
     @Override

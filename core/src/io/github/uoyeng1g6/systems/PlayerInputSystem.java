@@ -13,7 +13,7 @@ import io.github.uoyeng1g6.components.VelocityComponent;
 import io.github.uoyeng1g6.enums.MoveDirection;
 
 public class PlayerInputSystem extends EntitySystem {
-    private static final float PLAYER_SPEED = 0.5f;
+    private static final float PLAYER_SPEED = 0.125f;
 
     private Entity playerEntity;
 

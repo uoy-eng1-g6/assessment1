@@ -28,6 +28,7 @@ public class RenderingSystem extends IteratingSystem {
         }
 
         var pc = pm.get(entity);
-        batch.draw(tc.region, pc.x, pc.y, tc.region.getRegionWidth() * tc.scale, tc.region.getRegionHeight() * tc.scale);
+        batch.draw(
+                tc.region, pc.x, pc.y, tc.region.getRegionWidth() * tc.scale, tc.region.getRegionHeight() * tc.scale);
     }
 }
