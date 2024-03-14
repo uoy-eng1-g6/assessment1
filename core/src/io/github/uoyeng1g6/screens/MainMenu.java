@@ -2,30 +2,36 @@ package io.github.uoyeng1g6.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.utils.ChangeListener;
 
 public class MainMenu implements Screen {
     final HeslingtonHustle game;
 
+    Camera camera;
     Stage stage;
     Table root;
 
     public MainMenu(HeslingtonHustle game) {
         this.game = game;
 
-        stage = new Stage(new ScreenViewport());
+        camera = new OrthographicCamera();
+        var viewport = new FitViewport(30, 20, camera);
+
+        stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
         root = new Table(game.skin);
         root.setFillParent(true);
-        root.pad(5);
+        root.pad(0.25f);
 
         root.setDebug(game.debug);
         stage.addActor(root);
