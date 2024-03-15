@@ -17,7 +17,8 @@ import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.components.PositionComponent;
 import io.github.uoyeng1g6.components.TextureComponent;
 import io.github.uoyeng1g6.components.VelocityComponent;
-import io.github.uoyeng1g6.enums.MoveDirection;
+import io.github.uoyeng1g6.constants.ActivityType;
+import io.github.uoyeng1g6.constants.MoveDirection;
 import io.github.uoyeng1g6.models.GameState;
 import io.github.uoyeng1g6.systems.AnimationSystem;
 import io.github.uoyeng1g6.systems.DebugSystem;
@@ -25,7 +26,7 @@ import io.github.uoyeng1g6.systems.MapRenderingSystem;
 import io.github.uoyeng1g6.systems.MovementSystem;
 import io.github.uoyeng1g6.systems.PlayerInputSystem;
 import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
-import io.github.uoyeng1g6.systems.RenderingSystem;
+import io.github.uoyeng1g6.systems.StaticRenderingSystem;
 
 public class Playing implements Screen {
     private static final int WORLD_WIDTH = 57;
@@ -50,12 +51,13 @@ public class Playing implements Screen {
 
         engine.addEntity(initPlayer(engine));
         engine.addEntity(initBuilding(engine, game.buildingTextureAtlas.findRegion("B01"), 2, 2, 0.05f));
+        engine.addEntity(initBuilding(engine, game.buildingTextureAtlas.findRegion("H01"), 45, 10, 0.05f));
 
         engine.addSystem(new PlayerInputSystem());
         engine.addSystem(new MovementSystem());
         engine.addSystem(new PlayerInteractionSystem(gameState));
         engine.addSystem(new MapRenderingSystem(game.tiledMap, camera));
-        engine.addSystem(new RenderingSystem(game.spriteBatch));
+        engine.addSystem(new StaticRenderingSystem(game.spriteBatch));
         engine.addSystem(new AnimationSystem(game.spriteBatch));
         if (game.debug) {
             engine.addSystem(new DebugSystem(game.shapeDrawer));
@@ -91,11 +93,11 @@ public class Playing implements Screen {
         var collisionRect =
                 new Rectangle(x, y, textureRegion.getRegionWidth() * scale, textureRegion.getRegionHeight() * scale);
 
-        var building = engine.createEntity()
+        return engine.createEntity()
                 .add(new PositionComponent(x, y))
                 .add(new TextureComponent(textureRegion, scale).show())
-                .add(new InteractionComponent(state -> System.out.println("INTERACTED"), collisionRect));
-        return building;
+                .add(new InteractionComponent(
+                        state -> state.doActivity(2, 15, ActivityType.RECREATION), collisionRect));
     }
 
     @Override

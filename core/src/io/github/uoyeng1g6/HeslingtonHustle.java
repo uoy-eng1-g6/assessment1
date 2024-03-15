@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -31,6 +32,7 @@ public class HeslingtonHustle extends Game {
 
     public TiledMap tiledMap;
 
+    public BitmapFont bitmapFont;
     public SpriteBatch spriteBatch;
     public ShapeDrawer shapeDrawer;
 
@@ -70,8 +72,9 @@ public class HeslingtonHustle extends Game {
 
         tiledMap = new TmxMapLoader().load("maps/campus-east-crushed.tmx");
 
+        bitmapFont = new BitmapFont();
+        bitmapFont.getData().setScale(0.05f);
         spriteBatch = new SpriteBatch();
-
         whitePixel = new Texture(Gdx.files.internal("white_pixel.png"));
         shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(whitePixel, 0, 0, 1, 1));
 
@@ -99,6 +102,7 @@ public class HeslingtonHustle extends Game {
 
         tiledMap.dispose();
 
+        bitmapFont.dispose();
         spriteBatch.dispose();
     }
 }

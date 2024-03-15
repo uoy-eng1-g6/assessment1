@@ -10,7 +10,7 @@ import com.badlogic.gdx.Input;
 import io.github.uoyeng1g6.components.AnimationComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.components.VelocityComponent;
-import io.github.uoyeng1g6.enums.MoveDirection;
+import io.github.uoyeng1g6.constants.MoveDirection;
 
 public class PlayerInputSystem extends EntitySystem {
     private static final float PLAYER_SPEED = 0.125f;

@@ -1,4 +1,4 @@
-package io.github.uoyeng1g6.enums;
+package io.github.uoyeng1g6.constants;
 
 public class MoveDirection {
     public static final int STATIONARY = 0;

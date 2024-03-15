@@ -7,7 +7,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import io.github.uoyeng1g6.components.AnimationComponent;
 import io.github.uoyeng1g6.components.InteractionComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
@@ -45,7 +44,8 @@ public class PlayerInteractionSystem extends EntitySystem {
         }
 
         var ac = am.get(playerEntity);
-        var playerBoundingBox = ac.animations.get(ac.currentAnimation).getKeyFrame(ac.time).getBoundingRectangle();
+        var playerBoundingBox =
+                ac.animations.get(ac.currentAnimation).getKeyFrame(ac.time).getBoundingRectangle();
         for (var entity : interactables) {
             var ic = im.get(entity);
             if (!Intersector.overlaps(playerBoundingBox, ic.playerInteractionPosition)) {
