@@ -3,9 +3,6 @@ package io.github.uoyeng1g6.models;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PhysicsPolygon {
     private String name;
     private BodyDef.BodyType type;

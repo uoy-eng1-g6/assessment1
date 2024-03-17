@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.uoyeng1g6.components.AnimationComponent;
 import io.github.uoyeng1g6.components.FixtureComponent;
 import io.github.uoyeng1g6.components.PositionComponent;
-import io.github.uoyeng1g6.constants.PlayerConstants;
 
 public class AnimationSystem extends IteratingSystem {
     private final SpriteBatch batch;

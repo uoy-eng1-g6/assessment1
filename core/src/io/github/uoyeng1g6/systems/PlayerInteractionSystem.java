@@ -13,7 +13,6 @@ import io.github.uoyeng1g6.components.FixtureComponent;
 import io.github.uoyeng1g6.components.HitboxComponent;
 import io.github.uoyeng1g6.components.InteractionComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
-import io.github.uoyeng1g6.components.PositionComponent;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import io.github.uoyeng1g6.models.GameState;
 
@@ -63,7 +62,7 @@ public class PlayerInteractionSystem extends EntitySystem {
             }
 
             if (!intersecting) {
-                return;
+                continue;
             }
 
             var ic = im.get(entity);

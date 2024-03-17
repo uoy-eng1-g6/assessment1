@@ -12,7 +12,6 @@ import io.github.uoyeng1g6.components.FixtureComponent;
 import io.github.uoyeng1g6.components.HitboxComponent;
 import io.github.uoyeng1g6.components.InteractionComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
-import io.github.uoyeng1g6.components.PositionComponent;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -45,11 +44,7 @@ public class DebugSystem extends EntitySystem {
     public void update(float deltaTime) {
         var fixture = fm.get(playerEntity).fixture;
         var playerPosition = fixture.getBody().getPosition();
-        shapeDrawer.circle(
-                playerPosition.x,
-                playerPosition.y,
-                PlayerConstants.HITBOX_RADIUS,
-                DEBUG_LINE_WIDTH);
+        shapeDrawer.circle(playerPosition.x, playerPosition.y, PlayerConstants.HITBOX_RADIUS, DEBUG_LINE_WIDTH);
 
         for (var entity : interactables) {
             var hc = hm.get(entity);

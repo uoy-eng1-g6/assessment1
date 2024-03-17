@@ -6,7 +6,15 @@ import java.util.HashMap;
 
 public class GameState {
     public static class Day {
-        private HashMap<ActivityType, Integer> activityStats;
+        private final HashMap<ActivityType, Integer> activityStats = new HashMap<>();
+
+        public int statFor(ActivityType type) {
+            return activityStats.getOrDefault(type, 0);
+        }
+
+        public HashMap<ActivityType, Integer> getActivityStats() {
+            return activityStats;
+        }
     }
 
     private static final int MAX_ENERGY = 100;
@@ -28,6 +36,10 @@ public class GameState {
 
     public float getHoursRemaining() {
         return hoursRemaining;
+    }
+
+    public Day getCurrentDay() {
+        return currentDay;
     }
 
     public void advanceDay() {
