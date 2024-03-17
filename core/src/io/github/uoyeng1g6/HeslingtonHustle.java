@@ -24,11 +24,12 @@ public class HeslingtonHustle extends Game {
     }
 
     public final boolean debug;
+    public final boolean physicsDebug;
 
     public Skin skin;
 
     public TextureAtlas playerTextureAtlas;
-    public TextureAtlas buildingTextureAtlas;
+    public TextureAtlas interactionIconsTextureAtlas;
     public Texture whitePixel;
 
     public TiledMap tiledMap;
@@ -44,6 +45,7 @@ public class HeslingtonHustle extends Game {
 
     public HeslingtonHustle() {
         debug = System.getProperty("game.debug", "false").equals("true");
+        physicsDebug = System.getProperty("game.physicsDebug", "false").equals("true");
     }
 
     public void quit() {
@@ -71,7 +73,7 @@ public class HeslingtonHustle extends Game {
         skin = new Skin(Gdx.files.internal("skins/default/uiskin.json"));
 
         playerTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player.txt"));
-        buildingTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/buildings.txt"));
+        interactionIconsTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/interaction_icons.txt"));
 
         tiledMap = new TmxMapLoader().load("maps/campus-east.tmx");
 
@@ -100,7 +102,7 @@ public class HeslingtonHustle extends Game {
         skin.dispose();
 
         playerTextureAtlas.dispose();
-        buildingTextureAtlas.dispose();
+        interactionIconsTextureAtlas.dispose();
         whitePixel.dispose();
 
         tiledMap.dispose();

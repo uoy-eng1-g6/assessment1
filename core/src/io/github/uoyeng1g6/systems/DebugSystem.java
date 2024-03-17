@@ -13,6 +13,7 @@ import io.github.uoyeng1g6.components.HitboxComponent;
 import io.github.uoyeng1g6.components.InteractionComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.components.PositionComponent;
+import io.github.uoyeng1g6.constants.PlayerConstants;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class DebugSystem extends EntitySystem {
@@ -21,9 +22,9 @@ public class DebugSystem extends EntitySystem {
     private final ShapeDrawer shapeDrawer;
 
     private final ComponentMapper<HitboxComponent> hm = ComponentMapper.getFor(HitboxComponent.class);
+    private final ComponentMapper<FixtureComponent> fm = ComponentMapper.getFor(FixtureComponent.class);
 
     private ImmutableArray<Entity> interactables;
-    private ImmutableArray<Entity> hitboxEnabled;
     private Entity playerEntity;
 
     public DebugSystem(ShapeDrawer shapeDrawer) {
@@ -34,9 +35,6 @@ public class DebugSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         interactables = engine.getEntitiesFor(
                 Family.all(InteractionComponent.class, HitboxComponent.class).get());
-        hitboxEnabled = engine.getEntitiesFor(Family.all(HitboxComponent.class)
-                .exclude(InteractionComponent.class)
-                .get());
         playerEntity = engine.getEntitiesFor(
                         Family.all(PlayerComponent.class, FixtureComponent.class, AnimationComponent.class)
                                 .get())
@@ -45,22 +43,19 @@ public class DebugSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        //        shapeDrawer.rectangle(
-        //                Utils.getPlayerHitbox(playerEntity),
-        //                Color.RED,
-        //                DEBUG_LINE_WIDTH);
+        var fixture = fm.get(playerEntity).fixture;
+        var playerPosition = fixture.getBody().getPosition();
+        shapeDrawer.circle(
+                playerPosition.x,
+                playerPosition.y,
+                PlayerConstants.HITBOX_RADIUS,
+                DEBUG_LINE_WIDTH);
 
         for (var entity : interactables) {
-            for (var rect : hm.get(entity).rects) {
-                shapeDrawer.rectangle(rect, Color.BLUE, DEBUG_LINE_WIDTH);
-            }
-        }
-
-        for (var entity : hitboxEnabled) {
             var hc = hm.get(entity);
 
             for (var rect : hc.rects) {
-                shapeDrawer.rectangle(rect, hc.collidable ? Color.GREEN : Color.YELLOW, DEBUG_LINE_WIDTH);
+                shapeDrawer.rectangle(rect, Color.YELLOW, DEBUG_LINE_WIDTH);
             }
         }
     }

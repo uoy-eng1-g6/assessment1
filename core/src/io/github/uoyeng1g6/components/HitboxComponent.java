@@ -5,13 +5,10 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.Arrays;
 
 public class HitboxComponent implements Component {
-
-    public final boolean collidable;
     public final Rectangle[] rects;
     public final Rectangle region;
 
-    public HitboxComponent(boolean collidable, Rectangle... rects) {
-        this.collidable = collidable;
+    public HitboxComponent(Rectangle... rects) {
         this.rects = rects;
 
         var left = Arrays.stream(rects).map(r -> r.x).min(Float::compareTo).get();

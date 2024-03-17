@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -19,7 +20,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.components.AnimationComponent;
 import io.github.uoyeng1g6.components.FixtureComponent;
+import io.github.uoyeng1g6.components.HitboxComponent;
+import io.github.uoyeng1g6.components.InteractionComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
+import io.github.uoyeng1g6.components.PositionComponent;
+import io.github.uoyeng1g6.components.TextureComponent;
+import io.github.uoyeng1g6.constants.ActivityType;
 import io.github.uoyeng1g6.constants.MoveDirection;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import io.github.uoyeng1g6.models.GameState;
@@ -60,6 +66,10 @@ public class Playing implements Screen {
         initTerrain();
 
         engine.addEntity(initPlayerEntity(engine));
+
+        for (var entity : initInteractionLocations(engine)) {
+            engine.addEntity(entity);
+        }
 
         engine.addSystem(new PlayerInputSystem());
         engine.addSystem(new PlayerInteractionSystem(gameState));
@@ -180,6 +190,17 @@ public class Playing implements Screen {
         piazzaBuildingPolygon.dispose();
     }
 
+    Entity[] initInteractionLocations(Engine engine) {
+        var studyIcon = game.interactionIconsTextureAtlas.findRegion("book_icon");
+        var study = engine.createEntity()
+                .add(new TextureComponent(studyIcon, 2/64f).show())
+                .add(new PositionComponent(25, 15))
+                .add(new HitboxComponent(new Rectangle(25, 15, studyIcon.getRegionWidth() * (2/64f), studyIcon.getRegionHeight() * (2/64f))))
+                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.STUDY)));
+
+        return new Entity[]{study};
+    }
+
     Fixture initPlayerBody() {
         var player = new BodyDef();
         player.type = BodyDef.BodyType.DynamicBody;
@@ -226,9 +247,9 @@ public class Playing implements Screen {
         game.spriteBatch.begin();
 
         engine.update(delta);
-//        if (game.debug) {
-//            debugRenderer.render(world, camera.combined);
-//        }
+        if (game.physicsDebug) {
+            debugRenderer.render(world, camera.combined);
+        }
         game.spriteBatch.end();
 
         world.step(delta, 8, 3);
