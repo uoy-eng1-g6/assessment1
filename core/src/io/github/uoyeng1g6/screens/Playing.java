@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -19,6 +20,11 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.components.AnimationComponent;
 import io.github.uoyeng1g6.components.FixtureComponent;
@@ -48,6 +54,13 @@ public class Playing implements Screen {
     final OrthographicCamera camera;
     final Viewport viewport;
 
+    final OrthographicCamera uiCamera;
+    final Viewport uiViewport;
+
+    Stage stage;
+    Table counters;
+    Container<Label> days;
+
     Engine engine;
     GameState gameState;
     World world;
@@ -60,6 +73,47 @@ public class Playing implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
         viewport = new FitViewport(GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT, camera);
+
+        uiCamera = new OrthographicCamera();
+        uiViewport = new FitViewport(800, 600, uiCamera);
+
+        stage = new Stage(uiViewport);
+
+        counters = new Table(game.skin);
+        counters.setFillParent(true);
+        counters.pad(4);
+        counters.setDebug(game.debug);
+        stage.addActor(counters);
+
+        var daysLabel = new Label("Monday", game.skin);
+        days = new Container<Label>(daysLabel);
+
+        days.setFillParent(true);
+
+        stage.addActor(days);
+        days.center().top();
+        
+        var studyLabel = new Label("0", game.skin);
+        var eatLabel = new Label("0", game.skin);
+        var funLabel = new Label("0", game.skin);
+
+        // TODO Make appropriate textures when icons for those activities exist 
+        var studyIcon = game.interactionIconsTextureAtlas.findRegion("book_icon");
+        
+        Image studyImage = new Image(studyIcon);
+        Image eatImage = new Image(studyIcon);
+        Image funImage = new Image(studyIcon);
+        
+        counters.top().right();
+        counters.add(studyImage).width(32).height(32);
+        counters.add(studyLabel);
+        counters.row();
+        counters.add(eatImage).width(32).height(32);
+        counters.add(eatLabel);
+        counters.row();
+        counters.add(funImage).width(32).height(32);
+        counters.add(funLabel);
+
 
         this.engine = new PooledEngine();
         this.gameState = new GameState();
@@ -192,6 +246,10 @@ public class Playing implements Screen {
         game.spriteBatch.end();
 
         world.step(delta, 8, 3);
+
+        stage.act();
+        stage.draw();
+
     }
 
     @Override
@@ -213,6 +271,7 @@ public class Playing implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
         world.dispose();
     }
 }
