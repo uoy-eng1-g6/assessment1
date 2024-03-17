@@ -27,7 +27,9 @@ import io.github.uoyeng1g6.components.InteractionComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.components.PositionComponent;
 import io.github.uoyeng1g6.components.TextureComponent;
+import io.github.uoyeng1g6.components.TooltipComponent;
 import io.github.uoyeng1g6.constants.ActivityType;
+import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.constants.MoveDirection;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import io.github.uoyeng1g6.models.GameState;
@@ -38,11 +40,9 @@ import io.github.uoyeng1g6.systems.MapRenderingSystem;
 import io.github.uoyeng1g6.systems.PlayerInputSystem;
 import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
 import io.github.uoyeng1g6.systems.StaticRenderingSystem;
+import io.github.uoyeng1g6.systems.TooltipRenderingSystem;
 
 public class Playing implements Screen {
-    private static final int WORLD_WIDTH = 65;
-    private static final int WORLD_HEIGHT = 54;
-
     final HeslingtonHustle game;
 
     final OrthographicCamera camera;
@@ -58,12 +58,12 @@ public class Playing implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
-        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        camera.setToOrtho(false, GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
+        viewport = new FitViewport(GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT, camera);
 
         this.engine = new PooledEngine();
         this.gameState = new GameState();
-        this.world = new World(new Vector2(0, 0), true);
+        this.world = new World(new Vector2(), true);
 
         initTerrain();
 
@@ -78,6 +78,7 @@ public class Playing implements Screen {
         engine.addSystem(new MapRenderingSystem(game.tiledMap, camera));
         engine.addSystem(new StaticRenderingSystem(game.spriteBatch));
         engine.addSystem(new AnimationSystem(game.spriteBatch));
+        engine.addSystem(new TooltipRenderingSystem(game.tooltipFont, game.shapeDrawer, game.spriteBatch));
         if (game.debug) {
             engine.addSystem(new DebugSystem(game.shapeDrawer));
             debugRenderer = new Box2DDebugRenderer();
@@ -97,6 +98,7 @@ public class Playing implements Screen {
             var shape = new PolygonShape();
             shape.set(object.getVertices());
 
+            // We know that these will always be static bodies so will always have a density of 0
             body.createFixture(shape, 0f);
             shape.dispose();
         }
@@ -106,17 +108,42 @@ public class Playing implements Screen {
         var studyIcon = game.interactionIconsTextureAtlas.findRegion("book_icon");
         var study = engine.createEntity()
                 .add(new TextureComponent(studyIcon, 2/64f).show())
-                .add(new PositionComponent(25, 15))
-                .add(new HitboxComponent(new Rectangle(25, 15, studyIcon.getRegionWidth() * (2/64f), studyIcon.getRegionHeight() * (2/64f))))
-                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.STUDY)));
+                .add(new PositionComponent(25, 14))
+                .add(new HitboxComponent(new Rectangle(25, 14, studyIcon.getRegionWidth() * (2/64f), studyIcon.getRegionHeight() * (2/64f))))
+                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.STUDY)))
+                .add(new TooltipComponent(game.tooltipFont, "[E] Study for exams\nTime: -1h\nEnergy: -10"));
 
-        return new Entity[]{study};
+        var foodIcon = game.interactionIconsTextureAtlas.findRegion("food_icon");
+        var food = engine.createEntity()
+                .add(new TextureComponent(foodIcon, 2/64f).show())
+                .add(new PositionComponent(54, 2.5f))
+                .add(new HitboxComponent(new Rectangle(54, 2.5f, foodIcon.getRegionWidth() * (2/64f), foodIcon.getRegionHeight() * (2/64f))))
+                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.MEAL)))
+                .add(new TooltipComponent(game.tooltipFont, "[E] Eat at Piazza\nTime: -1h\nEnergy: -10"));
+
+        var popcornIcon = game.interactionIconsTextureAtlas.findRegion("popcorn_icon");
+        var recreation = engine.createEntity()
+                .add(new TextureComponent(popcornIcon, 2/64f).show())
+                .add(new PositionComponent(53.5f, 26.5f))
+                .add(new HitboxComponent(new Rectangle(54.5f, 26.5f, popcornIcon.getRegionWidth() * (2/64f), popcornIcon.getRegionHeight() * (2/64f))))
+                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.RECREATION)))
+                .add(new TooltipComponent(game.tooltipFont, "[E] Watch films with mates\nTime: -1h\nEnergy: -10"));
+
+        var sleepIcon = game.interactionIconsTextureAtlas.findRegion("bed_icon");
+        var sleep = engine.createEntity()
+                .add(new TextureComponent(sleepIcon, 2/64f).show())
+                .add(new PositionComponent(3.5f, 26.5f))
+                .add(new HitboxComponent(new Rectangle(3.5f, 26.5f, sleepIcon.getRegionWidth() * (2/64f), sleepIcon.getRegionHeight() * (2/64f))))
+                .add(new InteractionComponent(GameState::advanceDay))
+                .add(new TooltipComponent(game.tooltipFont, "[E] Go to sleep\nEnds the current day"));  // TODO - maybe confirmation popup?
+
+        return new Entity[]{study, food, recreation, sleep};
     }
 
     Fixture initPlayerBody() {
         var player = new BodyDef();
         player.type = BodyDef.BodyType.DynamicBody;
-        player.position.set(5, 20);
+        player.position.set(PlayerConstants.START_POSITION);
         var playerBody = world.createBody(player);
         playerBody.setUserData(PlayerConstants.HITBOX_RADIUS);
         var playerCircle = new CircleShape();

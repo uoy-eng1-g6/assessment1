@@ -3,6 +3,7 @@ package io.github.uoyeng1g6;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,7 +35,7 @@ public class HeslingtonHustle extends Game {
 
     public TiledMap tiledMap;
 
-    public BitmapFont bitmapFont;
+    public BitmapFont tooltipFont;
     public SpriteBatch spriteBatch;
     public ShapeDrawer shapeDrawer;
 
@@ -77,8 +78,12 @@ public class HeslingtonHustle extends Game {
 
         tiledMap = new TmxMapLoader().load("maps/campus-east.tmx");
 
-        bitmapFont = new BitmapFont();
-        bitmapFont.getData().setScale(0.05f);
+        tooltipFont = new BitmapFont();
+        tooltipFont.getData().setScale(0.07f);
+        tooltipFont.setUseIntegerPositions(false);
+        tooltipFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        tooltipFont.setColor(Color.BLACK);
+
         spriteBatch = new SpriteBatch();
         whitePixel = new Texture(Gdx.files.internal("white_pixel.png"));
         shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(whitePixel, 0, 0, 1, 1));
@@ -107,7 +112,7 @@ public class HeslingtonHustle extends Game {
 
         tiledMap.dispose();
 
-        bitmapFont.dispose();
+        tooltipFont.dispose();
         spriteBatch.dispose();
     }
 }
