@@ -1,7 +1,6 @@
 package io.github.uoyeng1g6.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.math.Rectangle;
 import io.github.uoyeng1g6.models.GameState;
 
 public class InteractionComponent implements Component {
@@ -11,10 +10,8 @@ public class InteractionComponent implements Component {
     }
 
     public final Interactable interactable;
-    public final Rectangle playerInteractionPosition;
 
-    public InteractionComponent(Interactable interactable, Rectangle playerInteractionPosition) {
+    public InteractionComponent(Interactable interactable) {
         this.interactable = interactable;
-        this.playerInteractionPosition = playerInteractionPosition;
     }
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import io.github.uoyeng1g6.screens.MainMenu;
 import io.github.uoyeng1g6.screens.Playing;
@@ -65,6 +66,8 @@ public class HeslingtonHustle extends Game {
 
     @Override
     public void create() {
+        Box2D.init();
+
         skin = new Skin(Gdx.files.internal("skins/default/uiskin.json"));
 
         playerTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player.txt"));
