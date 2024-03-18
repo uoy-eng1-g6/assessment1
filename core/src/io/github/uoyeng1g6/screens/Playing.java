@@ -130,21 +130,13 @@ public class Playing implements Screen {
 
         engine.addEntity(
                 engine.createEntity().add(new CounterComponent(daysLabel, new CounterComponent.CounterValueResolver() {
+                    // spotless:off
                     private final Map<Integer, String> dayNameMap = Map.of(
-                            7,
-                            "Monday",
-                            6,
-                            "Tuesday",
-                            5,
-                            "Wednesday",
-                            4,
-                            "Thursday",
-                            3,
-                            "Friday",
-                            2,
-                            "Saturday",
-                            1,
-                            "Sunday - Exam Tomorrow");
+                            7, "Monday", 6, "Tuesday", 5, "Wednesday",
+                            4, "Thursday", 3, "Friday", 2, "Saturday",
+                            1, "Sunday - Exam Tomorrow"
+                    );
+                    // spotless:on
 
                     @Override
                     public String resolveValue(GameState gameState) {
@@ -196,7 +188,7 @@ public class Playing implements Screen {
     }
 
     Entity[] initInteractionLocations(Engine engine) {
-        final var iconSize = 2/64f;
+        final var iconSize = 2 / 64f;
 
         var studyIcon = game.interactionIconsTextureAtlas.findRegion("book_icon");
         var study = engine.createEntity()
@@ -235,8 +227,7 @@ public class Playing implements Screen {
                 .add(new HitboxComponent(new Rectangle(
                         3.5f, 26.5f, sleepIcon.getRegionWidth() * iconSize, sleepIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(GameState::advanceDay))
-                .add(new TooltipComponent(
-                        game.tooltipFont, "[E] Go to sleep\nEnds the current day"));
+                .add(new TooltipComponent(game.tooltipFont, "[E] Go to sleep\nEnds the current day"));
 
         return new Entity[] {study, food, recreation, sleep};
     }

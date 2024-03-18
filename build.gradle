@@ -25,6 +25,7 @@ spotless {
     }
     java {
         target 'core/src/**/*.java', 'desktop/src/**/*.java'
+        toggleOffOn()
 
         importOrder()
         removeUnusedImports()
