@@ -3,14 +3,18 @@ package io.github.uoyeng1g6.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import io.github.uoyeng1g6.models.GameState;
-import java.util.function.Function;
 
 public class CounterComponent implements Component {
-    public final Label label;
-    public final Function<GameState, String> valueFunction;
+    @FunctionalInterface
+    public interface CounterValueResolver {
+        String resolveValue(GameState gameState);
+    }
 
-    public CounterComponent(Label label, Function<GameState, String> valueFunction) {
+    public final Label label;
+    public final CounterValueResolver valueResolver;
+
+    public CounterComponent(Label label, CounterValueResolver valueResolver) {
         this.label = label;
-        this.valueFunction = valueFunction;
+        this.valueResolver = valueResolver;
     }
 }

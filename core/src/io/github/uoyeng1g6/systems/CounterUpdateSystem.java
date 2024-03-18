@@ -21,6 +21,6 @@ public class CounterUpdateSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         var cc = cm.get(entity);
-        cc.label.setText(cc.valueFunction.apply(gameState));
+        cc.label.setText(cc.valueResolver.resolveValue(gameState));
     }
 }

@@ -48,6 +48,7 @@ import io.github.uoyeng1g6.systems.PlayerInputSystem;
 import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
 import io.github.uoyeng1g6.systems.StaticRenderingSystem;
 import io.github.uoyeng1g6.systems.TooltipRenderingSystem;
+import java.util.Map;
 
 public class Playing implements Screen {
     final HeslingtonHustle game;
@@ -127,6 +128,29 @@ public class Playing implements Screen {
             engine.addEntity(entity);
         }
 
+        engine.addEntity(
+                engine.createEntity().add(new CounterComponent(daysLabel, new CounterComponent.CounterValueResolver() {
+                    private final Map<Integer, String> dayNameMap = Map.of(
+                            7,
+                            "Monday",
+                            6,
+                            "Tuesday",
+                            5,
+                            "Wednesday",
+                            4,
+                            "Thursday",
+                            3,
+                            "Friday",
+                            2,
+                            "Saturday",
+                            1,
+                            "Sunday - Exam Tomorrow");
+
+                    @Override
+                    public String resolveValue(GameState gameState) {
+                        return dayNameMap.get(gameState.getDaysRemaining());
+                    }
+                })));
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
                         studyLabel,
