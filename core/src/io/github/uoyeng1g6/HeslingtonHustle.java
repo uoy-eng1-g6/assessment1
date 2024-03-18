@@ -36,6 +36,8 @@ public class HeslingtonHustle extends Game {
     public TiledMap tiledMap;
 
     public BitmapFont tooltipFont;
+    public BitmapFont overlayFont;
+
     public SpriteBatch spriteBatch;
     public ShapeDrawer shapeDrawer;
 
@@ -83,6 +85,12 @@ public class HeslingtonHustle extends Game {
         tooltipFont.setUseIntegerPositions(false);
         tooltipFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         tooltipFont.setColor(Color.BLACK);
+
+        overlayFont = new BitmapFont();
+        overlayFont.getData().setScale(0.2f);
+        overlayFont.setUseIntegerPositions(false);
+        overlayFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        overlayFont.setColor(Color.WHITE);
 
         spriteBatch = new SpriteBatch();
         whitePixel = new Texture(Gdx.files.internal("white_pixel.png"));

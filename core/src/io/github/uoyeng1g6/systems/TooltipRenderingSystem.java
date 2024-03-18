@@ -16,12 +16,14 @@ import io.github.uoyeng1g6.components.HitboxComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.components.TooltipComponent;
 import io.github.uoyeng1g6.constants.PlayerConstants;
+import io.github.uoyeng1g6.models.GameState;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class TooltipRenderingSystem extends EntitySystem {
     private final BitmapFont font;
     private final ShapeDrawer shapeDrawer;
     private final SpriteBatch batch;
+    private final GameState gameState;
 
     private final ComponentMapper<HitboxComponent> hm = ComponentMapper.getFor(HitboxComponent.class);
     private final ComponentMapper<TooltipComponent> tm = ComponentMapper.getFor(TooltipComponent.class);
@@ -30,10 +32,11 @@ public class TooltipRenderingSystem extends EntitySystem {
     private Entity playerEntity;
     private ImmutableArray<Entity> tooltipEnabled;
 
-    public TooltipRenderingSystem(BitmapFont font, ShapeDrawer shapeDrawer, SpriteBatch batch) {
+    public TooltipRenderingSystem(BitmapFont font, ShapeDrawer shapeDrawer, SpriteBatch batch, GameState gameState) {
         this.font = font;
         this.shapeDrawer = shapeDrawer;
         this.batch = batch;
+        this.gameState = gameState;
     }
 
     @Override
@@ -47,6 +50,11 @@ public class TooltipRenderingSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
+        if (gameState.interactionOverlay != null) {
+            // We don't need to render interaction overlays if the player is currently doing an interaction
+            return;
+        }
+
         var fixture = fm.get(playerEntity).fixture;
         var playerHitbox = new Circle(fixture.getBody().getPosition(), PlayerConstants.HITBOX_RADIUS);
 

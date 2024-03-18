@@ -43,6 +43,11 @@ public class PlayerInteractionSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
+        if (gameState.interactionOverlay != null) {
+            // We cannot interact while another interaction is occurring
+            return;
+        }
+
         var plc = plm.get(playerEntity);
         if (!plc.isInteracting) {
             return;
@@ -68,5 +73,7 @@ public class PlayerInteractionSystem extends EntitySystem {
             var ic = im.get(entity);
             ic.interactable.interact(this.gameState);
         }
+
+        plc.isInteracting = false;
     }
 }

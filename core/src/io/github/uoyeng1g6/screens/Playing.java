@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Rectangle;
@@ -44,6 +45,7 @@ import io.github.uoyeng1g6.models.PhysicsPolygon;
 import io.github.uoyeng1g6.systems.AnimationSystem;
 import io.github.uoyeng1g6.systems.CounterUpdateSystem;
 import io.github.uoyeng1g6.systems.DebugSystem;
+import io.github.uoyeng1g6.systems.InteractionOverlayRenderingSystem;
 import io.github.uoyeng1g6.systems.MapRenderingSystem;
 import io.github.uoyeng1g6.systems.PlayerInputSystem;
 import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
@@ -140,32 +142,32 @@ public class Playing implements Screen {
 
                     @Override
                     public String resolveValue(GameState gameState) {
-                        return dayNameMap.get(gameState.getDaysRemaining());
+                        return dayNameMap.get(gameState.daysRemaining);
                     }
                 })));
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
-                        studyLabel,
-                        state -> String.valueOf(state.getCurrentDay().statFor(ActivityType.STUDY)))));
+                        studyLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.STUDY)))));
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
-                        eatLabel, state -> String.valueOf(state.getCurrentDay().statFor(ActivityType.MEAL)))));
+                        eatLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.MEAL)))));
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
-                        recreationLabel,
-                        state -> String.valueOf(state.getCurrentDay().statFor(ActivityType.RECREATION)))));
+                        recreationLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.RECREATION)))));
 
-        engine.addSystem(new PlayerInputSystem());
+        engine.addSystem(new PlayerInputSystem(gameState));
         engine.addSystem(new PlayerInteractionSystem(gameState));
         engine.addSystem(new MapRenderingSystem(game.tiledMap, camera));
         engine.addSystem(new StaticRenderingSystem(game.spriteBatch));
-        engine.addSystem(new AnimationSystem(game.spriteBatch));
-        engine.addSystem(new TooltipRenderingSystem(game.tooltipFont, game.shapeDrawer, game.spriteBatch));
+        engine.addSystem(new AnimationSystem(game.spriteBatch, gameState));
+        engine.addSystem(new TooltipRenderingSystem(game.tooltipFont, game.shapeDrawer, game.spriteBatch, gameState));
         engine.addSystem(new CounterUpdateSystem(gameState));
         if (game.debug) {
             engine.addSystem(new DebugSystem(game.shapeDrawer));
             debugRenderer = new Box2DDebugRenderer();
         }
+        engine.addSystem(
+                new InteractionOverlayRenderingSystem(game.spriteBatch, game.overlayFont, game.shapeDrawer, gameState));
     }
 
     void initTerrain() {
@@ -196,7 +198,11 @@ public class Playing implements Screen {
                 .add(new PositionComponent(25, 14))
                 .add(new HitboxComponent(new Rectangle(
                         25, 14, studyIcon.getRegionWidth() * iconSize, studyIcon.getRegionHeight() * iconSize)))
-                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.STUDY)))
+                .add(new InteractionComponent(state -> {
+                    if (!state.doActivity(1, 10, ActivityType.STUDY, "Studying...")) {
+                        // Notify insufficient time/energy
+                    }
+                }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Study for exams\nTime: -1h\nEnergy: -10"));
 
         var foodIcon = game.interactionIconsTextureAtlas.findRegion("food_icon");
@@ -205,7 +211,11 @@ public class Playing implements Screen {
                 .add(new PositionComponent(54, 2.5f))
                 .add(new HitboxComponent(new Rectangle(
                         54, 2.5f, foodIcon.getRegionWidth() * iconSize, foodIcon.getRegionHeight() * iconSize)))
-                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.MEAL)))
+                .add(new InteractionComponent(state -> {
+                    if (!state.doActivity(1, 10, ActivityType.MEAL, "Eating...")) {
+                        // Notify insufficient time/energy
+                    }
+                }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Eat at Piazza\nTime: -1h\nEnergy: -10"));
 
         var popcornIcon = game.interactionIconsTextureAtlas.findRegion("popcorn_icon");
@@ -217,7 +227,11 @@ public class Playing implements Screen {
                         26.5f,
                         popcornIcon.getRegionWidth() * iconSize,
                         popcornIcon.getRegionHeight() * iconSize)))
-                .add(new InteractionComponent(state -> state.doActivity(1, 10, ActivityType.RECREATION)))
+                .add(new InteractionComponent(state -> {
+                    if (!state.doActivity(1, 10, ActivityType.RECREATION, "Watching films...")) {
+                        // Notify insufficient time/energy
+                    }
+                }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Watch films with mates\nTime: -1h\nEnergy: -10"));
 
         var sleepIcon = game.interactionIconsTextureAtlas.findRegion("bed_icon");
@@ -274,6 +288,9 @@ public class Playing implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
 
+        Gdx.gl.glEnable(GL30.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
 
@@ -283,10 +300,10 @@ public class Playing implements Screen {
         }
         game.spriteBatch.end();
 
-        world.step(delta, 8, 3);
-
         stage.act();
         stage.draw();
+
+        world.step(delta, 8, 3);
     }
 
     @Override

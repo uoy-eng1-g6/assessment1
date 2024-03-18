@@ -6,41 +6,34 @@ import java.util.HashMap;
 
 public class GameState {
     public static class Day {
-        private final HashMap<ActivityType, Integer> activityStats = new HashMap<>();
+        public final HashMap<ActivityType, Integer> activityStats = new HashMap<>();
 
         public int statFor(ActivityType type) {
             return activityStats.getOrDefault(type, 0);
         }
+    }
 
-        public HashMap<ActivityType, Integer> getActivityStats() {
-            return activityStats;
+    public static class InteractionOverlay {
+        public final String text;
+        public final float displayFor;
+
+        public InteractionOverlay(String text, float displayFor) {
+            this.text = text;
+            this.displayFor = displayFor;
         }
     }
 
     private static final int MAX_ENERGY = 100;
+    private static final int OVERLAY_SECONDS_PER_HOUR = 2;
 
-    private final ArrayList<Day> days = new ArrayList<>(7);
+    public final ArrayList<Day> days = new ArrayList<>(7);
+    public Day currentDay = new Day();
 
-    private int daysRemaining = 7;
-    private int energyRemaining = MAX_ENERGY;
-    private float hoursRemaining = 16;
-    private Day currentDay = new Day();
+    public int daysRemaining = 7;
+    public int energyRemaining = MAX_ENERGY;
+    public float hoursRemaining = 16;
 
-    public int getDaysRemaining() {
-        return daysRemaining;
-    }
-
-    public int getEnergyRemaining() {
-        return energyRemaining;
-    }
-
-    public float getHoursRemaining() {
-        return hoursRemaining;
-    }
-
-    public Day getCurrentDay() {
-        return currentDay;
-    }
+    public InteractionOverlay interactionOverlay = null;
 
     public void advanceDay() {
         daysRemaining--;
@@ -48,9 +41,11 @@ public class GameState {
 
         days.add(currentDay);
         currentDay = new Day();
+
+        interactionOverlay = new InteractionOverlay("Sleeping...", 5);
     }
 
-    public boolean doActivity(int timeUsage, int energyUsage, ActivityType type) {
+    public boolean doActivity(int timeUsage, int energyUsage, ActivityType type, String overlayText) {
         if (hoursRemaining < timeUsage || energyRemaining < energyUsage) {
             return false;
         }
@@ -59,6 +54,8 @@ public class GameState {
         energyRemaining -= energyUsage;
 
         currentDay.activityStats.merge(type, 1, Integer::sum);
+
+        interactionOverlay = new InteractionOverlay(overlayText, OVERLAY_SECONDS_PER_HOUR * timeUsage);
 
         return true;
     }

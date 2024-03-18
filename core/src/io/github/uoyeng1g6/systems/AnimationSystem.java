@@ -8,19 +8,33 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.uoyeng1g6.components.AnimationComponent;
 import io.github.uoyeng1g6.components.FixtureComponent;
 import io.github.uoyeng1g6.components.PositionComponent;
+import io.github.uoyeng1g6.models.GameState;
 
 public class AnimationSystem extends IteratingSystem {
     private final SpriteBatch batch;
+    private final GameState gameState;
 
     private final ComponentMapper<AnimationComponent> am = ComponentMapper.getFor(AnimationComponent.class);
     private final ComponentMapper<FixtureComponent> fm = ComponentMapper.getFor(FixtureComponent.class);
     private final ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
 
-    public AnimationSystem(SpriteBatch batch) {
+    public AnimationSystem(SpriteBatch batch, GameState gameState) {
         super(Family.all(AnimationComponent.class)
                 .one(PositionComponent.class, FixtureComponent.class)
                 .get());
+
         this.batch = batch;
+        this.gameState = gameState;
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        if (gameState.interactionOverlay != null) {
+            // Don't show animations beneath interaction overlay
+            return;
+        }
+
+        super.update(deltaTime);
     }
 
     @Override

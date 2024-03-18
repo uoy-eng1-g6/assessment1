@@ -13,8 +13,11 @@ import io.github.uoyeng1g6.components.FixtureComponent;
 import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.constants.MoveDirection;
 import io.github.uoyeng1g6.constants.PlayerConstants;
+import io.github.uoyeng1g6.models.GameState;
 
 public class PlayerInputSystem extends EntitySystem {
+    private final GameState gameState;
+
     private final ComponentMapper<PlayerComponent> pm = ComponentMapper.getFor(PlayerComponent.class);
     private final ComponentMapper<FixtureComponent> fm = ComponentMapper.getFor(FixtureComponent.class);
     private final ComponentMapper<AnimationComponent> am = ComponentMapper.getFor(AnimationComponent.class);
@@ -23,7 +26,9 @@ public class PlayerInputSystem extends EntitySystem {
 
     private Entity playerEntity;
 
-    public PlayerInputSystem() {}
+    public PlayerInputSystem(GameState gameState) {
+        this.gameState = gameState;
+    }
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -35,6 +40,11 @@ public class PlayerInputSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
+        if (gameState.interactionOverlay != null) {
+            // User input is disabled as an interaction is currently happening
+            return;
+        }
+
         velocity.set(0, 0);
 
         boolean left, right, up, down;
