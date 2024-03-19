@@ -42,6 +42,10 @@ public class PlayerInputSystem extends EntitySystem {
     public void update(float deltaTime) {
         if (gameState.interactionOverlay != null) {
             // User input is disabled as an interaction is currently happening
+            var fixture = fm.get(playerEntity).fixture;
+            // Stop the player - prevents bug where player would continue to move if direction
+            // key was held at same frame that interaction was triggered
+            fixture.getBody().setLinearVelocity(0, 0);
             return;
         }
 

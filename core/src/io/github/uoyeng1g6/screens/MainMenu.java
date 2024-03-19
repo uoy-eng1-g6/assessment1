@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
+import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.utils.ChangeListener;
 
 public class MainMenu implements Screen {
@@ -24,7 +25,7 @@ public class MainMenu implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        var viewport = new FitViewport(800, 600, camera);
+        var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);
 
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
@@ -56,14 +57,16 @@ public class MainMenu implements Screen {
 
     @Override
     public void render(float v) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
 
         stage.act();
         stage.draw();
     }
 
     @Override
-    public void show() {}
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+    }
 
     @Override
     public void resize(int width, int height) {

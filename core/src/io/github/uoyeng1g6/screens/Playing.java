@@ -18,7 +18,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -60,8 +59,6 @@ public class Playing implements Screen {
     final Viewport viewport;
 
     Stage stage;
-    Table counters;
-    Container<Label> days;
 
     Engine engine;
     GameState gameState;
@@ -78,45 +75,87 @@ public class Playing implements Screen {
 
         stage = new Stage(viewport);
 
-        counters = new Table(game.skin);
+        var labelStyle = new Label.LabelStyle(game.tooltipFont, Color.BLACK);
+
+        var uiTop = new Table();
+        uiTop.setFillParent(true);
+        uiTop.setDebug(game.debug);
+        stage.addActor(uiTop);
+        uiTop.center().top();
+
+        var daysLabel = new Label("Monday", labelStyle);
+        daysLabel.setFontScale(0.17f);
+        uiTop.add(daysLabel);
+        uiTop.row();
+        var timeLabel = new Label("07:00", labelStyle);
+        timeLabel.setFontScale(0.17f);
+        uiTop.add(timeLabel);
+
+        var counters = new Table(game.skin);
         counters.setFillParent(true);
         counters.pad(1);
         counters.setDebug(game.debug);
         stage.addActor(counters);
 
-        var labelStyle = new Label.LabelStyle(game.tooltipFont, Color.WHITE);
-        var daysLabel = new Label("Monday", labelStyle);
-        daysLabel.setFontScale(0.17f);
-
-        days = new Container<>(daysLabel);
-        days.setFillParent(true);
-        stage.addActor(days);
-        days.center().top();
-
-        var studyLabel = new Label("0", labelStyle);
-        studyLabel.setFontScale(0.15f);
-        var eatLabel = new Label("0", labelStyle);
-        eatLabel.setFontScale(0.15f);
-        var recreationLabel = new Label("0", labelStyle);
-        recreationLabel.setFontScale(0.15f);
-
         var studyIcon = game.interactionIconsTextureAtlas.findRegion("book_icon");
         var eatIcon = game.interactionIconsTextureAtlas.findRegion("food_icon");
         var recreationIcon = game.interactionIconsTextureAtlas.findRegion("popcorn_icon");
-
         var studyImage = new Image(studyIcon);
         var eatImage = new Image(eatIcon);
         var recreationImage = new Image(recreationIcon);
 
+        var todayLabel = new Label("Today:", labelStyle);
+        todayLabel.setFontScale(0.08f);
+        var totalLabel = new Label("Total:", labelStyle);
+        totalLabel.setFontScale(0.08f);
+
+        var dayStudyLabel = new Label("0", labelStyle);
+        dayStudyLabel.setFontScale(0.15f);
+        var totalStudyLabel = new Label("0", labelStyle);
+        totalStudyLabel.setFontScale(0.15f);
+
+        var dayEatLabel = new Label("0", labelStyle);
+        dayEatLabel.setFontScale(0.15f);
+        var totalEatLabel = new Label("0", labelStyle);
+        totalEatLabel.setFontScale(0.15f);
+
+        var dayRecreationLabel = new Label("0", labelStyle);
+        dayRecreationLabel.setFontScale(0.15f);
+        var totalRecreationLabel = new Label("0", labelStyle);
+        totalRecreationLabel.setFontScale(0.15f);
+
         counters.top().right();
+        counters.add();
+        counters.add(todayLabel).padRight(0.5f);
+        counters.add(totalLabel);
+        counters.row();
         counters.add(studyImage).width(3).height(3).padRight(0.25f);
-        counters.add(studyLabel);
+        counters.add(dayStudyLabel);
+        counters.add(totalStudyLabel);
         counters.row();
         counters.add(eatImage).width(3).height(3).padRight(0.25f);
-        counters.add(eatLabel);
+        counters.add(dayEatLabel);
+        counters.add(totalEatLabel);
         counters.row();
         counters.add(recreationImage).width(3).height(3).padRight(0.25f);
-        counters.add(recreationLabel);
+        counters.add(dayRecreationLabel);
+        counters.add(totalRecreationLabel);
+
+        var energy = new Table(game.skin);
+        energy.setFillParent(true);
+        energy.pad(1);
+        energy.setDebug(game.debug);
+        stage.addActor(energy);
+
+        var energyLabel = new Label("Energy Remaining:", labelStyle);
+        energyLabel.setFontScale(0.08f);
+        var energyAmount = new Label(String.valueOf(GameConstants.MAX_ENERGY), labelStyle);
+        energyAmount.setFontScale(0.15f);
+
+        energy.top().left();
+        energy.add(energyLabel);
+        energy.row();
+        energy.add(energyAmount);
 
         this.engine = new PooledEngine();
         this.gameState = new GameState();
@@ -145,15 +184,35 @@ public class Playing implements Screen {
                         return dayNameMap.get(gameState.daysRemaining);
                     }
                 })));
+        engine.addEntity(engine.createEntity().add(new CounterComponent(timeLabel, state -> {
+            var newHour = 7 + (GameConstants.MAX_HOURS - state.hoursRemaining);
+            return String.format("%s%d:00", newHour < 10 ? "0" : "", newHour);
+        })));
+
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
-                        studyLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.STUDY)))));
+                        dayStudyLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.STUDY)))));
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
-                        eatLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.MEAL)))));
+                        dayEatLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.MEAL)))));
         engine.addEntity(engine.createEntity()
                 .add(new CounterComponent(
-                        recreationLabel, state -> String.valueOf(state.currentDay.statFor(ActivityType.RECREATION)))));
+                        dayRecreationLabel,
+                        state -> String.valueOf(state.currentDay.statFor(ActivityType.RECREATION)))));
+
+        engine.addEntity(engine.createEntity()
+                .add(new CounterComponent(
+                        totalStudyLabel, state -> String.valueOf(state.getTotalActivityCount(ActivityType.STUDY)))));
+        engine.addEntity(engine.createEntity()
+                .add(new CounterComponent(
+                        totalEatLabel, state -> String.valueOf(state.getTotalActivityCount(ActivityType.MEAL)))));
+        engine.addEntity(engine.createEntity()
+                .add(new CounterComponent(
+                        totalRecreationLabel,
+                        state -> String.valueOf(state.getTotalActivityCount(ActivityType.RECREATION)))));
+
+        engine.addEntity(engine.createEntity()
+                .add(new CounterComponent(energyAmount, state -> String.valueOf(state.energyRemaining))));
 
         engine.addSystem(new PlayerInputSystem(gameState));
         engine.addSystem(new PlayerInteractionSystem(gameState));
@@ -189,6 +248,10 @@ public class Playing implements Screen {
         }
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
     Entity[] initInteractionLocations(Engine engine) {
         final var iconSize = 2 / 64f;
 
@@ -212,11 +275,11 @@ public class Playing implements Screen {
                 .add(new HitboxComponent(new Rectangle(
                         54, 2.5f, foodIcon.getRegionWidth() * iconSize, foodIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
-                    if (!state.doActivity(1, 10, ActivityType.MEAL, "Eating...")) {
+                    if (!state.doActivity(1, 5, ActivityType.MEAL, "Eating...")) {
                         // Notify insufficient time/energy
                     }
                 }))
-                .add(new TooltipComponent(game.tooltipFont, "[E] Eat at Piazza\nTime: -1h\nEnergy: -10"));
+                .add(new TooltipComponent(game.tooltipFont, "[E] Eat at Piazza\nTime: -1h\nEnergy: -5"));
 
         var popcornIcon = game.interactionIconsTextureAtlas.findRegion("popcorn_icon");
         var recreation = engine.createEntity()
@@ -286,6 +349,12 @@ public class Playing implements Screen {
 
     @Override
     public void render(float delta) {
+        // Allow the final interaction (day transition) to complete before showing the end screen
+        if (gameState.daysRemaining == 0 && gameState.interactionOverlay == null) {
+            game.setState(HeslingtonHustle.State.END_SCREEN);
+            return;
+        }
+
         ScreenUtils.clear(0, 0, 0, 1);
 
         Gdx.gl.glEnable(GL30.GL_BLEND);

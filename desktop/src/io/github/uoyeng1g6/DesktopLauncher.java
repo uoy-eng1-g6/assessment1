@@ -8,8 +8,7 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
-        config.setTitle("assessment1");
-        //        config.setWindowedMode(800, 600);
+        config.setTitle("Heslington Hustle");
         new Lwjgl3Application(new HeslingtonHustle(), config);
     }
 }

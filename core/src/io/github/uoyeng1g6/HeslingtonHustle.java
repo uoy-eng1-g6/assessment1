@@ -2,7 +2,6 @@ package io.github.uoyeng1g6;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import io.github.uoyeng1g6.screens.EndScreen;
 import io.github.uoyeng1g6.screens.MainMenu;
 import io.github.uoyeng1g6.screens.Playing;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -41,8 +41,9 @@ public class HeslingtonHustle extends Game {
     public SpriteBatch spriteBatch;
     public ShapeDrawer shapeDrawer;
 
-    Screen mainMenu;
-    Screen playing;
+    MainMenu mainMenu;
+    Playing playing = null;
+    EndScreen endScreen = null;
 
     private State currentState = State.MAIN_MENU;
 
@@ -61,9 +62,18 @@ public class HeslingtonHustle extends Game {
                 this.setScreen(mainMenu);
                 break;
             case PLAYING:
+                if (playing != null) {
+                    playing.dispose();
+                }
+                playing = new Playing(this);
                 this.setScreen(playing);
                 break;
             case END_SCREEN:
+                if (endScreen != null) {
+                    endScreen.dispose();
+                }
+                endScreen = new EndScreen(this, playing.getGameState());
+                this.setScreen(endScreen);
                 break;
         }
         currentState = state;
@@ -97,7 +107,6 @@ public class HeslingtonHustle extends Game {
         shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(whitePixel, 0, 0, 1, 1));
 
         mainMenu = new MainMenu(this);
-        playing = new Playing(this);
 
         this.setScreen(mainMenu);
     }
@@ -110,7 +119,13 @@ public class HeslingtonHustle extends Game {
     @Override
     public void dispose() {
         mainMenu.dispose();
-        playing.dispose();
+
+        if (playing != null) {
+            playing.dispose();
+        }
+        if (endScreen != null) {
+            endScreen.dispose();
+        }
 
         skin.dispose();
 

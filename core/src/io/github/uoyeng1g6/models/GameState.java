@@ -1,6 +1,7 @@
 package io.github.uoyeng1g6.models;
 
 import io.github.uoyeng1g6.constants.ActivityType;
+import io.github.uoyeng1g6.constants.GameConstants;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,21 +24,19 @@ public class GameState {
         }
     }
 
-    private static final int MAX_ENERGY = 100;
-    private static final int OVERLAY_SECONDS_PER_HOUR = 2;
-
     public final ArrayList<Day> days = new ArrayList<>(7);
     public Day currentDay = new Day();
 
     public int daysRemaining = 7;
-    public int energyRemaining = MAX_ENERGY;
-    public float hoursRemaining = 16;
+    public int energyRemaining = GameConstants.MAX_ENERGY;
+    public int hoursRemaining = GameConstants.MAX_HOURS;
 
     public InteractionOverlay interactionOverlay = null;
 
     public void advanceDay() {
         daysRemaining--;
-        energyRemaining = MAX_ENERGY;
+        energyRemaining = GameConstants.MAX_ENERGY;
+        hoursRemaining = GameConstants.MAX_HOURS;
 
         days.add(currentDay);
         currentDay = new Day();
@@ -52,11 +51,14 @@ public class GameState {
 
         hoursRemaining -= timeUsage;
         energyRemaining -= energyUsage;
-
         currentDay.activityStats.merge(type, 1, Integer::sum);
 
-        interactionOverlay = new InteractionOverlay(overlayText, OVERLAY_SECONDS_PER_HOUR * timeUsage);
+        interactionOverlay = new InteractionOverlay(overlayText, GameConstants.OVERLAY_SECONDS_PER_HOUR * timeUsage);
 
         return true;
+    }
+
+    public int getTotalActivityCount(ActivityType type) {
+        return days.stream().mapToInt(day -> day.statFor(type)).sum() + currentDay.statFor(type);
     }
 }
