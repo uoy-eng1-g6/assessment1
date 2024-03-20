@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+/**
+ * System to handle rendering the tilemap onto the game background.
+ */
 public class MapRenderingSystem extends EntitySystem {
     private final OrthographicCamera camera;
 

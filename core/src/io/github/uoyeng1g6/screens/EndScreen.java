@@ -17,20 +17,26 @@ import io.github.uoyeng1g6.models.GameState;
 import io.github.uoyeng1g6.utils.ChangeListener;
 import java.util.List;
 
+/**
+ * The end screen of the game. Displays the player's score and the total number done of each activity.
+ */
 public class EndScreen implements Screen {
+    /**
+     * Theoretical maximum day score. Allows normalising to range 0-100.
+     */
     private static final float MAX_DAY_SCORE = 105.125f;
+    /**
+     * Theoretical minimum day score. Allows normalising to range 0-100.
+     */
     private static final float MIN_DAY_SCORE = 0f;
 
-    private final HeslingtonHustle game;
-    private final GameState endGameState;
-
     Camera camera;
+    /**
+     * The {@code scene2d.ui} stage used to render this screen.
+     */
     Stage stage;
 
     public EndScreen(HeslingtonHustle game, GameState endGameState) {
-        this.game = game;
-        this.endGameState = endGameState;
-
         camera = new OrthographicCamera();
         var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);
 
@@ -68,6 +74,15 @@ public class EndScreen implements Screen {
         root.add(inner).grow();
     }
 
+    /**
+     * Calculate the score for a given day based on the number of activities performed. The optimal score
+     * is given by studying 5 times, eating 3 times, and doing a recreational activity 3 times.
+     *
+     * @param studyCount the number of times the player studied during the day.
+     * @param mealCount the number of times the player ate during the day.
+     * @param recreationCount the number of recreational activities done by the player during the day.
+     * @return the computed score given the activity counts.
+     */
     float getDayScore(int studyCount, int mealCount, int recreationCount) {
         var studyPoints = 0;
         for (int i = 1; i <= studyCount; i++) {
@@ -93,6 +108,12 @@ public class EndScreen implements Screen {
         return studyPoints * mealMultiplier * recreationMultiplier;
     }
 
+    /**
+     * Calculate the aggregate score of all the days.
+     *
+     * @param days the days to calculate the score for.
+     * @return the computed game score.
+     */
     float calculateExamScore(List<GameState.Day> days) {
         float totalScore = 0;
 

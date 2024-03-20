@@ -16,13 +16,19 @@ import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import io.github.uoyeng1g6.models.GameState;
 
+/**
+ * System to handle player interaction. Checks if the player is currently standing within the hitbox
+ * of an interactable and if so, triggers the interaction for that interactable.
+ */
 public class PlayerInteractionSystem extends EntitySystem {
     private final ComponentMapper<PlayerComponent> plm = ComponentMapper.getFor(PlayerComponent.class);
-    private final ComponentMapper<AnimationComponent> am = ComponentMapper.getFor(AnimationComponent.class);
     private final ComponentMapper<InteractionComponent> im = ComponentMapper.getFor(InteractionComponent.class);
     private final ComponentMapper<HitboxComponent> hm = ComponentMapper.getFor(HitboxComponent.class);
     private final ComponentMapper<FixtureComponent> fm = ComponentMapper.getFor(FixtureComponent.class);
 
+    /**
+     * The game state.
+     */
     private final GameState gameState;
 
     private Entity playerEntity;

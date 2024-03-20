@@ -8,6 +8,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.uoyeng1g6.components.PositionComponent;
 import io.github.uoyeng1g6.components.TextureComponent;
 
+/**
+ * System that handles rendering static graphics. For a static graphic to be rendered its entity must
+ * have both a {@link TextureComponent} and a {@link PositionComponent}, as well as have
+ * {@link TextureComponent#visible} be {@code true}.
+ */
 public class StaticRenderingSystem extends IteratingSystem {
     private final SpriteBatch batch;
 

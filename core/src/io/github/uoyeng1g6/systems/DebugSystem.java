@@ -15,9 +15,19 @@ import io.github.uoyeng1g6.components.PlayerComponent;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+/**
+ * System that handles drawing hitboxes around interactable objects and the player if
+ * the game was run using debug mode.
+ */
 public class DebugSystem extends EntitySystem {
+    /**
+     * The line width to use to draw the hitboxes.
+     */
     private static final float DEBUG_LINE_WIDTH = 0.2f;
 
+    /**
+     * The shapedrawer to use to draw the hitboxes.
+     */
     private final ShapeDrawer shapeDrawer;
 
     private final ComponentMapper<HitboxComponent> hm = ComponentMapper.getFor(HitboxComponent.class);

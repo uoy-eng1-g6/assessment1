@@ -19,10 +19,26 @@ import io.github.uoyeng1g6.constants.PlayerConstants;
 import io.github.uoyeng1g6.models.GameState;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+/**
+ * System that handles rendering an appropriate tooltip while the player is standing within the
+ * hitbox for the tooltip-enabled entity.
+ */
 public class TooltipRenderingSystem extends EntitySystem {
+    /**
+     * The font to use to write on the tooltip.
+     */
     private final BitmapFont font;
+    /**
+     * The shapedrawer to use to draw the tooltip.
+     */
     private final ShapeDrawer shapeDrawer;
+    /**
+     * The sprite batch to use to draw the tooltip.
+     */
     private final SpriteBatch batch;
+    /**
+     * The game state;
+     */
     private final GameState gameState;
 
     private final ComponentMapper<HitboxComponent> hm = ComponentMapper.getFor(HitboxComponent.class);

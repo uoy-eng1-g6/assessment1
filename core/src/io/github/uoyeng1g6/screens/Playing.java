@@ -52,18 +52,37 @@ import io.github.uoyeng1g6.systems.StaticRenderingSystem;
 import io.github.uoyeng1g6.systems.TooltipRenderingSystem;
 import java.util.Map;
 
+/**
+ * The gameplay screen for the game. Causes a transition to the end screen once all the in-game
+ * days have been completed.
+ */
 public class Playing implements Screen {
     final HeslingtonHustle game;
 
     final OrthographicCamera camera;
     final Viewport viewport;
 
+    /**
+     * The {@code scene2d.ui} stage used to render the ui overlay for this screen.
+     */
     Stage stage;
 
+    /**
+     * The engine used to handle system updating.
+     */
     Engine engine;
+    /**
+     * The current game state;
+     */
     GameState gameState;
+    /**
+     * The box2d world used for the physics system.
+     */
     World world;
 
+    /**
+     * The box2d debug renderer used when the game is running in physics debug mode.
+     */
     Box2DDebugRenderer debugRenderer = null;
 
     public Playing(HeslingtonHustle game) {
@@ -229,6 +248,18 @@ public class Playing implements Screen {
                 new InteractionOverlayRenderingSystem(game.spriteBatch, game.overlayFont, game.shapeDrawer, gameState));
     }
 
+    /**
+     * Get the current game state object.
+     *
+     * @return the game state for this playthrough.
+     */
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    /**
+     * Load the terrain polygons from the data json file and create them in the box2d world.
+     */
     void initTerrain() {
         var json = new Json();
         var objects = json.fromJson(PhysicsPolygon[].class, Gdx.files.internal("terrain.json"));
@@ -248,10 +279,12 @@ public class Playing implements Screen {
         }
     }
 
-    public GameState getGameState() {
-        return gameState;
-    }
-
+    /**
+     * Initialise the entities for the interaction locations on the map
+     *
+     * @param engine the engine to create the entities for.
+     * @return the created entities.
+     */
     Entity[] initInteractionLocations(Engine engine) {
         final var iconSize = 2 / 64f;
 
@@ -309,6 +342,11 @@ public class Playing implements Screen {
         return new Entity[] {study, food, recreation, sleep};
     }
 
+    /**
+     * Initialise the player's physics object in the box2d world.
+     *
+     * @return the fixture for the player's physics object.
+     */
     Fixture initPlayerBody() {
         var player = new BodyDef();
         player.type = BodyDef.BodyType.DynamicBody;
@@ -323,6 +361,12 @@ public class Playing implements Screen {
         return playerFixture;
     }
 
+    /**
+     * Initialise the entity that represents the player character.
+     *
+     * @param engine the engine to create the entity for.
+     * @return the created entity.
+     */
     Entity initPlayerEntity(Engine engine) {
         var playerAnimations = new AnimationComponent(0.05f);
         playerAnimations.animations.put(
@@ -357,6 +401,7 @@ public class Playing implements Screen {
 
         ScreenUtils.clear(0, 0, 0, 1);
 
+        // This makes transpacency work properly
         Gdx.gl.glEnable(GL30.GL_BLEND);
         Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
 

@@ -7,6 +7,9 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import io.github.uoyeng1g6.components.CounterComponent;
 import io.github.uoyeng1g6.models.GameState;
 
+/**
+ * System that handles updating counter label text.
+ */
 public class CounterUpdateSystem extends IteratingSystem {
     private final GameState gameState;
 

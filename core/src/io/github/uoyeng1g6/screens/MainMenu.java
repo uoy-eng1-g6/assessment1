@@ -14,23 +14,23 @@ import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.utils.ChangeListener;
 
+/**
+ * The main menu screen for the game. Allows the player to start a new game, or quit to desktop.
+ */
 public class MainMenu implements Screen {
-    final HeslingtonHustle game;
-
-    Camera camera;
+    /**
+     * The {@code scene2d.ui} stage used to render this screen.
+     */
     Stage stage;
-    Table root;
 
     public MainMenu(HeslingtonHustle game) {
-        this.game = game;
-
-        camera = new OrthographicCamera();
+        var camera = new OrthographicCamera();
         var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);
 
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
-        root = new Table(game.skin);
+        var root = new Table(game.skin);
         root.setFillParent(true);
         root.pad(0.25f);
 

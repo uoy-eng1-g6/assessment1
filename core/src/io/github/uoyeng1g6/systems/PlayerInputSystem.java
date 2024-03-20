@@ -15,7 +15,14 @@ import io.github.uoyeng1g6.constants.MoveDirection;
 import io.github.uoyeng1g6.constants.PlayerConstants;
 import io.github.uoyeng1g6.models.GameState;
 
+/**
+ * System to process the player's inputs and set the movement velocity, as well as set a flag
+ * on the player component if they are attempting to interact with something.
+ */
 public class PlayerInputSystem extends EntitySystem {
+    /**
+     * The game state.
+     */
     private final GameState gameState;
 
     private final ComponentMapper<PlayerComponent> pm = ComponentMapper.getFor(PlayerComponent.class);

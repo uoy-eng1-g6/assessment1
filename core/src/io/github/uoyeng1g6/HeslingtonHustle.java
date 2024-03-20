@@ -17,45 +17,120 @@ import io.github.uoyeng1g6.screens.MainMenu;
 import io.github.uoyeng1g6.screens.Playing;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+/**
+ * The main game class. Handles the switching between different screens as well as most of the asset
+ * loading and cleanup that is required for the rest of the game.
+ */
 public class HeslingtonHustle extends Game {
+    /**
+     * Enum representing all possible game states.
+     */
     public enum State {
+        /**
+         * The game is currently on the main menu screen.
+         */
         MAIN_MENU,
+        /**
+         * The game is currently being played.
+         */
         PLAYING,
+        /**
+         * The game is currently on the game over screen.
+         */
         END_SCREEN
     }
 
+    /**
+     * Whether debug mode is enabled - if {@code true} then hitbox outlines will be shown for the player
+     * and any interactables, as well as showing layout debug lines for {@code scene2d.ui}.
+     */
     public final boolean debug;
+    /**
+     * Whether physics debug mode is enabled - if {@code true} then hitbox outlines will be shown for any physics
+     * objects handled by {@code box2d}.
+     */
     public final boolean physicsDebug;
 
+    /**
+     * The skin to use when rendering {@code scene2d.ui} components.
+     */
     public Skin skin;
 
+    /**
+     * Texture atlas containing all images for the player's sprite.
+     */
     public TextureAtlas playerTextureAtlas;
+    /**
+     * Texture atlas containing all icons used to mark interaction locations on the map.
+     */
     public TextureAtlas interactionIconsTextureAtlas;
+    /**
+     * Texture which is just a single white pixel. Required for {@link ShapeDrawer} to work properly.
+     */
     public Texture whitePixel;
 
+    /**
+     * The tilemap to use for the game's background.
+     */
     public TiledMap tiledMap;
 
+    /**
+     * The font to use when rendering tooltips.
+     */
     public BitmapFont tooltipFont;
+    /**
+     * The font to use when rendering the screen overlay that is drawn while an interaction is in progress.
+     */
     public BitmapFont overlayFont;
 
+    /**
+     * The global spritebatch to use for the game.
+     */
     public SpriteBatch spriteBatch;
+    /**
+     * The global shapedrawer to use for the game.
+     */
     public ShapeDrawer shapeDrawer;
 
+    /**
+     * The main menu screen instance.
+     */
     MainMenu mainMenu;
+    /**
+     * The gameplay screen instance. A new one is required to be created each time the
+     * player starts a new game.
+     */
     Playing playing = null;
+    /**
+     * The end screen instance. A new one is required to be create each time the
+     * player finishes a game.
+     */
     EndScreen endScreen = null;
 
+    /**
+     * The game's current state.
+     */
     private State currentState = State.MAIN_MENU;
 
     public HeslingtonHustle() {
+        // Properties retrieved from command-line to allow enabling of different debug modes to help with development
         debug = System.getProperty("game.debug", "false").equals("true");
         physicsDebug = System.getProperty("game.physicsDebug", "false").equals("true");
     }
 
+    /**
+     * Quit the game to desktop.
+     */
     public void quit() {
         Gdx.app.exit();
     }
 
+    /**
+     * Set the current game state. Handles switching between the different screens and cleanup between
+     * screen changes.
+     *
+     * @param state the state that the game should transition to.
+     */
     public void setState(State state) {
         switch (state) {
             case MAIN_MENU:

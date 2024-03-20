@@ -10,8 +10,18 @@ import io.github.uoyeng1g6.components.FixtureComponent;
 import io.github.uoyeng1g6.components.PositionComponent;
 import io.github.uoyeng1g6.models.GameState;
 
+/**
+ * System that draws animated entities. In order for an entity to be animate-able it must have an
+ * {@link AnimationComponent}, as well as either a {@link FixtureComponent} or {@link PositionComponent}.
+ */
 public class AnimationSystem extends IteratingSystem {
+    /**
+     * The sprite batch to use to draw the animation frames.
+     */
     private final SpriteBatch batch;
+    /**
+     * The game state.
+     */
     private final GameState gameState;
 
     private final ComponentMapper<AnimationComponent> am = ComponentMapper.getFor(AnimationComponent.class);

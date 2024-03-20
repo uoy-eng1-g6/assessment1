@@ -9,14 +9,38 @@ import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.models.GameState;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+/**
+ * System that handles drawing a semi-transparent overlay over the game screen
+ * while an interaction is currently taking place. Also handles ending the interaction once
+ * the overlay timeout has expired.
+ */
 public class InteractionOverlayRenderingSystem extends EntitySystem {
+    /**
+     * The colour to draw the interaction overlay.
+     */
     private static final Color OVERLAY_COLOR = new Color(0, 0, 0, 0.35f);
 
+    /**
+     * The sprite batch to use to draw the overlay.
+     */
     private final SpriteBatch batch;
+    /**
+     * The font to use to write on the overlay.
+     */
     private final BitmapFont font;
+    /**
+     * The shapedrawer to use to draw the overlay.
+     */
     private final ShapeDrawer shapeDrawer;
+    /**
+     * The game state;
+     */
     private final GameState gameState;
 
+    /**
+     * The amount of time elapsed since the overlay was shown. If {@code -1} then no overlay is currently being
+     * shown.
+     */
     private float elapsed = -1;
 
     public InteractionOverlayRenderingSystem(
