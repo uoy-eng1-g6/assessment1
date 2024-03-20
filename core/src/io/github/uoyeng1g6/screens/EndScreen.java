@@ -55,7 +55,8 @@ public class EndScreen implements Screen {
 
         var inner = new Table(game.skin);
 
-        inner.add(String.format("Exam Score: %.2f / 100", calculateExamScore(endGameState.days))).padBottom(50);
+        inner.add(String.format("Exam Score: %.2f / 100", calculateExamScore(endGameState.days)))
+                .padBottom(50);
         inner.row();
         inner.add("Times Studied: " + endGameState.getTotalActivityCount(ActivityType.STUDY));
         inner.row();
