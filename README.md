@@ -54,6 +54,8 @@ following command before committing and pushing:
 ./gradlew spotlessApply
 ```
 
+The same pipeline will also run the test suite for the project and fail if any of the tests fail.
+
 ### Release pipeline
 
 Creating a github release with the built jar file is automated and just has to be triggered manually. Upon [running
