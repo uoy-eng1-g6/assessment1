@@ -242,10 +242,13 @@ public class Playing implements Screen {
         engine.addSystem(new CounterUpdateSystem(gameState));
         if (game.debug) {
             engine.addSystem(new DebugSystem(game.shapeDrawer));
-            debugRenderer = new Box2DDebugRenderer();
         }
         engine.addSystem(
                 new InteractionOverlayRenderingSystem(game.spriteBatch, game.overlayFont, game.shapeDrawer, gameState));
+
+        if (game.physicsDebug) {
+            debugRenderer = new Box2DDebugRenderer();
+        }
     }
 
     /**
