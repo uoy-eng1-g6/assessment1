@@ -14,15 +14,17 @@ jobs:
         run: ./gradlew spotlessCheck
       - name: Test
         run: ./gradlew clean tests:test
-      - name: Build
+      - name: Build for test report
         run: ./gradlew build jacocoTestReport
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: jacoco-report-${{ ubuntu-latest }}
+          name: jacoco-report
           path: tests/build/reports/jacoco/test/html/
+      - name: Build JAR
+        run: ./gradlew desktop:dist
       - name: Upload JAR
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: lib-${{ ubuntu-latest }}.jar
-          path: tests/build/libs/lib.jar
+          name: lib.jar
+          path: desktop/build/libs/*.jar

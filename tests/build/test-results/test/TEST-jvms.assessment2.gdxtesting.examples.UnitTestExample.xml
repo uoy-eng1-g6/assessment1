@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="jvms.assessment2.gdxtesting.examples.UnitTestExample" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-04-24T10:47:01" hostname="LAPTOP-GLC9RNER" time="0.0">
+<testsuite name="jvms.assessment2.gdxtesting.examples.UnitTestExample" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-04-24T11:09:02" hostname="LAPTOP-GLC9RNER" time="0.0">
   <properties/>
   <testcase name="oneEqualsOne" classname="jvms.assessment2.gdxtesting.examples.UnitTestExample" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
