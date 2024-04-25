@@ -37,6 +37,10 @@ public class PlayerInputSystem extends EntitySystem {
         this.gameState = gameState;
     }
 
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
     @Override
     public void addedToEngine(Engine engine) {
         playerEntity = engine.getEntitiesFor(
