@@ -163,7 +163,7 @@ public class HeslingtonHustle extends Game {
         playerTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/player.txt"));
         interactionIconsTextureAtlas = new TextureAtlas(Gdx.files.internal("sprites/interaction_icons.txt"));
 
-        tiledMap = new TmxMapLoader().load("maps/campus-east.tmx");
+        tiledMap = new TmxMapLoader().load("maps/campusEast.tmx");
 
         tooltipFont = new BitmapFont();
         tooltipFont.getData().setScale(0.07f);
