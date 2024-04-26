@@ -1,7 +1,8 @@
+package jvms.assessment2.gdxtesting;
+
 import io.github.uoyeng1g6.constants.ActivityType;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.models.GameState;
-import jvms.assessment2.gdxtesting.GdxTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,7 +23,7 @@ public class GameStateTest {
         assertEquals(6, gameState.daysRemaining);
         assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);
         assertEquals(GameConstants.MAX_HOURS, gameState.hoursRemaining);
-        assertNotSame(new ArrayList<GameState.Day>(7), gameState.days);
+        assertNotSame(new ArrayList<>(7), gameState.days);
         assertNotNull(gameState.interactionOverlay);
     }
 
