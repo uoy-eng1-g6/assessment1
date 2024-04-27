@@ -99,6 +99,7 @@ project(":tests") {
 
         implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
 
         testImplementation 'junit:junit:4.+'
         testImplementation "org.mockito:mockito-core:5.11.0"
@@ -106,6 +107,7 @@ project(":tests") {
         testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        testImplementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
     }
 
     jacocoTestReport {
