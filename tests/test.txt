@@ -1,0 +1,4 @@
+Adam,100
+TestName,100
+Eva,50
+John,0
