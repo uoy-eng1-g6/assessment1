@@ -66,10 +66,16 @@
         vertices:[{x:0,y:0},{x:5,y:-2},{x:12,y:-2},{x:17,y:0},{x:17,y:11},{x:12,y:13.5},{x:8,y:13.5},{x:0,y:9}]
     },
     {
-        name:piazzaBuilding,
+        name:piazzaBuildingLower,
         type:StaticBody,
         position:{x:45,y:11},
-        vertices:[{x:0,y:0},{x:8,y:-4},{x:32,y:-4},{x:32,y:8},{x:9,y:8},{x:6,y:16},{x:0,y:16},{x:6,y:10}]
+        vertices:[{x:0,y:0},{x:9,y:-4},{x:32,y:-4},{x:32,y:8},{x:0,y:8}]
+    },
+    {
+        name:piazzaBuildingUpper,
+        type:StaticBody,
+        position:{x:45,y:19},
+        vertices:[{x:0,y:0},{x:0,y:8},{x:6,y:8},{x:9,y:0}]
     },
     {
         name:commonRoom,
