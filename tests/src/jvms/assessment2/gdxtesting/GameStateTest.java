@@ -12,13 +12,18 @@ import static org.junit.Assert.*;
 
 @RunWith(GdxTestRunner.class)
 public class GameStateTest {
+    /*
+    * Test that stats begin at maximum and that day advances and the stats are updated
+    * */
     @Test
     public void testAdvanceDay() {
         GameState gameState = new GameState();
+        //Test starting values are as expected for a new GameState
         assertEquals(7, gameState.daysRemaining);
         assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);
         assertEquals(GameConstants.MAX_HOURS, gameState.hoursRemaining);
         assertEquals(new ArrayList<GameState.Day>(7), gameState.days);
+        //Test values after day has advanced
         gameState.advanceDay();
         assertEquals(6, gameState.daysRemaining);
         assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);
@@ -27,6 +32,10 @@ public class GameStateTest {
         assertNotNull(gameState.interactionOverlay);
     }
 
+    /*
+    * Test that activities complete with sufficient energy remaining and related values
+    * are updated correctly.
+    * */
     @Test
     public void testDoActivity() {
         GameState gameState = new GameState();
@@ -38,16 +47,21 @@ public class GameStateTest {
         int beforeHoursRemaining = gameState.hoursRemaining;
         GameState.Day currentDay = gameState.currentDay;
         boolean result = gameState.doActivity(timeToUse, energyToUse, activityType, overlayText);
+        //Test that activity completes and that values are as expected after completion
         assertTrue(result);
         assertEquals(beforeEnergy - energyToUse, gameState.energyRemaining);
         assertEquals(beforeHoursRemaining - timeToUse, gameState.hoursRemaining);
         currentDay.activityStats.merge(activityType, 1, Integer::sum);
         assertEquals(currentDay, gameState.currentDay);
+        //Test that activity completion fails when energy is insufficient
         gameState.energyRemaining = 5;
         boolean result2 = gameState.doActivity(timeToUse, energyToUse, activityType, overlayText);
         assertFalse(result2);
     }
 
+    /*
+    * Test that activity count is incremented for each activity type
+    * */
     @Test
     public void testGetTotalActivityCount() {
         GameState gameState = new GameState();
