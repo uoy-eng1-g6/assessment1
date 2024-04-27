@@ -345,14 +345,15 @@ public class Playing implements Screen {
                 }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Watch films with mates\nTime: -1h\nEnergy: -10"));
 
+        var footballIcon = game.interactionIconsTextureAtlas.findRegion("football_icon");
         var sports = engine.createEntity()
-                .add(new TextureComponent(popcornIcon, iconSize).show())
+                .add(new TextureComponent(footballIcon, iconSize).show())
                 .add(new PositionComponent(65.5f, 57.5f))
                 .add(new HitboxComponent(new Rectangle(
                         65.5f,
                         57.5f,
-                        popcornIcon.getRegionWidth() * iconSize,
-                        popcornIcon.getRegionHeight() * iconSize)))
+                        footballIcon.getRegionWidth() * iconSize,
+                        footballIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(2, 16, ActivityType.RECREATION, "Playing sports...")) {
                         // Notify insufficient time/energy
@@ -360,14 +361,15 @@ public class Playing implements Screen {
                 }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Play some sports\nTime: -2h\nEnergy: -16"));
 
+        var gooseIcon = game.interactionIconsTextureAtlas.findRegion("goose_icon");
         var ducks = engine.createEntity()
-                .add(new TextureComponent(popcornIcon, iconSize).show())
-                .add(new PositionComponent(33.5f, 7.5f))
+                .add(new TextureComponent(gooseIcon, iconSize).show())
+                .add(new PositionComponent(33.5f, 5.5f))
                 .add(new HitboxComponent(new Rectangle(
                         33.5f,
-                        7.5f,
-                        popcornIcon.getRegionWidth() * iconSize,
-                        popcornIcon.getRegionHeight() * iconSize)))
+                        5.5f,
+                        gooseIcon.getRegionWidth() * iconSize,
+                        gooseIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 6, ActivityType.RECREATION, "Feeding ducks...")) {
                         // Notify insufficient time/energy
@@ -375,14 +377,15 @@ public class Playing implements Screen {
                 }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Feed some ducks\nTime: -1h\nEnergy: -6"));
 
+        var sofaIcon = game.interactionIconsTextureAtlas.findRegion("sofa_icon");
         var chill = engine.createEntity()
-                .add(new TextureComponent(popcornIcon, iconSize).show())
+                .add(new TextureComponent(sofaIcon, iconSize).show())
                 .add(new PositionComponent(40.5f, 27.5f))
                 .add(new HitboxComponent(new Rectangle(
                         40.5f,
                         27.5f,
-                        popcornIcon.getRegionWidth() * iconSize,
-                        popcornIcon.getRegionHeight() * iconSize)))
+                        sofaIcon.getRegionWidth() * iconSize,
+                        sofaIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 6, ActivityType.RECREATION, "Relaxing...")) {
                         // Notify insufficient time/energy
@@ -390,14 +393,30 @@ public class Playing implements Screen {
                 }))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Relax with friends\nTime: -1h\nEnergy: -6"));
 
+        var busIcon = game.interactionIconsTextureAtlas.findRegion("bus_icon");
+        var town = engine.createEntity()
+                .add(new TextureComponent(busIcon, iconSize).show())
+                .add(new PositionComponent(12, 60.5f))
+                .add(new HitboxComponent(new Rectangle(
+                        12,
+                        60.5f,
+                        busIcon.getRegionWidth() * iconSize,
+                        busIcon.getRegionHeight() * iconSize)))
+                .add(new InteractionComponent(state -> {
+                    if (!state.doActivity(1, 7, ActivityType.RECREATION, "Travelling...")) {
+                        // Notify insufficient time/energy
+                    }
+                }))
+                .add(new TooltipComponent(game.tooltipFont, "[E] Spend time in town\nTime: -1h\nEnergy: -7"));
+
         var society = engine.createEntity()
-                .add(new TextureComponent(popcornIcon, iconSize).show())
+                .add(new TextureComponent(sofaIcon, iconSize).show())
                 .add(new PositionComponent(60.5f, 19.5f))
                 .add(new HitboxComponent(new Rectangle(
                         60.5f,
                         19.5f,
-                        popcornIcon.getRegionWidth() * iconSize,
-                        popcornIcon.getRegionHeight() * iconSize)))
+                        sofaIcon.getRegionWidth() * iconSize,
+                        sofaIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 5, ActivityType.RECREATION, "Socialising...")) {
                         // Notify insufficient time/energy
@@ -414,7 +433,7 @@ public class Playing implements Screen {
                 .add(new InteractionComponent(GameState::advanceDay))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Go to sleep\nEnds the current day"));
 
-        return new Entity[] {cs, library, food, recreation, sleep, sports,ducks, chill, society};
+        return new Entity[] {cs, library, food, recreation, sleep, sports,ducks, chill, society, town};
     }
 
     /**
