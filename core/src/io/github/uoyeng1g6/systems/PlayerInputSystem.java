@@ -41,6 +41,10 @@ public class PlayerInputSystem extends EntitySystem {
         return velocity;
     }
 
+    public Entity getPlayerEntity() {
+        return playerEntity;
+    }
+
     @Override
     public void addedToEngine(Engine engine) {
         playerEntity = engine.getEntitiesFor(

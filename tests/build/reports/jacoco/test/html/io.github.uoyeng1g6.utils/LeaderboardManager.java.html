@@ -10,13 +10,12 @@ import java.util.Scanner;
 
 public class LeaderboardManager {
 
-
-<span class="fc" id="L14">    class Ranking {</span>
+<span class="fc" id="L13">    class Ranking {</span>
         String player;
         int score;
     }
 
-<span class="fc" id="L19">    ArrayList&lt;Ranking&gt; leaderboard = new ArrayList&lt;Ranking&gt;();</span>
+<span class="fc" id="L18">    ArrayList&lt;Ranking&gt; leaderboard = new ArrayList&lt;Ranking&gt;();</span>
 
     File file;
 
@@ -24,36 +23,37 @@ public class LeaderboardManager {
      * Controls access, ranking and updating of the leaderboard file
      * @param filepath File path of a .txt that stores the leaderboard
      */
-<span class="fc" id="L27">    public LeaderboardManager(String filepath) {</span>
+<span class="fc" id="L26">    public LeaderboardManager(String filepath) {</span>
         try {
-<span class="fc" id="L29">            file = new File(filepath);</span>
-<span class="fc" id="L30">            Scanner scanner = new Scanner(file);</span>
+<span class="fc" id="L28">            file = new File(filepath);</span>
+<span class="fc" id="L29">            Scanner scanner = new Scanner(file);</span>
 
-<span class="fc bfc" id="L32" title="All 2 branches covered.">            while (scanner.hasNextLine()) {</span>
-<span class="fc" id="L33">                String line = scanner.nextLine();</span>
-<span class="fc" id="L34">                String[] res = line.split(&quot;,&quot;);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            while (scanner.hasNextLine()) {</span>
+<span class="fc" id="L32">                String line = scanner.nextLine();</span>
+<span class="fc" id="L33">                String[] res = line.split(&quot;,&quot;);</span>
 
-<span class="fc" id="L36">                Ranking entry = new Ranking();</span>
-<span class="fc" id="L37">                entry.player = res[0];</span>
-<span class="fc" id="L38">                entry.score = Integer.parseInt(res[1]);</span>
+<span class="fc" id="L35">                Ranking entry = new Ranking();</span>
+<span class="fc" id="L36">                entry.player = res[0];</span>
+<span class="fc" id="L37">                entry.score = Integer.parseInt(res[1]);</span>
 
-<span class="fc" id="L40">                leaderboard.add(entry);</span>
-<span class="fc" id="L41">            }</span>
-<span class="fc" id="L42">            sortLeaderboard();</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">            if (leaderboard.size() &gt; 10) {</span>
-<span class="fc" id="L44">                leaderboard.subList(9, leaderboard.size()-1).clear();</span>
+<span class="fc" id="L39">                leaderboard.add(entry);</span>
+<span class="fc" id="L40">            }</span>
+<span class="fc" id="L41">            sortLeaderboard();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (leaderboard.size() &gt; 10) {</span>
+<span class="fc" id="L43">                leaderboard.subList(9, leaderboard.size() - 1).clear();</span>
             }
-<span class="nc" id="L46">        } catch (FileNotFoundException e) {</span>
-<span class="nc" id="L47">            e.printStackTrace();</span>
-<span class="fc" id="L48">        }</span>
-<span class="fc" id="L49">    }</span>
+<span class="nc" id="L45">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L46">            e.printStackTrace();</span>
+<span class="fc" id="L47">        }</span>
+<span class="fc" id="L48">    }</span>
 
     public void sortLeaderboard() {
-<span class="fc" id="L52">        leaderboard.sort(new SortByScore().thenComparing(new SortByName()));</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L51">        leaderboard.sort(new SortByScore().thenComparing(new SortByName()));</span>
+<span class="fc" id="L52">    }</span>
+
     public String[][] getRanking() {
 <span class="fc" id="L55">        String[][] stringRanking = new String[leaderboard.size()][2];</span>
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (int i=0; i&lt;leaderboard.size(); i++) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (int i = 0; i &lt; leaderboard.size(); i++) {</span>
 <span class="fc" id="L57">            stringRanking[i][0] = leaderboard.get(i).player;</span>
 <span class="fc" id="L58">            stringRanking[i][1] = Integer.toString(leaderboard.get(i).score);</span>
         }
@@ -92,7 +92,7 @@ public class LeaderboardManager {
 <span class="fc" id="L92">    public class SortByScore implements Comparator&lt;Ranking&gt; {</span>
         @Override
         public int compare(Ranking o1, Ranking o2) {
-<span class="fc" id="L95">            return o2.score-o1.score;</span>
+<span class="fc" id="L95">            return o2.score - o1.score;</span>
         }
     }
 
