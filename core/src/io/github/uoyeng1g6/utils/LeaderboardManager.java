@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class LeaderboardManager {
 
-
     class Ranking {
         String player;
         int score;
@@ -41,7 +40,7 @@ public class LeaderboardManager {
             }
             sortLeaderboard();
             if (leaderboard.size() > 10) {
-                leaderboard.subList(9, leaderboard.size()-1).clear();
+                leaderboard.subList(9, leaderboard.size() - 1).clear();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -51,9 +50,10 @@ public class LeaderboardManager {
     public void sortLeaderboard() {
         leaderboard.sort(new SortByScore().thenComparing(new SortByName()));
     }
+
     public String[][] getRanking() {
         String[][] stringRanking = new String[leaderboard.size()][2];
-        for (int i=0; i<leaderboard.size(); i++) {
+        for (int i = 0; i < leaderboard.size(); i++) {
             stringRanking[i][0] = leaderboard.get(i).player;
             stringRanking[i][1] = Integer.toString(leaderboard.get(i).score);
         }
@@ -92,7 +92,7 @@ public class LeaderboardManager {
     public class SortByScore implements Comparator<Ranking> {
         @Override
         public int compare(Ranking o1, Ranking o2) {
-            return o2.score-o1.score;
+            return o2.score - o1.score;
         }
     }
 
