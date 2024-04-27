@@ -332,10 +332,10 @@ public class Playing implements Screen {
         var popcornIcon = game.interactionIconsTextureAtlas.findRegion("popcorn_icon");
         var recreation = engine.createEntity()
                 .add(new TextureComponent(popcornIcon, iconSize).show())
-                .add(new PositionComponent(53.5f, 26.5f))
+                .add(new PositionComponent(17, 60.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        53.5f,
-                        26.5f,
+                        17,
+                        60.5f,
                         popcornIcon.getRegionWidth() * iconSize,
                         popcornIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
