@@ -1,32 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="jvms.assessment2.gdxtesting.PlayerInputSystemTest" tests="2" skipped="0" failures="1" errors="0" timestamp="2024-04-27T15:21:22" hostname="MacBook-Pro-186" time="0.109">
+<testsuite name="jvms.assessment2.gdxtesting.PlayerInputSystemTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-04-28T09:37:05" hostname="MacBook-Pro-186" time="0.018">
   <properties/>
-  <testcase name="testSuccessfulAddToEngine" classname="jvms.assessment2.gdxtesting.PlayerInputSystemTest" time="0.081"/>
-  <testcase name="testVelocity" classname="jvms.assessment2.gdxtesting.PlayerInputSystemTest" time="0.007">
-    <failure message="java.lang.AssertionError: expected:&lt;(1.0,0.0)&gt; but was:&lt;(0.0,0.0)&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;(1.0,0.0)&gt; but was:&lt;(0.0,0.0)&gt;
-	at org.junit.Assert.fail(Assert.java:89)
-	at org.junit.Assert.failNotEquals(Assert.java:835)
-	at org.junit.Assert.assertEquals(Assert.java:120)
-	at org.junit.Assert.assertEquals(Assert.java:146)
-	at jvms.assessment2.gdxtesting.PlayerInputSystemTest.testVelocity(PlayerInputSystemTest.java:68)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
-	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
-	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
-	at jvms.assessment2.gdxtesting.GdxTestRunner.render(GdxTestRunner.java:59)
-	at com.badlogic.gdx.backends.headless.HeadlessApplication.mainLoop(HeadlessApplication.java:128)
-	at com.badlogic.gdx.backends.headless.HeadlessApplication$1.run(HeadlessApplication.java:93)
-</failure>
-  </testcase>
+  <testcase name="testSuccessfulAddToEngine" classname="jvms.assessment2.gdxtesting.PlayerInputSystemTest" time="0.002"/>
+  <testcase name="testVelocity" classname="jvms.assessment2.gdxtesting.PlayerInputSystemTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

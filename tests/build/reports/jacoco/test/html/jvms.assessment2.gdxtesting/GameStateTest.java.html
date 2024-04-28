@@ -12,50 +12,64 @@ import static org.junit.Assert.*;
 
 @RunWith(GdxTestRunner.class)
 <span class="fc" id="L14">public class GameStateTest {</span>
+    /*
+    * Test that stats begin at maximum and that day advances and the stats are updated
+    * */
     @Test
     public void testAdvanceDay() {
-<span class="fc" id="L17">        GameState gameState = new GameState();</span>
-<span class="fc" id="L18">        assertEquals(7, gameState.daysRemaining);</span>
-<span class="fc" id="L19">        assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);</span>
-<span class="fc" id="L20">        assertEquals(GameConstants.MAX_HOURS, gameState.hoursRemaining);</span>
-<span class="fc" id="L21">        assertEquals(new ArrayList&lt;GameState.Day&gt;(7), gameState.days);</span>
-<span class="fc" id="L22">        gameState.advanceDay();</span>
-<span class="fc" id="L23">        assertEquals(6, gameState.daysRemaining);</span>
-<span class="fc" id="L24">        assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);</span>
-<span class="fc" id="L25">        assertEquals(GameConstants.MAX_HOURS, gameState.hoursRemaining);</span>
-<span class="fc" id="L26">        assertNotSame(new ArrayList&lt;&gt;(7), gameState.days);</span>
-<span class="fc" id="L27">        assertNotNull(gameState.interactionOverlay);</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L20">        GameState gameState = new GameState();</span>
+        //Test starting values are as expected for a new GameState
+<span class="fc" id="L22">        assertEquals(7, gameState.daysRemaining);</span>
+<span class="fc" id="L23">        assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);</span>
+<span class="fc" id="L24">        assertEquals(GameConstants.MAX_HOURS, gameState.hoursRemaining);</span>
+<span class="fc" id="L25">        assertEquals(new ArrayList&lt;GameState.Day&gt;(7), gameState.days);</span>
+        //Test values after day has advanced
+<span class="fc" id="L27">        gameState.advanceDay();</span>
+<span class="fc" id="L28">        assertEquals(6, gameState.daysRemaining);</span>
+<span class="fc" id="L29">        assertEquals(GameConstants.MAX_ENERGY, gameState.energyRemaining);</span>
+<span class="fc" id="L30">        assertEquals(GameConstants.MAX_HOURS, gameState.hoursRemaining);</span>
+<span class="fc" id="L31">        assertNotSame(new ArrayList&lt;&gt;(7), gameState.days);</span>
+<span class="fc" id="L32">        assertNotNull(gameState.interactionOverlay);</span>
+<span class="fc" id="L33">    }</span>
 
+    /*
+    * Test that activities complete with sufficient energy remaining and related values
+    * are updated correctly.
+    * */
     @Test
     public void testDoActivity() {
-<span class="fc" id="L32">        GameState gameState = new GameState();</span>
-<span class="fc" id="L33">        int timeToUse = 1;</span>
-<span class="fc" id="L34">        int energyToUse = 10;</span>
-<span class="fc" id="L35">        ActivityType activityType = ActivityType.MEAL;</span>
-<span class="fc" id="L36">        String overlayText = &quot;Text&quot;;</span>
-<span class="fc" id="L37">        int beforeEnergy = gameState.energyRemaining;</span>
-<span class="fc" id="L38">        int beforeHoursRemaining = gameState.hoursRemaining;</span>
-<span class="fc" id="L39">        GameState.Day currentDay = gameState.currentDay;</span>
-<span class="fc" id="L40">        boolean result = gameState.doActivity(timeToUse, energyToUse, activityType, overlayText);</span>
-<span class="fc" id="L41">        assertTrue(result);</span>
-<span class="fc" id="L42">        assertEquals(beforeEnergy - energyToUse, gameState.energyRemaining);</span>
-<span class="fc" id="L43">        assertEquals(beforeHoursRemaining - timeToUse, gameState.hoursRemaining);</span>
-<span class="fc" id="L44">        currentDay.activityStats.merge(activityType, 1, Integer::sum);</span>
-<span class="fc" id="L45">        assertEquals(currentDay, gameState.currentDay);</span>
-<span class="fc" id="L46">        gameState.energyRemaining = 5;</span>
-<span class="fc" id="L47">        boolean result2 = gameState.doActivity(timeToUse, energyToUse, activityType, overlayText);</span>
-<span class="fc" id="L48">        assertFalse(result2);</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L41">        GameState gameState = new GameState();</span>
+<span class="fc" id="L42">        int timeToUse = 1;</span>
+<span class="fc" id="L43">        int energyToUse = 10;</span>
+<span class="fc" id="L44">        ActivityType activityType = ActivityType.MEAL;</span>
+<span class="fc" id="L45">        String overlayText = &quot;Text&quot;;</span>
+<span class="fc" id="L46">        int beforeEnergy = gameState.energyRemaining;</span>
+<span class="fc" id="L47">        int beforeHoursRemaining = gameState.hoursRemaining;</span>
+<span class="fc" id="L48">        GameState.Day currentDay = gameState.currentDay;</span>
+<span class="fc" id="L49">        boolean result = gameState.doActivity(timeToUse, energyToUse, activityType, overlayText);</span>
+        //Test that activity completes and that values are as expected after completion
+<span class="fc" id="L51">        assertTrue(result);</span>
+<span class="fc" id="L52">        assertEquals(beforeEnergy - energyToUse, gameState.energyRemaining);</span>
+<span class="fc" id="L53">        assertEquals(beforeHoursRemaining - timeToUse, gameState.hoursRemaining);</span>
+<span class="fc" id="L54">        currentDay.activityStats.merge(activityType, 1, Integer::sum);</span>
+<span class="fc" id="L55">        assertEquals(currentDay, gameState.currentDay);</span>
+        //Test that activity completion fails when energy is insufficient
+<span class="fc" id="L57">        gameState.energyRemaining = 5;</span>
+<span class="fc" id="L58">        boolean result2 = gameState.doActivity(timeToUse, energyToUse, activityType, overlayText);</span>
+<span class="fc" id="L59">        assertFalse(result2);</span>
+<span class="fc" id="L60">    }</span>
 
+    /*
+    * Test that activity count is incremented for each activity type
+    * */
     @Test
     public void testGetTotalActivityCount() {
-<span class="fc" id="L53">        GameState gameState = new GameState();</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        for(ActivityType activityType : ActivityType.values()) {</span>
-<span class="fc" id="L55">            assertEquals(0, gameState.getTotalActivityCount(activityType));</span>
-<span class="fc" id="L56">            gameState.doActivity(1, 10, activityType, &quot;test&quot;);</span>
-<span class="fc" id="L57">            assertEquals(1, gameState.getTotalActivityCount(activityType));</span>
+<span class="fc" id="L67">        GameState gameState = new GameState();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for(ActivityType activityType : ActivityType.values()) {</span>
+<span class="fc" id="L69">            assertEquals(0, gameState.getTotalActivityCount(activityType));</span>
+<span class="fc" id="L70">            gameState.doActivity(1, 10, activityType, &quot;test&quot;);</span>
+<span class="fc" id="L71">            assertEquals(1, gameState.getTotalActivityCount(activityType));</span>
         }
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L73">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
