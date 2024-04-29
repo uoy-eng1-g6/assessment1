@@ -12,8 +12,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-
 
 /**
  * The main menu screen for the game. Allows the player to start a new game, or quit to desktop.
@@ -23,7 +21,6 @@ public class MainMenu implements Screen {
      * The {@code scene2d.ui} stage used to render this screen.
      */
     Stage stage;
-    private TextField playerNameField; // New field for player name input
 
     public MainMenu(HeslingtonHustle game) {
         var camera = new OrthographicCamera();
@@ -54,14 +51,6 @@ public class MainMenu implements Screen {
         quitButton.addListener(ChangeListener.of((e, a) -> game.quit()));
         inner.add(quitButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));
 
-        inner.row(); // Add a new row
-        playerNameField = new TextField("", game.skin); // Initialize with an empty string
-        playerNameField.setMessageText("Enter your name"); // Display a placeholder text
-        playerNameField.setPosition(190, 100); // Set position (adjust as needed)
-        playerNameField.setSize(270, 50); // Set width and height (adjust as needed)
-        stage.addActor(playerNameField); // Add the text field to the stage
-
-
         root.add(inner).grow();
     }
 
@@ -71,8 +60,6 @@ public class MainMenu implements Screen {
 
         stage.act();
         stage.draw();
-
-        String playerName = playerNameField.getText();
     }
 
     @Override

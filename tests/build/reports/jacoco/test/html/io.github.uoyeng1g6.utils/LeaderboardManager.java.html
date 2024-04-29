@@ -10,12 +10,14 @@ import java.util.Scanner;
 
 public class LeaderboardManager {
 
-<span class="nc" id="L13">    class Ranking {</span>
+<span class="fc" id="L13">    class Ranking {</span>
         String player;
         int score;
     }
 
-<span class="nc" id="L18">    ArrayList&lt;Ranking&gt; leaderboard = new ArrayList&lt;Ranking&gt;();</span>
+<span class="fc" id="L18">    String currentPlayer = &quot;Unknown&quot;;</span>
+
+<span class="fc" id="L20">    ArrayList&lt;Ranking&gt; leaderboard = new ArrayList&lt;Ranking&gt;();</span>
 
     File file;
 
@@ -23,84 +25,118 @@ public class LeaderboardManager {
      * Controls access, ranking and updating of the leaderboard file
      * @param filepath File path of a .txt that stores the leaderboard
      */
-<span class="nc" id="L26">    public LeaderboardManager(String filepath) {</span>
+<span class="fc" id="L28">    public LeaderboardManager(String filepath) {</span>
         try {
-<span class="nc" id="L28">            file = new File(filepath);</span>
-<span class="nc" id="L29">            Scanner scanner = new Scanner(file);</span>
+<span class="fc" id="L30">            file = new File(filepath);</span>
 
-<span class="nc bnc" id="L31" title="All 2 branches missed.">            while (scanner.hasNextLine()) {</span>
-<span class="nc" id="L32">                String line = scanner.nextLine();</span>
-<span class="nc" id="L33">                String[] res = line.split(&quot;,&quot;);</span>
+            //Creates a new file if it doesn't exist
+<span class="fc" id="L33">            file.createNewFile();</span>
+<span class="fc" id="L34">            Scanner scanner = new Scanner(file);</span>
 
-<span class="nc" id="L35">                Ranking entry = new Ranking();</span>
-<span class="nc" id="L36">                entry.player = res[0];</span>
-<span class="nc" id="L37">                entry.score = Integer.parseInt(res[1]);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            while (scanner.hasNextLine()) {</span>
+<span class="fc" id="L37">                String line = scanner.nextLine();</span>
+<span class="fc" id="L38">                String[] res = line.split(&quot;,&quot;);</span>
 
-<span class="nc" id="L39">                leaderboard.add(entry);</span>
-<span class="nc" id="L40">            }</span>
-<span class="nc" id="L41">            sortLeaderboard();</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">            if (leaderboard.size() &gt; 10) {</span>
-<span class="nc" id="L43">                leaderboard.subList(9, leaderboard.size() - 1).clear();</span>
+<span class="fc" id="L40">                Ranking entry = new Ranking();</span>
+<span class="fc" id="L41">                entry.player = res[0];</span>
+<span class="fc" id="L42">                entry.score = Integer.parseInt(res[1]);</span>
+
+<span class="fc" id="L44">                leaderboard.add(entry);</span>
+<span class="fc" id="L45">            }</span>
+<span class="fc" id="L46">            sortLeaderboard();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (leaderboard.size() &gt; 10) {</span>
+<span class="fc" id="L48">                leaderboard.subList(9, leaderboard.size() - 1).clear();</span>
             }
-<span class="nc" id="L45">        } catch (FileNotFoundException e) {</span>
-<span class="nc" id="L46">            e.printStackTrace();</span>
-<span class="nc" id="L47">        }</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L50">        } catch (IOException e) {</span>
+<span class="nc" id="L51">            e.printStackTrace();</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">    }</span>
 
     public void sortLeaderboard() {
-<span class="nc" id="L51">        leaderboard.sort(new SortByScore().thenComparing(new SortByName()));</span>
-<span class="nc" id="L52">    }</span>
+<span class="fc" id="L56">        leaderboard.sort(new SortByScore().thenComparing(new SortByName()));</span>
+<span class="fc" id="L57">    }</span>
 
     public String[][] getRanking() {
-<span class="nc" id="L55">        String[][] stringRanking = new String[leaderboard.size()][2];</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        for (int i = 0; i &lt; leaderboard.size(); i++) {</span>
-<span class="nc" id="L57">            stringRanking[i][0] = leaderboard.get(i).player;</span>
-<span class="nc" id="L58">            stringRanking[i][1] = Integer.toString(leaderboard.get(i).score);</span>
+<span class="fc" id="L60">        String[][] stringRanking = new String[leaderboard.size()][2];</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (int i = 0; i &lt; leaderboard.size(); i++) {</span>
+<span class="fc" id="L62">            stringRanking[i][0] = leaderboard.get(i).player;</span>
+<span class="fc" id="L63">            stringRanking[i][1] = Integer.toString(leaderboard.get(i).score);</span>
         }
-<span class="nc" id="L60">        return stringRanking;</span>
+<span class="fc" id="L65">        return stringRanking;</span>
     }
 
     public String[][] addEntry(String playerName, int score) {
-<span class="nc" id="L64">        Ranking newEntry = new Ranking();</span>
-<span class="nc" id="L65">        newEntry.player = playerName;</span>
-<span class="nc" id="L66">        newEntry.score = score;</span>
+<span class="fc" id="L69">        Ranking newEntry = new Ranking();</span>
+<span class="fc" id="L70">        newEntry.player = playerName;</span>
+<span class="fc" id="L71">        newEntry.score = score;</span>
 
-<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (leaderboard.size() &lt; 10) {</span>
-<span class="nc" id="L69">            leaderboard.add(newEntry);</span>
-<span class="nc" id="L70">            sortLeaderboard();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (leaderboard.size() &lt; 10) {</span>
+<span class="fc" id="L74">            leaderboard.add(newEntry);</span>
+<span class="fc" id="L75">            sortLeaderboard();</span>
         } else {
-<span class="nc" id="L72">            leaderboard.add(newEntry);</span>
-<span class="nc" id="L73">            sortLeaderboard();</span>
-<span class="nc" id="L74">            leaderboard.remove(10);</span>
+<span class="fc" id="L77">            leaderboard.add(newEntry);</span>
+<span class="fc" id="L78">            sortLeaderboard();</span>
+<span class="fc" id="L79">            leaderboard.remove(10);</span>
         }
-<span class="nc" id="L76">        writeToFile();</span>
-<span class="nc" id="L77">        return getRanking();</span>
+<span class="fc" id="L81">        writeToFile();</span>
+<span class="fc" id="L82">        return getRanking();</span>
+    }
+
+    public String[][] addEntry(int score) {
+<span class="fc" id="L86">        Ranking newEntry = new Ranking();</span>
+
+<span class="fc" id="L88">        newEntry.player = currentPlayer;</span>
+<span class="fc" id="L89">        newEntry.score = score;</span>
+
+
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (leaderboard.size() &lt; 10) {</span>
+<span class="fc" id="L93">            leaderboard.add(newEntry);</span>
+<span class="fc" id="L94">            sortLeaderboard();</span>
+        } else {
+<span class="nc" id="L96">            leaderboard.add(newEntry);</span>
+<span class="nc" id="L97">            sortLeaderboard();</span>
+<span class="nc" id="L98">            leaderboard.remove(10);</span>
+        }
+<span class="fc" id="L100">        writeToFile();</span>
+<span class="fc" id="L101">        currentPlayer = &quot;Unknown&quot;;</span>
+<span class="fc" id="L102">        return getRanking();</span>
+    }
+
+    public void saveName(String player) {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (player.length() &gt; 11) {</span>
+<span class="nc" id="L107">            player = player.substring(10, player.length()-1);</span>
+        }
+<span class="fc" id="L109">        currentPlayer = player;</span>
+<span class="fc" id="L110">    }</span>
+
+    public String getName() {
+<span class="fc" id="L113">        return currentPlayer;</span>
     }
 
     public void writeToFile() {
         try {
-<span class="nc" id="L82">            FileWriter writer = new FileWriter(file.getPath());</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">            for (Ranking entry : leaderboard) {</span>
-<span class="nc" id="L84">                writer.write(entry.player + &quot;,&quot; + Integer.toString(entry.score) + &quot;\n&quot;);</span>
-<span class="nc" id="L85">            }</span>
-<span class="nc" id="L86">            writer.close();</span>
-<span class="nc" id="L87">        } catch (IOException e) {</span>
-<span class="nc" id="L88">            e.printStackTrace();</span>
-<span class="nc" id="L89">        }</span>
-<span class="nc" id="L90">    }</span>
+<span class="fc" id="L118">            FileWriter writer = new FileWriter(file.getPath());</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            for (Ranking entry : leaderboard) {</span>
+<span class="fc" id="L120">                writer.write(entry.player + &quot;,&quot; + Integer.toString(entry.score) + &quot;\n&quot;);</span>
+<span class="fc" id="L121">            }</span>
+<span class="fc" id="L122">            writer.close();</span>
+<span class="nc" id="L123">        } catch (IOException e) {</span>
+<span class="nc" id="L124">            e.printStackTrace();</span>
+<span class="fc" id="L125">        }</span>
+<span class="fc" id="L126">    }</span>
 
-<span class="nc" id="L92">    public class SortByScore implements Comparator&lt;Ranking&gt; {</span>
+<span class="fc" id="L128">    public class SortByScore implements Comparator&lt;Ranking&gt; {</span>
         @Override
         public int compare(Ranking o1, Ranking o2) {
-<span class="nc" id="L95">            return o2.score - o1.score;</span>
+<span class="fc" id="L131">            return o2.score - o1.score;</span>
         }
     }
 
-<span class="nc" id="L99">    class SortByName implements Comparator&lt;Ranking&gt; {</span>
+<span class="fc" id="L135">    class SortByName implements Comparator&lt;Ranking&gt; {</span>
 
         @Override
         public int compare(Ranking o1, Ranking o2) {
-<span class="nc" id="L103">            return o1.player.compareTo(o2.player);</span>
+<span class="fc" id="L139">            return o1.player.toLowerCase().compareTo(o2.player.toLowerCase());</span>
         }
     }
 }

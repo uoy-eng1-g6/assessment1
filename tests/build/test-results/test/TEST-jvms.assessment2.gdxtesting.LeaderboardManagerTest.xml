@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="jvms.assessment2.gdxtesting.LeaderboardManagerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2024-04-29T14:57:21" hostname="LAPTOP-GLC9RNER" time="0.069">
+  <properties/>
+  <testcase name="testLeaderboardUpdateScore" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.036"/>
+  <testcase name="testLeaderboardNameReset" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.003"/>
+  <testcase name="testLeaderboardCreation" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.003"/>
+  <testcase name="testLeaderboardReplacement" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.008"/>
+  <testcase name="testLeaderboardSaveName" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.003"/>
+  <testcase name="testLeaderboardLengthValidation" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.003"/>
+  <testcase name="testLeaderboardInsertionScore" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.003"/>
+  <testcase name="testLeaderboardOrderValidation" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.004"/>
+  <testcase name="testLeaderboardInsertionName" classname="jvms.assessment2.gdxtesting.LeaderboardManagerTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

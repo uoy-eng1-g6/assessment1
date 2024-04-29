@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+
 
 /**
  * The main menu screen for the game. Allows the player to start a new game, or quit to desktop.
@@ -22,68 +24,71 @@ public class MainMenu implements Screen {
      */
     Stage stage;
 
-<span class="nc" id="L25">    public MainMenu(HeslingtonHustle game) {</span>
-<span class="nc" id="L26">        var camera = new OrthographicCamera();</span>
-<span class="nc" id="L27">        var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);</span>
 
-<span class="nc" id="L29">        stage = new Stage(viewport);</span>
-<span class="nc" id="L30">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L28">    public MainMenu(HeslingtonHustle game) {</span>
+<span class="nc" id="L29">        var camera = new OrthographicCamera();</span>
+<span class="nc" id="L30">        var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);</span>
 
-<span class="nc" id="L32">        var root = new Table(game.skin);</span>
-<span class="nc" id="L33">        root.setFillParent(true);</span>
-<span class="nc" id="L34">        root.pad(0.25f);</span>
+<span class="nc" id="L32">        stage = new Stage(viewport);</span>
+<span class="nc" id="L33">        Gdx.input.setInputProcessor(stage);</span>
 
-<span class="nc" id="L36">        root.setDebug(game.debug);</span>
-<span class="nc" id="L37">        stage.addActor(root);</span>
+<span class="nc" id="L35">        var root = new Table(game.skin);</span>
+<span class="nc" id="L36">        root.setFillParent(true);</span>
+<span class="nc" id="L37">        root.pad(0.25f);</span>
 
-<span class="nc" id="L39">        root.add(&quot;Heslington Hustle&quot;).getActor().setFontScale(2);</span>
-<span class="nc" id="L40">        root.row();</span>
+<span class="nc" id="L39">        root.setDebug(game.debug);</span>
+<span class="nc" id="L40">        stage.addActor(root);</span>
 
-<span class="nc" id="L42">        var inner = new Table(game.skin);</span>
+<span class="nc" id="L42">        root.add(&quot;Heslington Hustle&quot;).getActor().setFontScale(2);</span>
+<span class="nc" id="L43">        root.row();</span>
 
-<span class="nc" id="L44">        var startButton = new TextButton(&quot;Start Game&quot;, game.skin);</span>
-<span class="nc" id="L45">        startButton.addListener(ChangeListener.of((e, a) -&gt; game.setState(HeslingtonHustle.State.PLAYING)));</span>
-<span class="nc" id="L46">        inner.add(startButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));</span>
+<span class="nc" id="L45">        var inner = new Table(game.skin);</span>
 
-<span class="nc" id="L48">        inner.row();</span>
+<span class="nc" id="L47">        var startButton = new TextButton(&quot;Start Game&quot;, game.skin);</span>
+<span class="nc" id="L48">        startButton.addListener(ChangeListener.of((e, a) -&gt; game.setState(HeslingtonHustle.State.PLAYING)));</span>
+<span class="nc" id="L49">        inner.add(startButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));</span>
 
-<span class="nc" id="L50">        var quitButton = new TextButton(&quot;Quit&quot;, game.skin);</span>
-<span class="nc" id="L51">        quitButton.addListener(ChangeListener.of((e, a) -&gt; game.quit()));</span>
-<span class="nc" id="L52">        inner.add(quitButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));</span>
+<span class="nc" id="L51">        inner.row();</span>
 
-<span class="nc" id="L54">        root.add(inner).grow();</span>
-<span class="nc" id="L55">    }</span>
+<span class="nc" id="L53">        var quitButton = new TextButton(&quot;Quit&quot;, game.skin);</span>
+<span class="nc" id="L54">        quitButton.addListener(ChangeListener.of((e, a) -&gt; game.quit()));</span>
+<span class="nc" id="L55">        inner.add(quitButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));</span>
+
+<span class="nc" id="L57">        root.add(inner).grow();</span>
+<span class="nc" id="L58">    }</span>
 
     @Override
     public void render(float v) {
-<span class="nc" id="L59">        ScreenUtils.clear(0, 0, 0, 1);</span>
+<span class="nc" id="L62">        ScreenUtils.clear(0, 0, 0, 1);</span>
 
-<span class="nc" id="L61">        stage.act();</span>
-<span class="nc" id="L62">        stage.draw();</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L64">        stage.act();</span>
+<span class="nc" id="L65">        stage.draw();</span>
 
-    @Override
-    public void show() {
-<span class="nc" id="L67">        Gdx.input.setInputProcessor(stage);</span>
+
 <span class="nc" id="L68">    }</span>
 
     @Override
-    public void resize(int width, int height) {
-<span class="nc" id="L72">        stage.getViewport().update(width, height, true);</span>
+    public void show() {
+<span class="nc" id="L72">        Gdx.input.setInputProcessor(stage);</span>
 <span class="nc" id="L73">    }</span>
 
     @Override
-<span class="nc" id="L76">    public void pause() {}</span>
+    public void resize(int width, int height) {
+<span class="nc" id="L77">        stage.getViewport().update(width, height, true);</span>
+<span class="nc" id="L78">    }</span>
 
     @Override
-<span class="nc" id="L79">    public void resume() {}</span>
+<span class="nc" id="L81">    public void pause() {}</span>
 
     @Override
-<span class="nc" id="L82">    public void hide() {}</span>
+<span class="nc" id="L84">    public void resume() {}</span>
+
+    @Override
+<span class="nc" id="L87">    public void hide() {}</span>
 
     @Override
     public void dispose() {
-<span class="nc" id="L86">        stage.dispose();</span>
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L91">        stage.dispose();</span>
+<span class="nc" id="L92">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

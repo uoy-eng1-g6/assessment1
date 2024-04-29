@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerNameInput.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">io.github.uoyeng1g6.screens</a> &gt; <span class="el_source">PlayerNameInput.java</span></div><h1>PlayerNameInput.java</h1><pre class="source lang-java linenums">package io.github.uoyeng1g6.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import io.github.uoyeng1g6.HeslingtonHustle;
+import io.github.uoyeng1g6.constants.GameConstants;
+import io.github.uoyeng1g6.utils.ChangeListener;
+import io.github.uoyeng1g6.utils.LeaderboardManager;
+
+import java.util.Objects;
+
+public class PlayerNameInput implements Screen {
+    /**
+     * The {@code scene2d.ui} stage used to render this screen.
+     */
+    Stage stage;
+
+    private TextField playerNameField; // New field for player name input
+
+    LeaderboardManager lm;
+
+<span class="nc" id="L30">    public PlayerNameInput(HeslingtonHustle game) {</span>
+<span class="nc" id="L31">        var camera = new OrthographicCamera();</span>
+<span class="nc" id="L32">        var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);</span>
+
+<span class="nc" id="L34">        stage = new Stage(viewport);</span>
+<span class="nc" id="L35">        Gdx.input.setInputProcessor(stage);</span>
+
+<span class="nc" id="L37">        var root = new Table(game.skin);</span>
+<span class="nc" id="L38">        root.setFillParent(true);</span>
+<span class="nc" id="L39">        root.pad(0.25f);</span>
+
+<span class="nc" id="L41">        root.setDebug(game.debug);</span>
+<span class="nc" id="L42">        stage.addActor(root);</span>
+
+        //root.add(&quot;Leaderboard&quot;).getActor().setFontScale(2);
+<span class="nc" id="L45">        root.row();</span>
+
+<span class="nc" id="L47">        lm = new LeaderboardManager(&quot;scores.txt&quot;);</span>
+
+<span class="nc" id="L49">        var inner = new Table(game.skin);</span>
+
+<span class="nc" id="L51">        playerNameField = new TextField(&quot;&quot;, game.skin); // Initialize with an empty string</span>
+<span class="nc" id="L52">        playerNameField.setMessageText(&quot;Enter your name&quot;); // Display a placeholder text</span>
+<span class="nc" id="L53">        inner.add(playerNameField).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner)); // Add the text field to the stage</span>
+
+<span class="nc" id="L55">        inner.row();</span>
+
+<span class="nc" id="L57">        var leaderboardButton = new TextButton(&quot;Leaderboard&quot;, game.skin);</span>
+<span class="nc" id="L58">        leaderboardButton.addListener(ChangeListener.of((e, a) -&gt; game.setState(HeslingtonHustle.State.LEADERBOARD)));</span>
+<span class="nc" id="L59">        inner.add(leaderboardButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));</span>
+
+<span class="nc" id="L61">        root.add(inner).grow();</span>
+<span class="nc" id="L62">    }</span>
+
+    @Override
+    public void render(float v) {
+<span class="nc" id="L66">        ScreenUtils.clear(0, 0, 0, 1);</span>
+
+<span class="nc" id="L68">        stage.act();</span>
+<span class="nc" id="L69">        stage.draw();</span>
+
+<span class="nc" id="L71">        String playerName = playerNameField.getText();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (!Objects.equals(playerName, &quot;&quot;)) {</span>
+<span class="nc" id="L73">            lm.saveName(playerName);</span>
+        }
+<span class="nc" id="L75">    }</span>
+
+    @Override
+    public void show() {
+<span class="nc" id="L79">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L80">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L84">        stage.getViewport().update(width, height, true);</span>
+<span class="nc" id="L85">    }</span>
+
+    @Override
+<span class="nc" id="L88">    public void pause() {}</span>
+
+    @Override
+<span class="nc" id="L91">    public void resume() {}</span>
+
+    @Override
+<span class="nc" id="L94">    public void hide() {}</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L98">        stage.dispose();</span>
+<span class="nc" id="L99">    }</span>
+
+    public LeaderboardManager getLeaderboardManager() {
+<span class="nc" id="L102">        return lm;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

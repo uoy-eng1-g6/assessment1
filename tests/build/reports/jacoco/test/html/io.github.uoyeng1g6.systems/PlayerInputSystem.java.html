@@ -25,87 +25,91 @@ public class PlayerInputSystem extends EntitySystem {
      */
     private final GameState gameState;
 
-<span class="nc" id="L28">    private final ComponentMapper&lt;PlayerComponent&gt; pm = ComponentMapper.getFor(PlayerComponent.class);</span>
-<span class="nc" id="L29">    private final ComponentMapper&lt;FixtureComponent&gt; fm = ComponentMapper.getFor(FixtureComponent.class);</span>
-<span class="nc" id="L30">    private final ComponentMapper&lt;AnimationComponent&gt; am = ComponentMapper.getFor(AnimationComponent.class);</span>
+<span class="fc" id="L28">    private final ComponentMapper&lt;PlayerComponent&gt; pm = ComponentMapper.getFor(PlayerComponent.class);</span>
+<span class="fc" id="L29">    private final ComponentMapper&lt;FixtureComponent&gt; fm = ComponentMapper.getFor(FixtureComponent.class);</span>
+<span class="fc" id="L30">    private final ComponentMapper&lt;AnimationComponent&gt; am = ComponentMapper.getFor(AnimationComponent.class);</span>
 
-<span class="nc" id="L32">    private final Vector2 velocity = new Vector2();</span>
+<span class="fc" id="L32">    private final Vector2 velocity = new Vector2();</span>
 
     private Entity playerEntity;
 
-<span class="nc" id="L36">    public PlayerInputSystem(GameState gameState) {</span>
-<span class="nc" id="L37">        this.gameState = gameState;</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L36">    public PlayerInputSystem(GameState gameState) {</span>
+<span class="fc" id="L37">        this.gameState = gameState;</span>
+<span class="fc" id="L38">    }</span>
 
     public Vector2 getVelocity() {
-<span class="nc" id="L41">        return velocity;</span>
+<span class="fc" id="L41">        return velocity;</span>
     }
 
     public Entity getPlayerEntity() {
-<span class="nc" id="L45">        return playerEntity;</span>
+<span class="fc" id="L45">        return playerEntity;</span>
+    }
+
+    public int getCurrentAnimation() {
+<span class="fc" id="L49">        return am.get(playerEntity).currentAnimation;</span>
     }
 
     @Override
     public void addedToEngine(Engine engine) {
-<span class="nc" id="L50">        playerEntity = engine.getEntitiesFor(</span>
-<span class="nc" id="L51">                        Family.all(PlayerComponent.class, AnimationComponent.class, FixtureComponent.class)</span>
-<span class="nc" id="L52">                                .get())</span>
-<span class="nc" id="L53">                .first();</span>
-<span class="nc" id="L54">    }</span>
+<span class="fc" id="L54">        playerEntity = engine.getEntitiesFor(</span>
+<span class="fc" id="L55">                        Family.all(PlayerComponent.class, AnimationComponent.class, FixtureComponent.class)</span>
+<span class="fc" id="L56">                                .get())</span>
+<span class="fc" id="L57">                .first();</span>
+<span class="fc" id="L58">    }</span>
 
     @Override
     public void update(float deltaTime) {
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (gameState.interactionOverlay != null) {</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (gameState.interactionOverlay != null) {</span>
             // User input is disabled as an interaction is currently happening
-<span class="nc" id="L60">            var fixture = fm.get(playerEntity).fixture;</span>
+<span class="nc" id="L64">            var fixture = fm.get(playerEntity).fixture;</span>
             // Stop the player - prevents bug where player would continue to move if direction
             // key was held at same frame that interaction was triggered
-<span class="nc" id="L63">            fixture.getBody().setLinearVelocity(0, 0);</span>
-<span class="nc" id="L64">            return;</span>
+<span class="nc" id="L67">            fixture.getBody().setLinearVelocity(0, 0);</span>
+<span class="nc" id="L68">            return;</span>
         }
 
-<span class="nc" id="L67">        velocity.set(0, 0);</span>
+<span class="fc" id="L71">        velocity.set(0, 0);</span>
 
         boolean left, right, up, down;
-<span class="nc" id="L70">        left = right = up = down = false;</span>
+<span class="fc" id="L74">        left = right = up = down = false;</span>
 
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {</span>
-<span class="nc" id="L73">            velocity.x = -PlayerConstants.PLAYER_SPEED;</span>
-<span class="nc" id="L74">            left = true;</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {</span>
+<span class="nc" id="L77">            velocity.x = -PlayerConstants.PLAYER_SPEED;</span>
+<span class="nc" id="L78">            left = true;</span>
         }
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {</span>
-<span class="nc" id="L77">            velocity.x = PlayerConstants.PLAYER_SPEED;</span>
-<span class="nc" id="L78">            right = true;</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {</span>
+<span class="nc" id="L81">            velocity.x = PlayerConstants.PLAYER_SPEED;</span>
+<span class="nc" id="L82">            right = true;</span>
         }
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {</span>
-<span class="nc" id="L81">            velocity.y = PlayerConstants.PLAYER_SPEED;</span>
-<span class="nc" id="L82">            up = true;</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {</span>
+<span class="nc" id="L85">            velocity.y = PlayerConstants.PLAYER_SPEED;</span>
+<span class="nc" id="L86">            up = true;</span>
         }
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {</span>
-<span class="nc" id="L85">            velocity.y = -PlayerConstants.PLAYER_SPEED;</span>
-<span class="nc" id="L86">            down = true;</span>
-        }
-
-<span class="nc bnc" id="L89" title="All 8 branches missed.">        if ((left &amp;&amp; right) || (!left &amp;&amp; !right)) {</span>
-<span class="nc" id="L90">            velocity.x = 0;</span>
-        }
-<span class="nc bnc" id="L92" title="All 8 branches missed.">        if ((up &amp;&amp; down) || (!up &amp;&amp; !down)) {</span>
-<span class="nc" id="L93">            velocity.y = 0;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {</span>
+<span class="nc" id="L89">            velocity.y = -PlayerConstants.PLAYER_SPEED;</span>
+<span class="nc" id="L90">            down = true;</span>
         }
 
-<span class="nc" id="L96">        var fixture = fm.get(playerEntity).fixture;</span>
-<span class="nc" id="L97">        fixture.getBody().setLinearVelocity(velocity);</span>
+<span class="pc bpc" id="L93" title="5 of 8 branches missed.">        if ((left &amp;&amp; right) || (!left &amp;&amp; !right)) {</span>
+<span class="fc" id="L94">            velocity.x = 0;</span>
+        }
+<span class="pc bpc" id="L96" title="5 of 8 branches missed.">        if ((up &amp;&amp; down) || (!up &amp;&amp; !down)) {</span>
+<span class="fc" id="L97">            velocity.y = 0;</span>
+        }
 
-<span class="nc" id="L99">        var ac = am.get(playerEntity);</span>
-<span class="nc bnc" id="L100" title="All 4 branches missed.">        if (velocity.x == 0 &amp;&amp; velocity.y == 0) {</span>
-<span class="nc" id="L101">            ac.currentAnimation = MoveDirection.STATIONARY;</span>
-<span class="nc bnc" id="L102" title="All 4 branches missed.">        } else if (velocity.x != 0 &amp;&amp; velocity.y == 0) {</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">            ac.currentAnimation = velocity.x &gt; 0 ? MoveDirection.RIGHT : MoveDirection.LEFT;</span>
+<span class="fc" id="L100">        var fixture = fm.get(playerEntity).fixture;</span>
+<span class="fc" id="L101">        fixture.getBody().setLinearVelocity(velocity);</span>
+
+<span class="fc" id="L103">        var ac = am.get(playerEntity);</span>
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">        if (velocity.x == 0 &amp;&amp; velocity.y == 0) {</span>
+<span class="fc" id="L105">            ac.currentAnimation = MoveDirection.STATIONARY;</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">        } else if (velocity.x != 0 &amp;&amp; velocity.y == 0) {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            ac.currentAnimation = velocity.x &gt; 0 ? MoveDirection.RIGHT : MoveDirection.LEFT;</span>
         } else {
-<span class="nc bnc" id="L105" title="All 2 branches missed.">            ac.currentAnimation = velocity.y &gt; 0 ? MoveDirection.UP : MoveDirection.DOWN;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            ac.currentAnimation = velocity.y &gt; 0 ? MoveDirection.UP : MoveDirection.DOWN;</span>
         }
 
-<span class="nc" id="L108">        pm.get(playerEntity).isInteracting = Gdx.input.isKeyJustPressed(Input.Keys.E);</span>
-<span class="nc" id="L109">    }</span>
+<span class="fc" id="L112">        pm.get(playerEntity).isInteracting = Gdx.input.isKeyJustPressed(Input.Keys.E);</span>
+<span class="fc" id="L113">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
