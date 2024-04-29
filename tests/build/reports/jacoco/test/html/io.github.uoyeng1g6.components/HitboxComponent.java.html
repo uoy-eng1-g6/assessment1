@@ -19,22 +19,22 @@ public class HitboxComponent implements Component {
      */
     public final Rectangle region;
 
-<span class="fc" id="L22">    public HitboxComponent(Rectangle... rects) {</span>
-<span class="fc" id="L23">        this.rects = rects;</span>
+<span class="nc" id="L22">    public HitboxComponent(Rectangle... rects) {</span>
+<span class="nc" id="L23">        this.rects = rects;</span>
 
         // Calculate the vertices of the full hitbox enclosing region
-<span class="fc" id="L26">        var left = Arrays.stream(rects).map(r -&gt; r.x).min(Float::compareTo).get();</span>
-<span class="fc" id="L27">        var right = Arrays.stream(rects)</span>
-<span class="fc" id="L28">                .map(r -&gt; r.x + r.width)</span>
-<span class="fc" id="L29">                .max(Float::compareTo)</span>
-<span class="fc" id="L30">                .get();</span>
-<span class="fc" id="L31">        var top = Arrays.stream(rects)</span>
-<span class="fc" id="L32">                .map(r -&gt; r.y + r.height)</span>
-<span class="fc" id="L33">                .max(Float::compareTo)</span>
-<span class="fc" id="L34">                .get();</span>
-<span class="fc" id="L35">        var bottom = Arrays.stream(rects).map(r -&gt; r.y).min(Float::compareTo).get();</span>
+<span class="nc" id="L26">        var left = Arrays.stream(rects).map(r -&gt; r.x).min(Float::compareTo).get();</span>
+<span class="nc" id="L27">        var right = Arrays.stream(rects)</span>
+<span class="nc" id="L28">                .map(r -&gt; r.x + r.width)</span>
+<span class="nc" id="L29">                .max(Float::compareTo)</span>
+<span class="nc" id="L30">                .get();</span>
+<span class="nc" id="L31">        var top = Arrays.stream(rects)</span>
+<span class="nc" id="L32">                .map(r -&gt; r.y + r.height)</span>
+<span class="nc" id="L33">                .max(Float::compareTo)</span>
+<span class="nc" id="L34">                .get();</span>
+<span class="nc" id="L35">        var bottom = Arrays.stream(rects).map(r -&gt; r.y).min(Float::compareTo).get();</span>
 
-<span class="fc" id="L37">        this.region = new Rectangle(left, bottom, right - left, top - bottom);</span>
-<span class="fc" id="L38">    }</span>
+<span class="nc" id="L37">        this.region = new Rectangle(left, bottom, right - left, top - bottom);</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

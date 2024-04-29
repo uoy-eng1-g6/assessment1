@@ -20,7 +20,7 @@ import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(GdxTestRunner.class)
-<span class="fc" id="L23">public class PlayerInputSystemTest {</span>
+<span class="nc" id="L23">public class PlayerInputSystemTest {</span>
 
     Engine engine;
     GameState gameState;
@@ -29,44 +29,44 @@ import static org.junit.Assert.assertEquals;
     @Before
     public void initialiseEngine() {
 
-<span class="fc" id="L32">        engine = new PooledEngine();</span>
-<span class="fc" id="L33">        gameState = new GameState();</span>
+<span class="nc" id="L32">        engine = new PooledEngine();</span>
+<span class="nc" id="L33">        gameState = new GameState();</span>
 
-<span class="fc" id="L35">        World world = new World(new Vector2(), true);</span>
+<span class="nc" id="L35">        World world = new World(new Vector2(), true);</span>
 
-<span class="fc" id="L37">        var player = new BodyDef();</span>
-<span class="fc" id="L38">        player.type = BodyDef.BodyType.DynamicBody;</span>
-<span class="fc" id="L39">        player.position.set(PlayerConstants.START_POSITION);</span>
-<span class="fc" id="L40">        var playerBody = world.createBody(player);</span>
-<span class="fc" id="L41">        playerBody.setUserData(PlayerConstants.HITBOX_RADIUS);</span>
-<span class="fc" id="L42">        var playerCircle = new CircleShape();</span>
-<span class="fc" id="L43">        playerCircle.setRadius(PlayerConstants.HITBOX_RADIUS);</span>
-<span class="fc" id="L44">        var playerFixture = playerBody.createFixture(playerCircle, 1f);</span>
-<span class="fc" id="L45">        playerCircle.dispose();</span>
+<span class="nc" id="L37">        var player = new BodyDef();</span>
+<span class="nc" id="L38">        player.type = BodyDef.BodyType.DynamicBody;</span>
+<span class="nc" id="L39">        player.position.set(PlayerConstants.START_POSITION);</span>
+<span class="nc" id="L40">        var playerBody = world.createBody(player);</span>
+<span class="nc" id="L41">        playerBody.setUserData(PlayerConstants.HITBOX_RADIUS);</span>
+<span class="nc" id="L42">        var playerCircle = new CircleShape();</span>
+<span class="nc" id="L43">        playerCircle.setRadius(PlayerConstants.HITBOX_RADIUS);</span>
+<span class="nc" id="L44">        var playerFixture = playerBody.createFixture(playerCircle, 1f);</span>
+<span class="nc" id="L45">        playerCircle.dispose();</span>
 
-<span class="fc" id="L47">        var playerAnimations = new AnimationComponent(0.05f);</span>
+<span class="nc" id="L47">        var playerAnimations = new AnimationComponent(0.05f);</span>
 
-<span class="fc" id="L49">        playerEntity = engine.createEntity().add(new PlayerComponent()).add(playerAnimations).add(new FixtureComponent(playerFixture));</span>
-<span class="fc" id="L50">        engine.addEntity(playerEntity);</span>
-<span class="fc" id="L51">    }</span>
+<span class="nc" id="L49">        playerEntity = engine.createEntity().add(new PlayerComponent()).add(playerAnimations).add(new FixtureComponent(playerFixture));</span>
+<span class="nc" id="L50">        engine.addEntity(playerEntity);</span>
+<span class="nc" id="L51">    }</span>
 
     @Test
     public void testSuccessfulAddToEngine() {
-<span class="fc" id="L55">        engine.addSystem(new PlayerInputSystem(gameState));</span>
+<span class="nc" id="L55">        engine.addSystem(new PlayerInputSystem(gameState));</span>
 
         //Test the system has successfully found the player entity.
-<span class="fc" id="L58">        assertEquals(playerEntity, engine.getSystem(PlayerInputSystem.class).getPlayerEntity());</span>
-<span class="fc" id="L59">    }</span>
+<span class="nc" id="L58">        assertEquals(playerEntity, engine.getSystem(PlayerInputSystem.class).getPlayerEntity());</span>
+<span class="nc" id="L59">    }</span>
 
     @Test
     public void testVelocity() {
-<span class="fc" id="L63">        engine.addSystem(new PlayerInputSystem(gameState));</span>
+<span class="nc" id="L63">        engine.addSystem(new PlayerInputSystem(gameState));</span>
 
-<span class="fc" id="L65">        engine.update(0.01f);</span>
+<span class="nc" id="L65">        engine.update(0.01f);</span>
 
         //Test if the velocity is 0 when no key is being pressed.
-<span class="fc" id="L68">        assertEquals(new Vector2(0, 0), engine.getSystem(PlayerInputSystem.class).getVelocity());</span>
-<span class="fc" id="L69">    }</span>
+<span class="nc" id="L68">        assertEquals(new Vector2(0, 0), engine.getSystem(PlayerInputSystem.class).getVelocity());</span>
+<span class="nc" id="L69">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -8,19 +8,19 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-<span class="fc" id="L11">public class PhysicsPolygonTest {</span>
+<span class="nc" id="L11">public class PhysicsPolygonTest {</span>
 
     @Test
     public void testPhysicsPolygon (){
-<span class="fc" id="L15">        BodyDef body = new BodyDef();</span>
-<span class="fc" id="L16">        body.type = BodyDef.BodyType.StaticBody;</span>
-<span class="fc" id="L17">        Vector2[] vertices = {new Vector2(0, 0), new Vector2(1, 0)};</span>
-<span class="fc" id="L18">        PhysicsPolygon p = new PhysicsPolygon(&quot;name&quot;, body.type, new Vector2(0, 0), vertices);</span>
+<span class="nc" id="L15">        BodyDef body = new BodyDef();</span>
+<span class="nc" id="L16">        body.type = BodyDef.BodyType.StaticBody;</span>
+<span class="nc" id="L17">        Vector2[] vertices = {new Vector2(0, 0), new Vector2(1, 0)};</span>
+<span class="nc" id="L18">        PhysicsPolygon p = new PhysicsPolygon(&quot;name&quot;, body.type, new Vector2(0, 0), vertices);</span>
 
-<span class="fc" id="L20">        assertEquals(p.getName(), &quot;name&quot;);</span>
-<span class="fc" id="L21">        assertEquals(p.getType(), BodyDef.BodyType.StaticBody);</span>
-<span class="fc" id="L22">        assertEquals(p.getPosition(), new Vector2(0, 0));</span>
-<span class="fc" id="L23">        assertArrayEquals(p.getVertices(), vertices);</span>
-<span class="fc" id="L24">    }</span>
+<span class="nc" id="L20">        assertEquals(p.getName(), &quot;name&quot;);</span>
+<span class="nc" id="L21">        assertEquals(p.getType(), BodyDef.BodyType.StaticBody);</span>
+<span class="nc" id="L22">        assertEquals(p.getPosition(), new Vector2(0, 0));</span>
+<span class="nc" id="L23">        assertArrayEquals(p.getVertices(), vertices);</span>
+<span class="nc" id="L24">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -12,11 +12,22 @@ public class AssetTests {
     @Test
     public void testPlayerAssetExists() {
         assertTrue("The asset for the player exists", Gdx.files.internal("../assets/sprites/player.png").exists());
-
+        assertTrue("The asset for the player exists", Gdx.files.internal("../assets/sprites/player.txt").exists());
     }
 
     @Test
     public void testTilemapAssetExists() {
         assertTrue("The asset for the TileMap exists", Gdx.files.internal("../assets/maps/campus-east.tmx").exists());
+    }
+
+    @Test
+    public void testInteractionIconsAssetExists() {
+        assertTrue("The asset for the Interaction Icons exists", Gdx.files.internal("../assets/sprites/interaction_icons.png").exists());
+        assertTrue("The asset for the Interaction Icons  exists", Gdx.files.internal("../assets/sprites/interaction_icons.txt").exists());
+    }
+
+    @Test
+    public void testTerrainAssetExists() {
+        assertTrue("The asset for the terrain exists", Gdx.files.internal("../assets/terrain.json").exists());
     }
 }
