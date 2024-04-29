@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HitboxComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">io.github.uoyeng1g6.components</a> &gt; <span class="el_source">HitboxComponent.java</span></div><h1>HitboxComponent.java</h1><pre class="source lang-java linenums">package io.github.uoyeng1g6.components;
+
+import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Rectangle;
+import java.util.Arrays;
+
+/**
+ * Component allowing an entity to have one or more hitboxes. Intended for use with interactables.
+ */
+public class HitboxComponent implements Component {
+    /**
+     * The rectangles making up the entity's hitbox.
+     */
+    public final Rectangle[] rects;
+    /**
+     * The rectangular region enclosing all the entity's hitbox rectangles. Reduces
+     * the number of checks that need to be run each frame - all the hitboxes only need
+     * to be iterated through if the object causing the collision is within this region.
+     */
+    public final Rectangle region;
+
+<span class="nc" id="L22">    public HitboxComponent(Rectangle... rects) {</span>
+<span class="nc" id="L23">        this.rects = rects;</span>
+
+        // Calculate the vertices of the full hitbox enclosing region
+<span class="nc" id="L26">        var left = Arrays.stream(rects).map(r -&gt; r.x).min(Float::compareTo).get();</span>
+<span class="nc" id="L27">        var right = Arrays.stream(rects)</span>
+<span class="nc" id="L28">                .map(r -&gt; r.x + r.width)</span>
+<span class="nc" id="L29">                .max(Float::compareTo)</span>
+<span class="nc" id="L30">                .get();</span>
+<span class="nc" id="L31">        var top = Arrays.stream(rects)</span>
+<span class="nc" id="L32">                .map(r -&gt; r.y + r.height)</span>
+<span class="nc" id="L33">                .max(Float::compareTo)</span>
+<span class="nc" id="L34">                .get();</span>
+<span class="nc" id="L35">        var bottom = Arrays.stream(rects).map(r -&gt; r.y).min(Float::compareTo).get();</span>
+
+<span class="nc" id="L37">        this.region = new Rectangle(left, bottom, right - left, top - bottom);</span>
+<span class="nc" id="L38">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

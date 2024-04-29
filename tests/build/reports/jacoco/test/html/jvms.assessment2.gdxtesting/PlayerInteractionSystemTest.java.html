@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerInteractionSystemTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">jvms.assessment2.gdxtesting</a> &gt; <span class="el_source">PlayerInteractionSystemTest.java</span></div><h1>PlayerInteractionSystemTest.java</h1><pre class="source lang-java linenums">package jvms.assessment2.gdxtesting;
+
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.World;
+import io.github.uoyeng1g6.components.*;
+import io.github.uoyeng1g6.constants.ActivityType;
+import io.github.uoyeng1g6.constants.PlayerConstants;
+import io.github.uoyeng1g6.models.GameState;
+import io.github.uoyeng1g6.systems.PlayerInputSystem;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
+import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.Before;
+
+import static org.junit.Assert.assertEquals;
+
+@RunWith(GdxTestRunner.class)
+<span class="nc" id="L24">public class PlayerInteractionSystemTest {</span>
+
+    Engine engine;
+    GameState gameState;
+    Entity playerEntity;
+    Entity interactableEntity;
+
+    @Before
+    public void initialiseEngine() {
+
+<span class="nc" id="L34">        engine = new PooledEngine();</span>
+<span class="nc" id="L35">        gameState = new GameState();</span>
+
+<span class="nc" id="L37">        World world = new World(new Vector2(), true);</span>
+
+<span class="nc" id="L39">        var player = new BodyDef();</span>
+<span class="nc" id="L40">        player.type = BodyDef.BodyType.DynamicBody;</span>
+<span class="nc" id="L41">        player.position.set(PlayerConstants.START_POSITION);</span>
+<span class="nc" id="L42">        var playerBody = world.createBody(player);</span>
+<span class="nc" id="L43">        playerBody.setUserData(PlayerConstants.HITBOX_RADIUS);</span>
+<span class="nc" id="L44">        var playerCircle = new CircleShape();</span>
+<span class="nc" id="L45">        playerCircle.setRadius(PlayerConstants.HITBOX_RADIUS);</span>
+<span class="nc" id="L46">        var playerFixture = playerBody.createFixture(playerCircle, 1f);</span>
+<span class="nc" id="L47">        playerCircle.dispose();</span>
+
+<span class="nc" id="L49">        var playerAnimations = new AnimationComponent(0.05f);</span>
+
+<span class="nc" id="L51">        playerEntity = engine.createEntity().add(new PlayerComponent()).add(playerAnimations).add(new FixtureComponent(playerFixture));</span>
+<span class="nc" id="L52">        engine.addEntity(playerEntity);</span>
+
+<span class="nc" id="L54">        interactableEntity = engine.createEntity()</span>
+<span class="nc" id="L55">                .add(new PositionComponent(54, 2.5f))</span>
+<span class="nc" id="L56">                .add(new HitboxComponent(new Rectangle(</span>
+                        54, 2.5f, 10f, 10f)))
+<span class="nc" id="L58">                .add(new InteractionComponent(state -&gt; {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                    if (!state.doActivity(1, 5, ActivityType.MEAL, &quot;Eating...&quot;)) {</span>
+                        // Notify insufficient time/energy
+                    }
+<span class="nc" id="L62">                }));</span>
+
+<span class="nc" id="L64">        engine.addEntity(interactableEntity);</span>
+
+<span class="nc" id="L66">        Entity nonInteractableEntity = engine.createEntity()</span>
+<span class="nc" id="L67">                .add(new PositionComponent(54, 2.5f))</span>
+<span class="nc" id="L68">                .add(new HitboxComponent(new Rectangle(</span>
+                        54, 2.5f, 10f, 10f)));
+
+<span class="nc" id="L71">        engine.addEntity(nonInteractableEntity);</span>
+<span class="nc" id="L72">    }</span>
+
+    @Test
+    public void testSuccessfulAddToEngine() {
+<span class="nc" id="L76">        engine.addSystem(new PlayerInteractionSystem(gameState));</span>
+
+        //Test the system has successfully found the player entity.
+<span class="nc" id="L79">        assertEquals(playerEntity, engine.getSystem(PlayerInteractionSystem.class).getPlayerEntity());</span>
+
+        //Test the array Interactables contains the correct Entities
+<span class="nc" id="L82">        assertEquals(1, engine.getSystem(PlayerInteractionSystem.class).getInteractables().size());</span>
+<span class="nc" id="L83">        assertEquals(interactableEntity, engine.getSystem(PlayerInteractionSystem.class).getInteractables().get(0));</span>
+<span class="nc" id="L84">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

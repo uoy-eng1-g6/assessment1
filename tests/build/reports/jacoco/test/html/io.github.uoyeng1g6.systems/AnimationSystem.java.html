@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnimationSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">io.github.uoyeng1g6.systems</a> &gt; <span class="el_source">AnimationSystem.java</span></div><h1>AnimationSystem.java</h1><pre class="source lang-java linenums">package io.github.uoyeng1g6.systems;
+
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.uoyeng1g6.components.AnimationComponent;
+import io.github.uoyeng1g6.components.FixtureComponent;
+import io.github.uoyeng1g6.components.PositionComponent;
+import io.github.uoyeng1g6.models.GameState;
+
+/**
+ * System that draws animated entities. In order for an entity to be animate-able it must have an
+ * {@link AnimationComponent}, as well as either a {@link FixtureComponent} or {@link PositionComponent}.
+ */
+public class AnimationSystem extends IteratingSystem {
+    /**
+     * The sprite batch to use to draw the animation frames.
+     */
+    private final SpriteBatch batch;
+    /**
+     * The game state.
+     */
+    private final GameState gameState;
+
+<span class="nc" id="L27">    private final ComponentMapper&lt;AnimationComponent&gt; am = ComponentMapper.getFor(AnimationComponent.class);</span>
+<span class="nc" id="L28">    private final ComponentMapper&lt;FixtureComponent&gt; fm = ComponentMapper.getFor(FixtureComponent.class);</span>
+<span class="nc" id="L29">    private final ComponentMapper&lt;PositionComponent&gt; pm = ComponentMapper.getFor(PositionComponent.class);</span>
+
+    public AnimationSystem(SpriteBatch batch, GameState gameState) {
+<span class="nc" id="L32">        super(Family.all(AnimationComponent.class)</span>
+<span class="nc" id="L33">                .one(PositionComponent.class, FixtureComponent.class)</span>
+<span class="nc" id="L34">                .get());</span>
+
+<span class="nc" id="L36">        this.batch = batch;</span>
+<span class="nc" id="L37">        this.gameState = gameState;</span>
+<span class="nc" id="L38">    }</span>
+
+    @Override
+    public void update(float deltaTime) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (gameState.interactionOverlay != null) {</span>
+            // Don't show animations beneath interaction overlay
+<span class="nc" id="L44">            return;</span>
+        }
+
+<span class="nc" id="L47">        super.update(deltaTime);</span>
+<span class="nc" id="L48">    }</span>
+
+    @Override
+    protected void processEntity(Entity entity, float deltaTime) {
+<span class="nc" id="L52">        var ac = am.get(entity);</span>
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (ac.currentAnimation == -1) {</span>
+            // This item is currently invisible
+<span class="nc" id="L56">            return;</span>
+        }
+
+<span class="nc" id="L59">        var animation = ac.animations.get(ac.currentAnimation);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (animation == null) {</span>
+<span class="nc" id="L61">            throw new IllegalStateException(&quot;current animation does not map to an animation&quot;);</span>
+        }
+
+<span class="nc" id="L64">        ac.time += deltaTime;</span>
+<span class="nc" id="L65">        var sprite = animation.getKeyFrame(ac.time);</span>
+
+<span class="nc" id="L67">        var pc = pm.get(entity);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (pc != null) {</span>
+<span class="nc" id="L69">            batch.draw(sprite, pc.x, pc.y, sprite.getWidth() * ac.spriteScale, sprite.getHeight() * ac.spriteScale);</span>
+<span class="nc" id="L70">            return;</span>
+        }
+
+<span class="nc" id="L73">        var fc = fm.get(entity);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (fc != null) {</span>
+<span class="nc" id="L75">            var body = fc.fixture.getBody();</span>
+<span class="nc" id="L76">            batch.draw(</span>
+                    sprite,
+<span class="nc" id="L78">                    body.getPosition().x - (float) body.getUserData(),</span>
+<span class="nc" id="L79">                    body.getPosition().y - (float) body.getUserData(),</span>
+<span class="nc" id="L80">                    sprite.getWidth() * ac.spriteScale,</span>
+<span class="nc" id="L81">                    sprite.getHeight() * ac.spriteScale);</span>
+        }
+<span class="nc" id="L83">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
