@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TooltipRenderingSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">io.github.uoyeng1g6.systems</a> &gt; <span class="el_source">TooltipRenderingSystem.java</span></div><h1>TooltipRenderingSystem.java</h1><pre class="source lang-java linenums">package io.github.uoyeng1g6.systems;
+
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import io.github.uoyeng1g6.components.FixtureComponent;
+import io.github.uoyeng1g6.components.HitboxComponent;
+import io.github.uoyeng1g6.components.PlayerComponent;
+import io.github.uoyeng1g6.components.TooltipComponent;
+import io.github.uoyeng1g6.constants.PlayerConstants;
+import io.github.uoyeng1g6.models.GameState;
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
+/**
+ * System that handles rendering an appropriate tooltip while the player is standing within the
+ * hitbox for the tooltip-enabled entity.
+ */
+public class TooltipRenderingSystem extends EntitySystem {
+    /**
+     * The font to use to write on the tooltip.
+     */
+    private final BitmapFont font;
+    /**
+     * The shapedrawer to use to draw the tooltip.
+     */
+    private final ShapeDrawer shapeDrawer;
+    /**
+     * The sprite batch to use to draw the tooltip.
+     */
+    private final SpriteBatch batch;
+    /**
+     * The game state;
+     */
+    private final GameState gameState;
+
+<span class="nc" id="L44">    private final ComponentMapper&lt;HitboxComponent&gt; hm = ComponentMapper.getFor(HitboxComponent.class);</span>
+<span class="nc" id="L45">    private final ComponentMapper&lt;TooltipComponent&gt; tm = ComponentMapper.getFor(TooltipComponent.class);</span>
+<span class="nc" id="L46">    private final ComponentMapper&lt;FixtureComponent&gt; fm = ComponentMapper.getFor(FixtureComponent.class);</span>
+
+    private Entity playerEntity;
+    private ImmutableArray&lt;Entity&gt; tooltipEnabled;
+
+<span class="nc" id="L51">    public TooltipRenderingSystem(BitmapFont font, ShapeDrawer shapeDrawer, SpriteBatch batch, GameState gameState) {</span>
+<span class="nc" id="L52">        this.font = font;</span>
+<span class="nc" id="L53">        this.shapeDrawer = shapeDrawer;</span>
+<span class="nc" id="L54">        this.batch = batch;</span>
+<span class="nc" id="L55">        this.gameState = gameState;</span>
+<span class="nc" id="L56">    }</span>
+
+    @Override
+    public void addedToEngine(Engine engine) {
+<span class="nc" id="L60">        playerEntity = engine.getEntitiesFor(Family.all(PlayerComponent.class, FixtureComponent.class)</span>
+<span class="nc" id="L61">                        .get())</span>
+<span class="nc" id="L62">                .first();</span>
+<span class="nc" id="L63">        tooltipEnabled = engine.getEntitiesFor(</span>
+<span class="nc" id="L64">                Family.all(HitboxComponent.class, TooltipComponent.class).get());</span>
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    public void update(float deltaTime) {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (gameState.interactionOverlay != null) {</span>
+            // We don't need to render interaction overlays if the player is currently doing an interaction
+<span class="nc" id="L71">            return;</span>
+        }
+
+<span class="nc" id="L74">        var fixture = fm.get(playerEntity).fixture;</span>
+<span class="nc" id="L75">        var playerHitbox = new Circle(fixture.getBody().getPosition(), PlayerConstants.HITBOX_RADIUS);</span>
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (var entity : tooltipEnabled) {</span>
+<span class="nc" id="L78">            var hc = hm.get(entity);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (!Intersector.overlaps(playerHitbox, hc.region)) {</span>
+<span class="nc" id="L80">                continue;</span>
+            }
+
+<span class="nc" id="L83">            var tc = tm.get(entity);</span>
+
+<span class="nc" id="L85">            var drawX = hc.region.x;</span>
+<span class="nc" id="L86">            var drawY = hc.region.y;</span>
+
+<span class="nc" id="L88">            drawX -= (tc.tooltip.width / 2) - (hc.region.width / 2); // Center text with hitbox</span>
+<span class="nc" id="L89">            drawY += tc.tooltip.height + hc.region.height + 0.8f; // Move above hitbox and add padding</span>
+
+<span class="nc" id="L91">            shapeDrawer.filledRectangle(</span>
+                    drawX - 0.1f,
+                    drawY - tc.tooltip.height - 0.1f,
+                    tc.tooltip.width + 0.2f,
+                    tc.tooltip.height + 0.2f,
+                    Color.LIGHT_GRAY);
+<span class="nc" id="L97">            font.draw(batch, tc.tooltip, drawX, drawY);</span>
+<span class="nc" id="L98">        }</span>
+<span class="nc" id="L99">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

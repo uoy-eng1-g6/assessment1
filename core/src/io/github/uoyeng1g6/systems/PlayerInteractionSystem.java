@@ -46,6 +46,14 @@ public class PlayerInteractionSystem extends EntitySystem {
                 Family.all(InteractionComponent.class, HitboxComponent.class).get());
     }
 
+    public ImmutableArray getInteractables() {
+        return interactables;
+    }
+
+    public Entity getPlayerEntity() {
+        return playerEntity;
+    }
+
     @Override
     public void update(float deltaTime) {
         if (gameState.interactionOverlay != null) {

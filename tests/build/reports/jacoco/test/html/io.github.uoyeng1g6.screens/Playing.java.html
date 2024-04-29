@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Playing.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">io.github.uoyeng1g6.screens</a> &gt; <span class="el_source">Playing.java</span></div><h1>Playing.java</h1><pre class="source lang-java linenums">package io.github.uoyeng1g6.screens;
+
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.uoyeng1g6.HeslingtonHustle;
+import io.github.uoyeng1g6.components.AnimationComponent;
+import io.github.uoyeng1g6.components.CounterComponent;
+import io.github.uoyeng1g6.components.FixtureComponent;
+import io.github.uoyeng1g6.components.HitboxComponent;
+import io.github.uoyeng1g6.components.InteractionComponent;
+import io.github.uoyeng1g6.components.PlayerComponent;
+import io.github.uoyeng1g6.components.PositionComponent;
+import io.github.uoyeng1g6.components.TextureComponent;
+import io.github.uoyeng1g6.components.TooltipComponent;
+import io.github.uoyeng1g6.constants.ActivityType;
+import io.github.uoyeng1g6.constants.GameConstants;
+import io.github.uoyeng1g6.constants.MoveDirection;
+import io.github.uoyeng1g6.constants.PlayerConstants;
+import io.github.uoyeng1g6.models.GameState;
+import io.github.uoyeng1g6.models.PhysicsPolygon;
+import io.github.uoyeng1g6.systems.AnimationSystem;
+import io.github.uoyeng1g6.systems.CounterUpdateSystem;
+import io.github.uoyeng1g6.systems.DebugSystem;
+import io.github.uoyeng1g6.systems.InteractionOverlayRenderingSystem;
+import io.github.uoyeng1g6.systems.MapRenderingSystem;
+import io.github.uoyeng1g6.systems.PlayerInputSystem;
+import io.github.uoyeng1g6.systems.PlayerInteractionSystem;
+import io.github.uoyeng1g6.systems.StaticRenderingSystem;
+import io.github.uoyeng1g6.systems.TooltipRenderingSystem;
+import java.util.Map;
+
+/**
+ * The gameplay screen for the game. Causes a transition to the end screen once all the in-game
+ * days have been completed.
+ */
+public class Playing implements Screen {
+    final HeslingtonHustle game;
+
+    final OrthographicCamera camera;
+    final Viewport viewport;
+
+    /**
+     * The {@code scene2d.ui} stage used to render the ui overlay for this screen.
+     */
+    Stage stage;
+
+    /**
+     * The engine used to handle system updating.
+     */
+    Engine engine;
+    /**
+     * The current game state;
+     */
+    GameState gameState;
+    /**
+     * The box2d world used for the physics system.
+     */
+    World world;
+
+    /**
+     * The box2d debug renderer used when the game is running in physics debug mode.
+     */
+<span class="nc" id="L86">    Box2DDebugRenderer debugRenderer = null;</span>
+
+<span class="nc" id="L88">    public Playing(HeslingtonHustle game) {</span>
+<span class="nc" id="L89">        this.game = game;</span>
+
+<span class="nc" id="L91">        camera = new OrthographicCamera();</span>
+<span class="nc" id="L92">        camera.setToOrtho(false, GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);</span>
+<span class="nc" id="L93">        viewport = new FitViewport(GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT, camera);</span>
+
+<span class="nc" id="L95">        stage = new Stage(viewport);</span>
+
+<span class="nc" id="L97">        var labelStyle = new Label.LabelStyle(game.tooltipFont, Color.BLACK);</span>
+
+<span class="nc" id="L99">        var uiTop = new Table();</span>
+<span class="nc" id="L100">        uiTop.setFillParent(true);</span>
+<span class="nc" id="L101">        uiTop.setDebug(game.debug);</span>
+<span class="nc" id="L102">        stage.addActor(uiTop);</span>
+<span class="nc" id="L103">        uiTop.center().top();</span>
+
+<span class="nc" id="L105">        var daysLabel = new Label(&quot;Monday&quot;, labelStyle);</span>
+<span class="nc" id="L106">        daysLabel.setFontScale(0.17f);</span>
+<span class="nc" id="L107">        uiTop.add(daysLabel);</span>
+<span class="nc" id="L108">        uiTop.row();</span>
+<span class="nc" id="L109">        var timeLabel = new Label(&quot;07:00&quot;, labelStyle);</span>
+<span class="nc" id="L110">        timeLabel.setFontScale(0.17f);</span>
+<span class="nc" id="L111">        uiTop.add(timeLabel);</span>
+
+<span class="nc" id="L113">        var counters = new Table(game.skin);</span>
+<span class="nc" id="L114">        counters.setFillParent(true);</span>
+<span class="nc" id="L115">        counters.pad(1);</span>
+<span class="nc" id="L116">        counters.setDebug(game.debug);</span>
+<span class="nc" id="L117">        stage.addActor(counters);</span>
+
+<span class="nc" id="L119">        var studyIcon = game.interactionIconsTextureAtlas.findRegion(&quot;book_icon&quot;);</span>
+<span class="nc" id="L120">        var eatIcon = game.interactionIconsTextureAtlas.findRegion(&quot;food_icon&quot;);</span>
+<span class="nc" id="L121">        var recreationIcon = game.interactionIconsTextureAtlas.findRegion(&quot;popcorn_icon&quot;);</span>
+<span class="nc" id="L122">        var studyImage = new Image(studyIcon);</span>
+<span class="nc" id="L123">        var eatImage = new Image(eatIcon);</span>
+<span class="nc" id="L124">        var recreationImage = new Image(recreationIcon);</span>
+
+<span class="nc" id="L126">        var todayLabel = new Label(&quot;Today:&quot;, labelStyle);</span>
+<span class="nc" id="L127">        todayLabel.setFontScale(0.08f);</span>
+<span class="nc" id="L128">        var totalLabel = new Label(&quot;Total:&quot;, labelStyle);</span>
+<span class="nc" id="L129">        totalLabel.setFontScale(0.08f);</span>
+
+<span class="nc" id="L131">        var dayStudyLabel = new Label(&quot;0&quot;, labelStyle);</span>
+<span class="nc" id="L132">        dayStudyLabel.setFontScale(0.15f);</span>
+<span class="nc" id="L133">        var totalStudyLabel = new Label(&quot;0&quot;, labelStyle);</span>
+<span class="nc" id="L134">        totalStudyLabel.setFontScale(0.15f);</span>
+
+<span class="nc" id="L136">        var dayEatLabel = new Label(&quot;0&quot;, labelStyle);</span>
+<span class="nc" id="L137">        dayEatLabel.setFontScale(0.15f);</span>
+<span class="nc" id="L138">        var totalEatLabel = new Label(&quot;0&quot;, labelStyle);</span>
+<span class="nc" id="L139">        totalEatLabel.setFontScale(0.15f);</span>
+
+<span class="nc" id="L141">        var dayRecreationLabel = new Label(&quot;0&quot;, labelStyle);</span>
+<span class="nc" id="L142">        dayRecreationLabel.setFontScale(0.15f);</span>
+<span class="nc" id="L143">        var totalRecreationLabel = new Label(&quot;0&quot;, labelStyle);</span>
+<span class="nc" id="L144">        totalRecreationLabel.setFontScale(0.15f);</span>
+
+<span class="nc" id="L146">        counters.top().right();</span>
+<span class="nc" id="L147">        counters.add();</span>
+<span class="nc" id="L148">        counters.add(todayLabel).padRight(0.5f);</span>
+<span class="nc" id="L149">        counters.add(totalLabel);</span>
+<span class="nc" id="L150">        counters.row();</span>
+<span class="nc" id="L151">        counters.add(studyImage).width(3).height(3).padRight(0.25f);</span>
+<span class="nc" id="L152">        counters.add(dayStudyLabel);</span>
+<span class="nc" id="L153">        counters.add(totalStudyLabel);</span>
+<span class="nc" id="L154">        counters.row();</span>
+<span class="nc" id="L155">        counters.add(eatImage).width(3).height(3).padRight(0.25f);</span>
+<span class="nc" id="L156">        counters.add(dayEatLabel);</span>
+<span class="nc" id="L157">        counters.add(totalEatLabel);</span>
+<span class="nc" id="L158">        counters.row();</span>
+<span class="nc" id="L159">        counters.add(recreationImage).width(3).height(3).padRight(0.25f);</span>
+<span class="nc" id="L160">        counters.add(dayRecreationLabel);</span>
+<span class="nc" id="L161">        counters.add(totalRecreationLabel);</span>
+
+<span class="nc" id="L163">        var energy = new Table(game.skin);</span>
+<span class="nc" id="L164">        energy.setFillParent(true);</span>
+<span class="nc" id="L165">        energy.pad(1);</span>
+<span class="nc" id="L166">        energy.setDebug(game.debug);</span>
+<span class="nc" id="L167">        stage.addActor(energy);</span>
+
+<span class="nc" id="L169">        var energyLabel = new Label(&quot;Energy Remaining:&quot;, labelStyle);</span>
+<span class="nc" id="L170">        energyLabel.setFontScale(0.08f);</span>
+<span class="nc" id="L171">        var energyAmount = new Label(String.valueOf(GameConstants.MAX_ENERGY), labelStyle);</span>
+<span class="nc" id="L172">        energyAmount.setFontScale(0.15f);</span>
+
+<span class="nc" id="L174">        energy.top().left();</span>
+<span class="nc" id="L175">        energy.add(energyLabel);</span>
+<span class="nc" id="L176">        energy.row();</span>
+<span class="nc" id="L177">        energy.add(energyAmount);</span>
+
+<span class="nc" id="L179">        this.engine = new PooledEngine();</span>
+<span class="nc" id="L180">        this.gameState = new GameState();</span>
+<span class="nc" id="L181">        this.world = new World(new Vector2(), true);</span>
+
+<span class="nc" id="L183">        initTerrain();</span>
+
+<span class="nc" id="L185">        engine.addEntity(initPlayerEntity(engine));</span>
+
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        for (var entity : initInteractionLocations(engine)) {</span>
+<span class="nc" id="L188">            engine.addEntity(entity);</span>
+        }
+
+<span class="nc" id="L191">        engine.addEntity(</span>
+<span class="nc" id="L192">                engine.createEntity().add(new CounterComponent(daysLabel, new CounterComponent.CounterValueResolver() {</span>
+                    // spotless:off
+<span class="nc" id="L194">                    private final Map&lt;Integer, String&gt; dayNameMap = Map.of(</span>
+<span class="nc" id="L195">                            7, &quot;Monday&quot;, 6, &quot;Tuesday&quot;, 5, &quot;Wednesday&quot;,</span>
+<span class="nc" id="L196">                            4, &quot;Thursday&quot;, 3, &quot;Friday&quot;, 2, &quot;Saturday&quot;,</span>
+<span class="nc" id="L197">                            1, &quot;Sunday - Exam Tomorrow&quot;</span>
+                    );
+                    // spotless:on
+
+                    @Override
+                    public String resolveValue(GameState gameState) {
+<span class="nc" id="L203">                        return dayNameMap.get(gameState.daysRemaining);</span>
+                    }
+                })));
+<span class="nc" id="L206">        engine.addEntity(engine.createEntity().add(new CounterComponent(timeLabel, state -&gt; {</span>
+<span class="nc" id="L207">            var newHour = 7 + (GameConstants.MAX_HOURS - state.hoursRemaining);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            return String.format(&quot;%s%d:00&quot;, newHour &lt; 10 ? &quot;0&quot; : &quot;&quot;, newHour);</span>
+        })));
+
+<span class="nc" id="L211">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L212">                .add(new CounterComponent(</span>
+<span class="nc" id="L213">                        dayStudyLabel, state -&gt; String.valueOf(state.currentDay.statFor(ActivityType.STUDY)))));</span>
+<span class="nc" id="L214">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L215">                .add(new CounterComponent(</span>
+<span class="nc" id="L216">                        dayEatLabel, state -&gt; String.valueOf(state.currentDay.statFor(ActivityType.MEAL)))));</span>
+<span class="nc" id="L217">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L218">                .add(new CounterComponent(</span>
+                        dayRecreationLabel,
+<span class="nc" id="L220">                        state -&gt; String.valueOf(state.currentDay.statFor(ActivityType.RECREATION)))));</span>
+
+<span class="nc" id="L222">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L223">                .add(new CounterComponent(</span>
+<span class="nc" id="L224">                        totalStudyLabel, state -&gt; String.valueOf(state.getTotalActivityCount(ActivityType.STUDY)))));</span>
+<span class="nc" id="L225">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L226">                .add(new CounterComponent(</span>
+<span class="nc" id="L227">                        totalEatLabel, state -&gt; String.valueOf(state.getTotalActivityCount(ActivityType.MEAL)))));</span>
+<span class="nc" id="L228">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L229">                .add(new CounterComponent(</span>
+                        totalRecreationLabel,
+<span class="nc" id="L231">                        state -&gt; String.valueOf(state.getTotalActivityCount(ActivityType.RECREATION)))));</span>
+
+<span class="nc" id="L233">        engine.addEntity(engine.createEntity()</span>
+<span class="nc" id="L234">                .add(new CounterComponent(energyAmount, state -&gt; String.valueOf(state.energyRemaining))));</span>
+
+<span class="nc" id="L236">        engine.addSystem(new PlayerInputSystem(gameState));</span>
+<span class="nc" id="L237">        engine.addSystem(new PlayerInteractionSystem(gameState));</span>
+<span class="nc" id="L238">        engine.addSystem(new MapRenderingSystem(game.tiledMap, camera));</span>
+<span class="nc" id="L239">        engine.addSystem(new StaticRenderingSystem(game.spriteBatch));</span>
+<span class="nc" id="L240">        engine.addSystem(new AnimationSystem(game.spriteBatch, gameState));</span>
+<span class="nc" id="L241">        engine.addSystem(new TooltipRenderingSystem(game.tooltipFont, game.shapeDrawer, game.spriteBatch, gameState));</span>
+<span class="nc" id="L242">        engine.addSystem(new CounterUpdateSystem(gameState));</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (game.debug) {</span>
+<span class="nc" id="L244">            engine.addSystem(new DebugSystem(game.shapeDrawer));</span>
+        }
+<span class="nc" id="L246">        engine.addSystem(</span>
+                new InteractionOverlayRenderingSystem(game.spriteBatch, game.overlayFont, game.shapeDrawer, gameState));
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (game.physicsDebug) {</span>
+<span class="nc" id="L250">            debugRenderer = new Box2DDebugRenderer();</span>
+        }
+<span class="nc" id="L252">    }</span>
+
+    /**
+     * Get the current game state object.
+     *
+     * @return the game state for this playthrough.
+     */
+    public GameState getGameState() {
+<span class="nc" id="L260">        return gameState;</span>
+    }
+
+    /**
+     * Load the terrain polygons from the data json file and create them in the box2d world.
+     */
+    void initTerrain() {
+<span class="nc" id="L267">        var json = new Json();</span>
+<span class="nc" id="L268">        var objects = json.fromJson(PhysicsPolygon[].class, Gdx.files.internal(&quot;terrain.json&quot;));</span>
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        for (var object : objects) {</span>
+<span class="nc" id="L271">            var bodyDef = new BodyDef();</span>
+<span class="nc" id="L272">            bodyDef.type = object.getType();</span>
+<span class="nc" id="L273">            bodyDef.position.set(object.getPosition());</span>
+
+<span class="nc" id="L275">            var body = world.createBody(bodyDef);</span>
+<span class="nc" id="L276">            var shape = new PolygonShape();</span>
+<span class="nc" id="L277">            shape.set(object.getVertices());</span>
+
+            // We know that these will always be static bodies so will always have a density of 0
+<span class="nc" id="L280">            body.createFixture(shape, 0f);</span>
+<span class="nc" id="L281">            shape.dispose();</span>
+        }
+<span class="nc" id="L283">    }</span>
+
+    /**
+     * Initialise the entities for the interaction locations on the map
+     *
+     * @param engine the engine to create the entities for.
+     * @return the created entities.
+     */
+    Entity[] initInteractionLocations(Engine engine) {
+<span class="nc" id="L292">        final var iconSize = 2 / 64f;</span>
+
+<span class="nc" id="L294">        var studyIcon = game.interactionIconsTextureAtlas.findRegion(&quot;book_icon&quot;);</span>
+<span class="nc" id="L295">        var study = engine.createEntity()</span>
+<span class="nc" id="L296">                .add(new TextureComponent(studyIcon, iconSize).show())</span>
+<span class="nc" id="L297">                .add(new PositionComponent(25, 14))</span>
+<span class="nc" id="L298">                .add(new HitboxComponent(new Rectangle(</span>
+<span class="nc" id="L299">                        25, 14, studyIcon.getRegionWidth() * iconSize, studyIcon.getRegionHeight() * iconSize)))</span>
+<span class="nc" id="L300">                .add(new InteractionComponent(state -&gt; {</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                    if (!state.doActivity(1, 10, ActivityType.STUDY, &quot;Studying...&quot;)) {</span>
+                        // Notify insufficient time/energy
+                    }
+<span class="nc" id="L304">                }))</span>
+<span class="nc" id="L305">                .add(new TooltipComponent(game.tooltipFont, &quot;[E] Study for exams\nTime: -1h\nEnergy: -10&quot;));</span>
+
+<span class="nc" id="L307">        var foodIcon = game.interactionIconsTextureAtlas.findRegion(&quot;food_icon&quot;);</span>
+<span class="nc" id="L308">        var food = engine.createEntity()</span>
+<span class="nc" id="L309">                .add(new TextureComponent(foodIcon, iconSize).show())</span>
+<span class="nc" id="L310">                .add(new PositionComponent(54, 2.5f))</span>
+<span class="nc" id="L311">                .add(new HitboxComponent(new Rectangle(</span>
+<span class="nc" id="L312">                        54, 2.5f, foodIcon.getRegionWidth() * iconSize, foodIcon.getRegionHeight() * iconSize)))</span>
+<span class="nc" id="L313">                .add(new InteractionComponent(state -&gt; {</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">                    if (!state.doActivity(1, 5, ActivityType.MEAL, &quot;Eating...&quot;)) {</span>
+                        // Notify insufficient time/energy
+                    }
+<span class="nc" id="L317">                }))</span>
+<span class="nc" id="L318">                .add(new TooltipComponent(game.tooltipFont, &quot;[E] Eat at Piazza\nTime: -1h\nEnergy: -5&quot;));</span>
+
+<span class="nc" id="L320">        var popcornIcon = game.interactionIconsTextureAtlas.findRegion(&quot;popcorn_icon&quot;);</span>
+<span class="nc" id="L321">        var recreation = engine.createEntity()</span>
+<span class="nc" id="L322">                .add(new TextureComponent(popcornIcon, iconSize).show())</span>
+<span class="nc" id="L323">                .add(new PositionComponent(53.5f, 26.5f))</span>
+<span class="nc" id="L324">                .add(new HitboxComponent(new Rectangle(</span>
+                        53.5f,
+                        26.5f,
+<span class="nc" id="L327">                        popcornIcon.getRegionWidth() * iconSize,</span>
+<span class="nc" id="L328">                        popcornIcon.getRegionHeight() * iconSize)))</span>
+<span class="nc" id="L329">                .add(new InteractionComponent(state -&gt; {</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">                    if (!state.doActivity(1, 10, ActivityType.RECREATION, &quot;Watching films...&quot;)) {</span>
+                        // Notify insufficient time/energy
+                    }
+<span class="nc" id="L333">                }))</span>
+<span class="nc" id="L334">                .add(new TooltipComponent(game.tooltipFont, &quot;[E] Watch films with mates\nTime: -1h\nEnergy: -10&quot;));</span>
+
+<span class="nc" id="L336">        var sleepIcon = game.interactionIconsTextureAtlas.findRegion(&quot;bed_icon&quot;);</span>
+<span class="nc" id="L337">        var sleep = engine.createEntity()</span>
+<span class="nc" id="L338">                .add(new TextureComponent(sleepIcon, iconSize).show())</span>
+<span class="nc" id="L339">                .add(new PositionComponent(3.5f, 26.5f))</span>
+<span class="nc" id="L340">                .add(new HitboxComponent(new Rectangle(</span>
+<span class="nc" id="L341">                        3.5f, 26.5f, sleepIcon.getRegionWidth() * iconSize, sleepIcon.getRegionHeight() * iconSize)))</span>
+<span class="nc" id="L342">                .add(new InteractionComponent(GameState::advanceDay))</span>
+<span class="nc" id="L343">                .add(new TooltipComponent(game.tooltipFont, &quot;[E] Go to sleep\nEnds the current day&quot;));</span>
+
+<span class="nc" id="L345">        return new Entity[] {study, food, recreation, sleep};</span>
+    }
+
+    /**
+     * Initialise the player's physics object in the box2d world.
+     *
+     * @return the fixture for the player's physics object.
+     */
+    Fixture initPlayerBody() {
+<span class="nc" id="L354">        var player = new BodyDef();</span>
+<span class="nc" id="L355">        player.type = BodyDef.BodyType.DynamicBody;</span>
+<span class="nc" id="L356">        player.position.set(PlayerConstants.START_POSITION);</span>
+<span class="nc" id="L357">        var playerBody = world.createBody(player);</span>
+<span class="nc" id="L358">        playerBody.setUserData(PlayerConstants.HITBOX_RADIUS);</span>
+<span class="nc" id="L359">        var playerCircle = new CircleShape();</span>
+<span class="nc" id="L360">        playerCircle.setRadius(PlayerConstants.HITBOX_RADIUS);</span>
+<span class="nc" id="L361">        var playerFixture = playerBody.createFixture(playerCircle, 1f);</span>
+<span class="nc" id="L362">        playerCircle.dispose();</span>
+
+<span class="nc" id="L364">        return playerFixture;</span>
+    }
+
+    /**
+     * Initialise the entity that represents the player character.
+     *
+     * @param engine the engine to create the entity for.
+     * @return the created entity.
+     */
+    Entity initPlayerEntity(Engine engine) {
+<span class="nc" id="L374">        var playerAnimations = new AnimationComponent(0.05f);</span>
+<span class="nc" id="L375">        playerAnimations.animations.put(</span>
+                MoveDirection.STATIONARY,
+<span class="nc" id="L377">                new Animation&lt;&gt;(1f, game.playerTextureAtlas.createSprites(&quot;stationary&quot;), Animation.PlayMode.LOOP));</span>
+<span class="nc" id="L378">        playerAnimations.animations.put(</span>
+                MoveDirection.UP,
+<span class="nc" id="L380">                new Animation&lt;&gt;(0.12f, game.playerTextureAtlas.createSprites(&quot;walk_up&quot;), Animation.PlayMode.LOOP));</span>
+<span class="nc" id="L381">        playerAnimations.animations.put(</span>
+                MoveDirection.DOWN,
+<span class="nc" id="L383">                new Animation&lt;&gt;(0.12f, game.playerTextureAtlas.createSprites(&quot;walk_down&quot;), Animation.PlayMode.LOOP));</span>
+<span class="nc" id="L384">        playerAnimations.animations.put(</span>
+                MoveDirection.LEFT,
+<span class="nc" id="L386">                new Animation&lt;&gt;(0.12f, game.playerTextureAtlas.createSprites(&quot;walk_left&quot;), Animation.PlayMode.LOOP));</span>
+<span class="nc" id="L387">        playerAnimations.animations.put(</span>
+                MoveDirection.RIGHT,
+<span class="nc" id="L389">                new Animation&lt;&gt;(0.12f, game.playerTextureAtlas.createSprites(&quot;walk_right&quot;), Animation.PlayMode.LOOP));</span>
+
+<span class="nc" id="L391">        return engine.createEntity()</span>
+<span class="nc" id="L392">                .add(new PlayerComponent())</span>
+<span class="nc" id="L393">                .add(playerAnimations)</span>
+<span class="nc" id="L394">                .add(new FixtureComponent(initPlayerBody()));</span>
+    }
+
+    @Override
+    public void render(float delta) {
+        // Allow the final interaction (day transition) to complete before showing the end screen
+<span class="nc bnc" id="L400" title="All 4 branches missed.">        if (gameState.daysRemaining == 0 &amp;&amp; gameState.interactionOverlay == null) {</span>
+<span class="nc" id="L401">            game.setState(HeslingtonHustle.State.END_SCREEN);</span>
+<span class="nc" id="L402">            return;</span>
+        }
+
+<span class="nc" id="L405">        ScreenUtils.clear(0, 0, 0, 1);</span>
+
+        // This makes transpacency work properly
+<span class="nc" id="L408">        Gdx.gl.glEnable(GL30.GL_BLEND);</span>
+<span class="nc" id="L409">        Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);</span>
+
+<span class="nc" id="L411">        game.spriteBatch.setProjectionMatrix(camera.combined);</span>
+<span class="nc" id="L412">        game.spriteBatch.begin();</span>
+
+<span class="nc" id="L414">        engine.update(delta);</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">        if (game.physicsDebug) {</span>
+<span class="nc" id="L416">            debugRenderer.render(world, camera.combined);</span>
+        }
+<span class="nc" id="L418">        game.spriteBatch.end();</span>
+
+<span class="nc" id="L420">        stage.act();</span>
+<span class="nc" id="L421">        stage.draw();</span>
+
+<span class="nc" id="L423">        world.step(delta, 8, 3);</span>
+<span class="nc" id="L424">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L428">        viewport.update(width, height, false);</span>
+<span class="nc" id="L429">    }</span>
+
+    @Override
+<span class="nc" id="L432">    public void show() {}</span>
+
+    @Override
+<span class="nc" id="L435">    public void pause() {}</span>
+
+    @Override
+<span class="nc" id="L438">    public void resume() {}</span>
+
+    @Override
+<span class="nc" id="L441">    public void hide() {}</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L445">        stage.dispose();</span>
+<span class="nc" id="L446">        world.dispose();</span>
+<span class="nc" id="L447">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

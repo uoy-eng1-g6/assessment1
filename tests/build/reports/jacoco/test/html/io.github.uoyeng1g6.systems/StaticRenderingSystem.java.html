@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StaticRenderingSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">io.github.uoyeng1g6.systems</a> &gt; <span class="el_source">StaticRenderingSystem.java</span></div><h1>StaticRenderingSystem.java</h1><pre class="source lang-java linenums">package io.github.uoyeng1g6.systems;
+
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.uoyeng1g6.components.PositionComponent;
+import io.github.uoyeng1g6.components.TextureComponent;
+
+/**
+ * System that handles rendering static graphics. For a static graphic to be rendered its entity must
+ * have both a {@link TextureComponent} and a {@link PositionComponent}, as well as have
+ * {@link TextureComponent#visible} be {@code true}.
+ */
+public class StaticRenderingSystem extends IteratingSystem {
+    private final SpriteBatch batch;
+
+<span class="nc" id="L19">    private final ComponentMapper&lt;TextureComponent&gt; tm = ComponentMapper.getFor(TextureComponent.class);</span>
+<span class="nc" id="L20">    private final ComponentMapper&lt;PositionComponent&gt; pm = ComponentMapper.getFor(PositionComponent.class);</span>
+
+    public StaticRenderingSystem(SpriteBatch batch) {
+<span class="nc" id="L23">        super(Family.all(TextureComponent.class, PositionComponent.class).get());</span>
+
+<span class="nc" id="L25">        this.batch = batch;</span>
+<span class="nc" id="L26">    }</span>
+
+    @Override
+    protected void processEntity(Entity entity, float deltaTime) {
+<span class="nc" id="L30">        var tc = tm.get(entity);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (!tc.visible) {</span>
+<span class="nc" id="L32">            return;</span>
+        }
+
+<span class="nc" id="L35">        var pc = pm.get(entity);</span>
+<span class="nc" id="L36">        batch.draw(</span>
+<span class="nc" id="L37">                tc.region, pc.x, pc.y, tc.region.getRegionWidth() * tc.scale, tc.region.getRegionHeight() * tc.scale);</span>
+<span class="nc" id="L38">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
