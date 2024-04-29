@@ -45,7 +45,9 @@ public class PlayerInputSystem extends EntitySystem {
         return playerEntity;
     }
 
-    public int getCurrentAnimation() { return am.get(playerEntity).currentAnimation; }
+    public int getCurrentAnimation() {
+        return am.get(playerEntity).currentAnimation;
+    }
 
     @Override
     public void addedToEngine(Engine engine) {
