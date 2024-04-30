@@ -117,12 +117,25 @@ public class EndScreen implements Screen {
      */
     float calculateExamScore(List<GameState.Day> days) {
         float totalScore = 0;
+        boolean movieAchievement = false;
+        boolean townAchievement = false;
+        boolean sportAchievement = true;
 
         for (var day : days) {
             int studyCount = day.statFor(ActivityType.STUDY);
             int mealCount = day.statFor(ActivityType.MEAL);
             int recreationCount = day.statFor(ActivityType.RECREATION);
 
+            if (day.statForName("movie") >= 3 && !movieAchievement) {
+                movieAchievement = true;
+            }
+            if (day.statForName("town") >= 5 && !townAchievement) {
+                townAchievement = true;
+            }
+            if (sportAchievement && day.statForName("sport") == 0){
+                sportAchievement = false;
+            }
+            
             var dayScore = getDayScore(studyCount, mealCount, recreationCount);
             // Normalise day score between 0 and 100, round up to nearest whole number
             var normalisedDayScore = Math.ceil(((dayScore - MIN_DAY_SCORE) * 100) / (MAX_DAY_SCORE - MIN_DAY_SCORE));
@@ -130,6 +143,10 @@ public class EndScreen implements Screen {
             // Increase total score
             totalScore += (float) (normalisedDayScore * (1 / 7f));
         }
+
+        System.out.println(movieAchievement);
+        System.out.println(townAchievement);
+        System.out.println(sportAchievement);
 
         // Clamp total score from 0-100
         return Math.min(100, Math.max(0, totalScore));

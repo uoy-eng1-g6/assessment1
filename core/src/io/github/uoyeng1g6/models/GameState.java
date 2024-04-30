@@ -19,6 +19,11 @@ public class GameState {
         public final HashMap<ActivityType, Integer> activityStats = new HashMap<>();
 
         /**
+         * Map of activity name to number of activities completed with that name.
+         */
+        public final HashMap<String, Integer> activityNameStats = new HashMap<>();
+
+        /**
          * Get the number of times an activity of a specific type has been done.
          *
          * @param type the type of activity.
@@ -27,6 +32,8 @@ public class GameState {
         public int statFor(ActivityType type) {
             return activityStats.getOrDefault(type, 0);
         }
+
+        public int statForName(String name){ return activityNameStats.getOrDefault(name, 0);}
     }
 
     /**
@@ -101,7 +108,7 @@ public class GameState {
      * @param overlayText the text to show on the overlay while doing the interaction.
      * @return boolean indicating whether the activity could be performed.
      */
-    public boolean doActivity(int timeUsage, int energyUsage, ActivityType type, String overlayText) {
+    public boolean doActivity(int timeUsage, int energyUsage, ActivityType type, String overlayText, String activityName) {
         if (hoursRemaining < timeUsage || energyRemaining < energyUsage) {
             return false;
         }
@@ -109,6 +116,7 @@ public class GameState {
         hoursRemaining -= timeUsage;
         energyRemaining -= energyUsage;
         currentDay.activityStats.merge(type, 1, Integer::sum);
+        currentDay.activityNameStats.merge(activityName, 1, Integer::sum);
 
         interactionOverlay = new InteractionOverlay(overlayText, GameConstants.OVERLAY_SECONDS_PER_HOUR * timeUsage);
 
