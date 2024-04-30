@@ -298,11 +298,11 @@ public class Playing implements Screen {
                 .add(new HitboxComponent(new Rectangle(
                         25, 14, studyIcon.getRegionWidth() * iconSize, studyIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
-                    if (!state.doActivity(1, 10, ActivityType.STUDY, "Studying...")) {
+                    if (!state.doActivity(1, 6, ActivityType.STUDY, "Studying...")) {
                         // Notify insufficient time/energy
                     }
                 }))
-                .add(new TooltipComponent(game.tooltipFont, "[E] Study for exams\nTime: -1h\nEnergy: -10"));
+                .add(new TooltipComponent(game.tooltipFont, "[E] Study for exams\nTime: -1h\nEnergy: -6"));
 
         var library = engine.createEntity()
                 .add(new TextureComponent(studyIcon, iconSize).show())
@@ -310,11 +310,11 @@ public class Playing implements Screen {
                 .add(new HitboxComponent(new Rectangle(
                         72.5f, 21.5f, studyIcon.getRegionWidth() * iconSize, studyIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
-                    if (!state.doActivity(1, 10, ActivityType.STUDY, "Studying...")) {
+                    if (!state.doActivity(1, 6, ActivityType.STUDY, "Studying...")) {
                         // Notify insufficient time/energy
                     }
                 }))
-                .add(new TooltipComponent(game.tooltipFont, "[E] Study for exams\nTime: -1h\nEnergy: -10"));
+                .add(new TooltipComponent(game.tooltipFont, "[E] Study for exams\nTime: -1h\nEnergy: -6"));
 
         var foodIcon = game.interactionIconsTextureAtlas.findRegion("food_icon");
         var food = engine.createEntity()
@@ -332,18 +332,18 @@ public class Playing implements Screen {
         var popcornIcon = game.interactionIconsTextureAtlas.findRegion("popcorn_icon");
         var recreation = engine.createEntity()
                 .add(new TextureComponent(popcornIcon, iconSize).show())
-                .add(new PositionComponent(17, 60.5f))
+                .add(new PositionComponent(19, 60.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        17,
+                        19,
                         60.5f,
                         popcornIcon.getRegionWidth() * iconSize,
                         popcornIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
-                    if (!state.doActivity(1, 10, ActivityType.RECREATION, "Watching films...")) {
+                    if (!state.doActivity(2, 14, ActivityType.RECREATION, "Watching films...")) {
                         // Notify insufficient time/energy
                     }
                 }))
-                .add(new TooltipComponent(game.tooltipFont, "[E] Watch films with mates\nTime: -1h\nEnergy: -10"));
+                .add(new TooltipComponent(game.tooltipFont, "[E] Watch films with mates\nTime: -2h\nEnergy: -14"));
 
         var footballIcon = game.interactionIconsTextureAtlas.findRegion("football_icon");
         var sports = engine.createEntity()
