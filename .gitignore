@@ -6,7 +6,7 @@
 hs_err_pid*
 
 ## HTML (tests)
-/tests/build
+/tests/build/
 
 ## Robovm
 /ios/robovm-build/
