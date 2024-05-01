@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="jvms.assessment2.gdxtesting.EndScreenTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2024-05-01T09:48:37" hostname="MacBook-Pro-186.local" time="0.248">
+<testsuite name="jvms.assessment2.gdxtesting.EndScreenTest" tests="3" skipped="0" failures="3" errors="0" timestamp="2024-05-01T11:28:05" hostname="MacBook-Pro-186.local" time="0.256">
   <properties/>
-  <testcase name="scoreTest" classname="jvms.assessment2.gdxtesting.EndScreenTest" time="0.248">
+  <testcase name="midScoreTest" classname="jvms.assessment2.gdxtesting.EndScreenTest" time="0.234">
     <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
 	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
 	at com.badlogic.gdx.graphics.glutils.ShaderProgram.compileShaders(ShaderProgram.java:184)
@@ -11,7 +11,65 @@
 	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:81)
 	at com.badlogic.gdx.scenes.scene2d.Stage.&lt;init&gt;(Stage.java:100)
 	at io.github.uoyeng1g6.screens.EndScreen.&lt;init&gt;(EndScreen.java:43)
-	at jvms.assessment2.gdxtesting.EndScreenTest.scoreTest(EndScreenTest.java:39)
+	at jvms.assessment2.gdxtesting.EndScreenTest.midScoreTest(EndScreenTest.java:77)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at jvms.assessment2.gdxtesting.GdxTestRunner.render(GdxTestRunner.java:59)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication.mainLoop(HeadlessApplication.java:128)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication$1.run(HeadlessApplication.java:93)
+</failure>
+  </testcase>
+  <testcase name="badScoreTest" classname="jvms.assessment2.gdxtesting.EndScreenTest" time="0.007">
+    <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.compileShaders(ShaderProgram.java:184)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.&lt;init&gt;(ShaderProgram.java:167)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.createDefaultShader(SpriteBatch.java:163)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:127)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:81)
+	at com.badlogic.gdx.scenes.scene2d.Stage.&lt;init&gt;(Stage.java:100)
+	at io.github.uoyeng1g6.screens.EndScreen.&lt;init&gt;(EndScreen.java:43)
+	at jvms.assessment2.gdxtesting.EndScreenTest.badScoreTest(EndScreenTest.java:58)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at jvms.assessment2.gdxtesting.GdxTestRunner.render(GdxTestRunner.java:59)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication.mainLoop(HeadlessApplication.java:128)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication$1.run(HeadlessApplication.java:93)
+</failure>
+  </testcase>
+  <testcase name="idealScoreTest" classname="jvms.assessment2.gdxtesting.EndScreenTest" time="0.001">
+    <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.compileShaders(ShaderProgram.java:184)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.&lt;init&gt;(ShaderProgram.java:167)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.createDefaultShader(SpriteBatch.java:163)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:127)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:81)
+	at com.badlogic.gdx.scenes.scene2d.Stage.&lt;init&gt;(Stage.java:100)
+	at io.github.uoyeng1g6.screens.EndScreen.&lt;init&gt;(EndScreen.java:43)
+	at jvms.assessment2.gdxtesting.EndScreenTest.idealScoreTest(EndScreenTest.java:39)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

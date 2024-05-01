@@ -23,13 +23,13 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">1</div>
+<div class="counter">3</div>
 <p>tests</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">1</div>
+<div class="counter">3</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.248s</div>
+<div class="counter">0.242s</div>
 <p>duration</p>
 </div>
 </td>
@@ -70,8 +70,8 @@
 <div id="tab0" class="tab">
 <h2>Failed tests</h2>
 <div class="test">
-<a name="scoreTest"></a>
-<h3 class="failures">scoreTest</h3>
+<a name="badScoreTest"></a>
+<h3 class="failures">badScoreTest</h3>
 <span class="code">
 <pre>java.lang.NullPointerException
 	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
@@ -82,7 +82,73 @@
 	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:81)
 	at com.badlogic.gdx.scenes.scene2d.Stage.&lt;init&gt;(Stage.java:100)
 	at io.github.uoyeng1g6.screens.EndScreen.&lt;init&gt;(EndScreen.java:43)
-	at jvms.assessment2.gdxtesting.EndScreenTest.scoreTest(EndScreenTest.java:39)
+	at jvms.assessment2.gdxtesting.EndScreenTest.badScoreTest(EndScreenTest.java:58)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at jvms.assessment2.gdxtesting.GdxTestRunner.render(GdxTestRunner.java:59)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication.mainLoop(HeadlessApplication.java:128)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication$1.run(HeadlessApplication.java:93)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="idealScoreTest"></a>
+<h3 class="failures">idealScoreTest</h3>
+<span class="code">
+<pre>java.lang.NullPointerException
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.compileShaders(ShaderProgram.java:184)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.&lt;init&gt;(ShaderProgram.java:167)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.createDefaultShader(SpriteBatch.java:163)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:127)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:81)
+	at com.badlogic.gdx.scenes.scene2d.Stage.&lt;init&gt;(Stage.java:100)
+	at io.github.uoyeng1g6.screens.EndScreen.&lt;init&gt;(EndScreen.java:43)
+	at jvms.assessment2.gdxtesting.EndScreenTest.idealScoreTest(EndScreenTest.java:39)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at jvms.assessment2.gdxtesting.GdxTestRunner.render(GdxTestRunner.java:59)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication.mainLoop(HeadlessApplication.java:128)
+	at com.badlogic.gdx.backends.headless.HeadlessApplication$1.run(HeadlessApplication.java:93)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="midScoreTest"></a>
+<h3 class="failures">midScoreTest</h3>
+<span class="code">
+<pre>java.lang.NullPointerException
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.compileShaders(ShaderProgram.java:184)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.&lt;init&gt;(ShaderProgram.java:167)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.createDefaultShader(SpriteBatch.java:163)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:127)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:81)
+	at com.badlogic.gdx.scenes.scene2d.Stage.&lt;init&gt;(Stage.java:100)
+	at io.github.uoyeng1g6.screens.EndScreen.&lt;init&gt;(EndScreen.java:43)
+	at jvms.assessment2.gdxtesting.EndScreenTest.midScoreTest(EndScreenTest.java:77)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -114,8 +180,18 @@
 </tr>
 </thead>
 <tr>
-<td class="failures">scoreTest</td>
-<td class="failures">0.248s</td>
+<td class="failures">badScoreTest</td>
+<td class="failures">0.007s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">idealScoreTest</td>
+<td class="failures">0.001s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">midScoreTest</td>
+<td class="failures">0.234s</td>
 <td class="failures">failed</td>
 </tr>
 </table>
@@ -128,7 +204,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.5</a> at 1 May 2024, 10:48:38</p>
+<a href="http://www.gradle.org">Gradle 8.5</a> at 1 May 2024, 12:28:06</p>
 </div>
 </div>
 </body>

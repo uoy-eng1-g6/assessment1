@@ -23,7 +23,7 @@ public class EndScreenTest {
         gameState = new GameState();
     }
     @Test
-    public void scoreTest() {
+    public void idealScoreTest() {
         for (int day_count = 1; day_count < 7; day_count++) {
             for (int i=1; i<3; i++) {
                 gameState.doActivity(1, 0, ActivityType.MEAL, new String());
@@ -32,6 +32,44 @@ public class EndScreenTest {
                 gameState.doActivity(1, 0, ActivityType.STUDY, new String());
             }
             for (int i=1; i<3; i++) {
+                gameState.doActivity(1, 0, ActivityType.RECREATION, new String());
+            }
+            gameState.advanceDay();
+        }
+        EndScreen endScreen = new EndScreen(new HeslingtonHustle(), gameState);
+        System.out.println(endScreen.calculateExamScore(gameState.days));
+        assertTrue(true);
+    }
+
+    @Test
+    public void badScoreTest() {
+        for (int day_count = 1; day_count < 7; day_count++) {
+            for (int i=1; i<5; i++) {
+                gameState.doActivity(1, 0, ActivityType.MEAL, new String());
+            }
+            for (int i=1; i<2; i++) {
+                gameState.doActivity(1, 0, ActivityType.STUDY, new String());
+            }
+            for (int i=1; i<6; i++) {
+                gameState.doActivity(1, 0, ActivityType.RECREATION, new String());
+            }
+            gameState.advanceDay();
+        }
+        EndScreen endScreen = new EndScreen(new HeslingtonHustle(), gameState);
+        System.out.println(endScreen.calculateExamScore(gameState.days));
+        assertTrue(true);
+    }
+
+    @Test
+    public void midScoreTest() {
+        for (int day_count = 1; day_count < 7; day_count++) {
+            for (int i=1; i<4; i++) {
+                gameState.doActivity(1, 0, ActivityType.MEAL, new String());
+            }
+            for (int i=1; i<5; i++) {
+                gameState.doActivity(1, 0, ActivityType.STUDY, new String());
+            }
+            for (int i=1; i<4; i++) {
                 gameState.doActivity(1, 0, ActivityType.RECREATION, new String());
             }
             gameState.advanceDay();

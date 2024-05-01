@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="jvms.assessment2.gdxtesting.examples.UnitTestExample" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-01T09:48:38" hostname="MacBook-Pro-186.local" time="0.0">
+<testsuite name="jvms.assessment2.gdxtesting.examples.UnitTestExample" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-01T11:28:06" hostname="MacBook-Pro-186.local" time="0.0">
   <properties/>
   <testcase name="oneEqualsOne" classname="jvms.assessment2.gdxtesting.examples.UnitTestExample" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
