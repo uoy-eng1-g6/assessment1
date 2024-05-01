@@ -12,17 +12,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.utils.ChangeListener;
+import io.github.uoyeng1g6.utils.LeaderboardManager;
 
-/**
- * The main menu screen for the game. Allows the player to start a new game, or quit to desktop.
- */
-public class MainMenu implements Screen {
+public class Leaderboard implements Screen {
     /**
      * The {@code scene2d.ui} stage used to render this screen.
      */
     Stage stage;
 
-    public MainMenu(HeslingtonHustle game) {
+    public Leaderboard(HeslingtonHustle game, LeaderboardManager lm, int score) {
         var camera = new OrthographicCamera();
         var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);
 
@@ -36,24 +34,34 @@ public class MainMenu implements Screen {
         root.setDebug(game.debug);
         stage.addActor(root);
 
-        root.add("Heslington Hustle").getActor().setFontScale(2);
+        root.add("Leaderboard").getActor().setFontScale(2);
         root.row();
 
         var inner = new Table(game.skin);
 
-        var startButton = new TextButton("Start Game", game.skin);
-        startButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.PLAYING)));
-        inner.add(startButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));
+        if (score >= 0) {
+            lm.addEntry(score);
+        }
+        String[][] rankings = lm.getRanking();
+        var leaderboard = new Table(game.skin);
+        leaderboard.add("Rank").padRight(20);
+        leaderboard.add("Player").pad(0, 20, 0, 20);
+        leaderboard.add("Score").padLeft(20);
 
-        inner.row();
+        for (int i = 0; i < rankings.length; i++) {
+            leaderboard.row();
+            leaderboard.add(Integer.toString(i + 1)).padRight(20);
+            leaderboard.add(rankings[i][0]).pad(0, 20, 0, 20);
+            leaderboard.add(rankings[i][1]).padLeft(20);
+        }
 
-        var leaderboardButton = new TextButton("Leaderboard", game.skin);
-        leaderboardButton.addListener(
-                ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.MAIN_TO_LEADERBOARD)));
-        inner.add(leaderboardButton)
-                .pad(10)
-                .width(Value.percentWidth(0.4f, inner))
-                .height(Value.percentHeight(0.1f, inner));
+        root.add(leaderboard);
+
+        root.row();
+
+        var menuButton = new TextButton("Main Menu", game.skin);
+        menuButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.MAIN_MENU)));
+        inner.add(menuButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));
 
         inner.row();
 

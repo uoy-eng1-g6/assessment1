@@ -30,6 +30,8 @@ public class EndScreen implements Screen {
      */
     private static final float MIN_DAY_SCORE = 0f;
 
+    private int examScore;
+
     Camera camera;
     /**
      * The {@code scene2d.ui} stage used to render this screen.
@@ -55,7 +57,7 @@ public class EndScreen implements Screen {
 
         var inner = new Table(game.skin);
 
-        inner.add(String.format("Exam Score: %.2f / 100", calculateExamScore(endGameState.days)))
+        inner.add(String.format("Exam Score: %.0f / 100", calculateExamScore(endGameState.days)))
                 .padBottom(50);
         inner.row();
         inner.add("Times Studied: " + endGameState.getTotalActivityCount(ActivityType.STUDY));
@@ -65,12 +67,14 @@ public class EndScreen implements Screen {
         inner.add("Recreational Activities Done: " + endGameState.getTotalActivityCount(ActivityType.RECREATION));
         inner.row();
 
-        var mainMenuButton = new TextButton("Main Menu", game.skin);
-        mainMenuButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.MAIN_MENU)));
-        inner.add(mainMenuButton)
+        var nextButton = new TextButton("Next", game.skin);
+        nextButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.PLAYER_NAME_INPUT)));
+        inner.add(nextButton)
                 .padTop(50)
                 .width(Value.percentWidth(0.4f, inner))
                 .height(Value.percentHeight(0.1f, inner));
+
+        inner.row();
 
         root.add(inner).grow();
     }
@@ -149,7 +153,12 @@ public class EndScreen implements Screen {
         System.out.println(sportAchievement);
 
         // Clamp total score from 0-100
-        return Math.min(100, Math.max(0, totalScore));
+        examScore = Math.round(Math.min(100, Math.max(0, totalScore)));
+        return examScore;
+    }
+
+    public int getExamScore() {
+        return examScore;
     }
 
     @Override

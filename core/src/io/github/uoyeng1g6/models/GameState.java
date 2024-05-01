@@ -51,7 +51,7 @@ public class GameState {
 
         public InteractionOverlay(String text, float displayFor) {
             this.text = text;
-            this.displayFor = displayFor;
+            this.displayFor = displayFor * 0.3f;
         }
     }
 
