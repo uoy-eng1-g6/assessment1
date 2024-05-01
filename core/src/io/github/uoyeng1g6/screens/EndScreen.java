@@ -15,6 +15,9 @@ import io.github.uoyeng1g6.constants.ActivityType;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.models.GameState;
 import io.github.uoyeng1g6.utils.ChangeListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,8 +67,28 @@ public class EndScreen implements Screen {
         inner.row();
         inner.add("Meals Eaten: " + endGameState.getTotalActivityCount(ActivityType.MEAL));
         inner.row();
-        inner.add("Recreational Activities Done: " + endGameState.getTotalActivityCount(ActivityType.RECREATION));
+        inner.add("Recreational Activities Done: " + endGameState.getTotalActivityCount(ActivityType.RECREATION)).padBottom(50);
         inner.row();
+        inner.row();
+        List<Boolean> achievements = calculateAchievements(endGameState.days);
+        inner.add("Achievements").padBottom(20);
+        inner.row();
+        if (achievements.get(0)) {
+            inner.add("Movie Marathon: Watch at least 3 movies in a single day +5");
+            inner.row();
+        }
+        if (achievements.get(1)) {
+            inner.add("You really went to town on that...: Go to town at least 5 times in a single day +5");
+            inner.row();
+        }
+        if (achievements.get(2)) {
+            inner.add("Gymbro: Go to the gym at least once a day, every day +5");
+            inner.row();
+        }
+        if (!(achievements.get(0) || achievements.get(1) || achievements.get(2))) {
+            inner.add("You found no achievements.");
+            inner.row();
+        }
 
         var nextButton = new TextButton("Next", game.skin);
         nextButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.PLAYER_NAME_INPUT)));
@@ -121,24 +144,11 @@ public class EndScreen implements Screen {
      */
     float calculateExamScore(List<GameState.Day> days) {
         float totalScore = 0;
-        boolean movieAchievement = false;
-        boolean townAchievement = false;
-        boolean sportAchievement = true;
 
         for (var day : days) {
             int studyCount = day.statFor(ActivityType.STUDY);
             int mealCount = day.statFor(ActivityType.MEAL);
             int recreationCount = day.statFor(ActivityType.RECREATION);
-
-            if (day.statForName("movie") >= 3 && !movieAchievement) {
-                movieAchievement = true;
-            }
-            if (day.statForName("town") >= 5 && !townAchievement) {
-                townAchievement = true;
-            }
-            if (sportAchievement && day.statForName("sport") == 0){
-                sportAchievement = false;
-            }
             
             var dayScore = getDayScore(studyCount, mealCount, recreationCount);
             // Normalise day score between 0 and 100, round up to nearest whole number
@@ -148,13 +158,56 @@ public class EndScreen implements Screen {
             totalScore += (float) (normalisedDayScore * (1 / 7f));
         }
 
-        System.out.println(movieAchievement);
-        System.out.println(townAchievement);
-        System.out.println(sportAchievement);
+        List<Boolean> achievements = calculateAchievements(days);
+        boolean movieAchievement = achievements.get(0);
+        boolean townAchievement = achievements.get(1);
+        boolean sportAchievement = achievements.get(2);
+
+        //Add achievement bonuses
+        if (movieAchievement) {
+            totalScore += 5;
+        }
+        if (townAchievement) {
+            totalScore += 5;
+        }
+        if (sportAchievement) {
+            totalScore += 5;
+        }
 
         // Clamp total score from 0-100
         examScore = Math.round(Math.min(100, Math.max(0, totalScore)));
         return examScore;
+    }
+
+    List<Boolean> calculateAchievements(List<GameState.Day> days) {
+
+        // Movie Marathon: For watching 3 movies in a day
+        boolean movieAchievement = false;
+
+        // You really went to town on that... : For going to town 5 times in a day
+        boolean townAchievement = false;
+
+        // Gymbro : Go to the gym at least once a day, every day
+        boolean sportAchievement = true;
+
+        for (var day : days) {
+
+            if (day.statForName("movie") >= 3 && !movieAchievement) {
+                movieAchievement = true;
+            }
+            if (day.statForName("town") >= 5 && !townAchievement) {
+                townAchievement = true;
+            }
+            if (sportAchievement && day.statForName("sports") == 0){
+                sportAchievement = false;
+            }
+        }
+
+        System.out.println(movieAchievement);
+        System.out.println(townAchievement);
+        System.out.println(sportAchievement);
+
+        return Arrays.asList(movieAchievement, townAchievement, sportAchievement);
     }
 
     public int getExamScore() {
