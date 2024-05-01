@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import io.github.uoyeng1g6.screens.*;
+import io.github.uoyeng1g6.utils.LeaderboardManager;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -43,7 +44,11 @@ public class HeslingtonHustle extends Game {
         /**
          * The game is currently on the leaderboard screen.
          */
-        LEADERBOARD
+        LEADERBOARD,
+        /**
+         * The game is going from main menu to leaderboard.
+         */
+        MAIN_TO_LEADERBOARD
     }
 
     /**
@@ -179,6 +184,13 @@ public class HeslingtonHustle extends Game {
                 }
                 leaderboard =
                         new Leaderboard(this, playerNameInputScreen.getLeaderboardManager(), endScreen.getExamScore());
+                this.setScreen(leaderboard);
+                break;
+            case MAIN_TO_LEADERBOARD:
+                if (leaderboard != null) {
+                    leaderboard.dispose();
+                }
+                leaderboard = new Leaderboard(this, new LeaderboardManager("scores.txt"), -1);
                 this.setScreen(leaderboard);
                 break;
         }
