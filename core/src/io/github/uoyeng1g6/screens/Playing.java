@@ -334,10 +334,7 @@ public class Playing implements Screen {
                 .add(new TextureComponent(popcornIcon, iconSize).show())
                 .add(new PositionComponent(19, 60.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        19,
-                        60.5f,
-                        popcornIcon.getRegionWidth() * iconSize,
-                        popcornIcon.getRegionHeight() * iconSize)))
+                        19, 60.5f, popcornIcon.getRegionWidth() * iconSize, popcornIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(2, 14, ActivityType.RECREATION, "Watching films...")) {
                         // Notify insufficient time/energy
@@ -366,10 +363,7 @@ public class Playing implements Screen {
                 .add(new TextureComponent(gooseIcon, iconSize).show())
                 .add(new PositionComponent(33.5f, 5.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        33.5f,
-                        5.5f,
-                        gooseIcon.getRegionWidth() * iconSize,
-                        gooseIcon.getRegionHeight() * iconSize)))
+                        33.5f, 5.5f, gooseIcon.getRegionWidth() * iconSize, gooseIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 6, ActivityType.RECREATION, "Feeding ducks...")) {
                         // Notify insufficient time/energy
@@ -382,10 +376,7 @@ public class Playing implements Screen {
                 .add(new TextureComponent(sofaIcon, iconSize).show())
                 .add(new PositionComponent(40.5f, 27.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        40.5f,
-                        27.5f,
-                        sofaIcon.getRegionWidth() * iconSize,
-                        sofaIcon.getRegionHeight() * iconSize)))
+                        40.5f, 27.5f, sofaIcon.getRegionWidth() * iconSize, sofaIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 6, ActivityType.RECREATION, "Relaxing...")) {
                         // Notify insufficient time/energy
@@ -398,10 +389,7 @@ public class Playing implements Screen {
                 .add(new TextureComponent(busIcon, iconSize).show())
                 .add(new PositionComponent(12, 60.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        12,
-                        60.5f,
-                        busIcon.getRegionWidth() * iconSize,
-                        busIcon.getRegionHeight() * iconSize)))
+                        12, 60.5f, busIcon.getRegionWidth() * iconSize, busIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 7, ActivityType.RECREATION, "Travelling...")) {
                         // Notify insufficient time/energy
@@ -413,10 +401,7 @@ public class Playing implements Screen {
                 .add(new TextureComponent(sofaIcon, iconSize).show())
                 .add(new PositionComponent(60.5f, 19.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        60.5f,
-                        19.5f,
-                        sofaIcon.getRegionWidth() * iconSize,
-                        sofaIcon.getRegionHeight() * iconSize)))
+                        60.5f, 19.5f, sofaIcon.getRegionWidth() * iconSize, sofaIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
                     if (!state.doActivity(1, 5, ActivityType.RECREATION, "Socialising...")) {
                         // Notify insufficient time/energy
@@ -433,7 +418,7 @@ public class Playing implements Screen {
                 .add(new InteractionComponent(GameState::advanceDay))
                 .add(new TooltipComponent(game.tooltipFont, "[E] Go to sleep\nEnds the current day"));
 
-        return new Entity[] {cs, library, food, recreation, sleep, sports,ducks, chill, society, town};
+        return new Entity[] {cs, library, food, recreation, sleep, sports, ducks, chill, society, town};
     }
 
     /**
