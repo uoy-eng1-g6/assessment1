@@ -33,7 +33,9 @@ public class GameState {
             return activityStats.getOrDefault(type, 0);
         }
 
-        public int statForName(String name){ return activityNameStats.getOrDefault(name, 0);}
+        public int statForName(String name) {
+            return activityNameStats.getOrDefault(name, 0);
+        }
     }
 
     /**
@@ -108,7 +110,8 @@ public class GameState {
      * @param overlayText the text to show on the overlay while doing the interaction.
      * @return boolean indicating whether the activity could be performed.
      */
-    public boolean doActivity(int timeUsage, int energyUsage, ActivityType type, String overlayText, String activityName) {
+    public boolean doActivity(
+            int timeUsage, int energyUsage, ActivityType type, String overlayText, String activityName) {
         if (hoursRemaining < timeUsage || energyRemaining < energyUsage) {
             return false;
         }

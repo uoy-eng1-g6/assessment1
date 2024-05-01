@@ -15,8 +15,6 @@ import io.github.uoyeng1g6.constants.ActivityType;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.models.GameState;
 import io.github.uoyeng1g6.utils.ChangeListener;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +65,8 @@ public class EndScreen implements Screen {
         inner.row();
         inner.add("Meals Eaten: " + endGameState.getTotalActivityCount(ActivityType.MEAL));
         inner.row();
-        inner.add("Recreational Activities Done: " + endGameState.getTotalActivityCount(ActivityType.RECREATION)).padBottom(50);
+        inner.add("Recreational Activities Done: " + endGameState.getTotalActivityCount(ActivityType.RECREATION))
+                .padBottom(50);
         inner.row();
         inner.row();
         List<Boolean> achievements = calculateAchievements(endGameState.days);
@@ -149,7 +148,7 @@ public class EndScreen implements Screen {
             int studyCount = day.statFor(ActivityType.STUDY);
             int mealCount = day.statFor(ActivityType.MEAL);
             int recreationCount = day.statFor(ActivityType.RECREATION);
-            
+
             var dayScore = getDayScore(studyCount, mealCount, recreationCount);
             // Normalise day score between 0 and 100, round up to nearest whole number
             var normalisedDayScore = Math.ceil(((dayScore - MIN_DAY_SCORE) * 100) / (MAX_DAY_SCORE - MIN_DAY_SCORE));
@@ -163,7 +162,7 @@ public class EndScreen implements Screen {
         boolean townAchievement = achievements.get(1);
         boolean sportAchievement = achievements.get(2);
 
-        //Add achievement bonuses
+        // Add achievement bonuses
         if (movieAchievement) {
             totalScore += 5;
         }
@@ -198,7 +197,7 @@ public class EndScreen implements Screen {
             if (day.statForName("town") >= 5 && !townAchievement) {
                 townAchievement = true;
             }
-            if (sportAchievement && day.statForName("sports") == 0){
+            if (sportAchievement && day.statForName("sports") == 0) {
                 sportAchievement = false;
             }
         }
