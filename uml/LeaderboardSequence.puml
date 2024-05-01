@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant PlayerNameInput
+participant LeaderboardManager
+participant Leaderboard
+participant HeslingtonHustle
+participant EndScreen
+PlayerNameInput -> LeaderboardManager: Creates LeaderboardManager
+LeaderboardManager -> LeaderboardManager: Loads and sorts leaderboard file data
+PlayerNameInput -> LeaderboardManager: Saves player's name to memory
+PlayerNameInput -> HeslingtonHustle: Updates state to LEADERBOARD
+EndScreen <- HeslingtonHustle: Calls getExamScore()
+EndScreen -> HeslingtonHustle: Returns player's score
+HeslingtonHustle -> Leaderboard: Sets screen to leaderboard
+Leaderboard -> LeaderboardManager: Calls addEntry()
+LeaderboardManager -> LeaderboardManager: Saves player's name and score to disk
+Leaderboard -> LeaderboardManager: Requests rankings
+LeaderboardManager -> Leaderboard: Returns top 10 ranking
+Leaderboard -> Leaderboard: Displays leaderboard to player
+Leaderboard -> HeslingtonHustle: Updates game state to either MAIN_MENU or quits
+@enduml
