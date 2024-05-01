@@ -2,11 +2,11 @@
 'https://plantuml.com/sequence-diagram
 
 autonumber
-EndScreen -> HeslingtonHustle: Updates state to PLAYER_NAME_INPUT
+EndScreen -> HeslingtonHustle: Updates state to\nPLAYER_NAME_INPUT
 HeslingtonHustle -> PlayerNameInput: Sets screen to PlayerNameInput
-PlayerNameInput -> LeaderboardManager: Creates new leaderboard manager object
+PlayerNameInput -> LeaderboardManager: Creates new leaderboard\nmanager object
 PlayerNameInput -> PlayerNameInput: Presents name input box
 PlayerNameInput -> LeaderboardManager: Saves entered name
-PlayerNameInput -> HeslingtonHustle: Updates state to LEADERBOARD upon name entry
+PlayerNameInput -> HeslingtonHustle: Updates state to LEADERBOARD\nupon name entry
 
 @enduml
