@@ -12,9 +12,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import io.github.uoyeng1g6.screens.EndScreen;
-import io.github.uoyeng1g6.screens.MainMenu;
-import io.github.uoyeng1g6.screens.Playing;
+import io.github.uoyeng1g6.screens.*;
+import io.github.uoyeng1g6.utils.LeaderboardManager;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -37,7 +36,19 @@ public class HeslingtonHustle extends Game {
         /**
          * The game is currently on the game over screen.
          */
-        END_SCREEN
+        END_SCREEN,
+        /**
+         * The game is currently on the player name input screen.
+         */
+        PLAYER_NAME_INPUT,
+        /**
+         * The game is currently on the leaderboard screen.
+         */
+        LEADERBOARD,
+        /**
+         * The game is going from main menu to leaderboard.
+         */
+        MAIN_TO_LEADERBOARD
     }
 
     /**
@@ -102,10 +113,20 @@ public class HeslingtonHustle extends Game {
      */
     Playing playing = null;
     /**
-     * The end screen instance. A new one is required to be create each time the
+     * The end screen instance. A new one is required to be created each time the
      * player finishes a game.
      */
     EndScreen endScreen = null;
+    /**
+     * The name input screen instance. A new one is required to be created each time the
+     * player finishes a game.
+     */
+    PlayerNameInput playerNameInputScreen = null;
+    /**
+     * The leaderboard instance. A new one is required to be created each time the
+     * player finishes a game.
+     */
+    Leaderboard leaderboard = null;
 
     /**
      * The game's current state.
@@ -149,6 +170,28 @@ public class HeslingtonHustle extends Game {
                 }
                 endScreen = new EndScreen(this, playing.getGameState());
                 this.setScreen(endScreen);
+                break;
+            case PLAYER_NAME_INPUT:
+                if (playerNameInputScreen != null) {
+                    playerNameInputScreen.dispose();
+                }
+                playerNameInputScreen = new PlayerNameInput(this);
+                this.setScreen(playerNameInputScreen);
+                break;
+            case LEADERBOARD:
+                if (leaderboard != null) {
+                    leaderboard.dispose();
+                }
+                leaderboard =
+                        new Leaderboard(this, playerNameInputScreen.getLeaderboardManager(), endScreen.getExamScore());
+                this.setScreen(leaderboard);
+                break;
+            case MAIN_TO_LEADERBOARD:
+                if (leaderboard != null) {
+                    leaderboard.dispose();
+                }
+                leaderboard = new Leaderboard(this, new LeaderboardManager("scores.txt"), -1);
+                this.setScreen(leaderboard);
                 break;
         }
         currentState = state;
