@@ -31,3 +31,31 @@ popcorn_icon
   orig: 128, 128
   offset: 0, 0
   index: -1
+sofa_icon
+  rotate: false
+  xy: 261, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+football_icon
+  rotate: false
+  xy: 391, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+goose_icon
+  rotate: false
+  xy: 261, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+bus_icon
+  rotate: false
+  xy: 391, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
