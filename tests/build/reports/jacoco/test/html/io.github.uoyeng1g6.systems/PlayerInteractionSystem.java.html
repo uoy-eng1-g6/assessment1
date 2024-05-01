@@ -20,10 +20,10 @@ import io.github.uoyeng1g6.models.GameState;
  * of an interactable and if so, triggers the interaction for that interactable.
  */
 public class PlayerInteractionSystem extends EntitySystem {
-<span class="nc" id="L23">    private final ComponentMapper&lt;PlayerComponent&gt; plm = ComponentMapper.getFor(PlayerComponent.class);</span>
-<span class="nc" id="L24">    private final ComponentMapper&lt;InteractionComponent&gt; im = ComponentMapper.getFor(InteractionComponent.class);</span>
-<span class="nc" id="L25">    private final ComponentMapper&lt;HitboxComponent&gt; hm = ComponentMapper.getFor(HitboxComponent.class);</span>
-<span class="nc" id="L26">    private final ComponentMapper&lt;FixtureComponent&gt; fm = ComponentMapper.getFor(FixtureComponent.class);</span>
+<span class="fc" id="L23">    private final ComponentMapper&lt;PlayerComponent&gt; plm = ComponentMapper.getFor(PlayerComponent.class);</span>
+<span class="fc" id="L24">    private final ComponentMapper&lt;InteractionComponent&gt; im = ComponentMapper.getFor(InteractionComponent.class);</span>
+<span class="fc" id="L25">    private final ComponentMapper&lt;HitboxComponent&gt; hm = ComponentMapper.getFor(HitboxComponent.class);</span>
+<span class="fc" id="L26">    private final ComponentMapper&lt;FixtureComponent&gt; fm = ComponentMapper.getFor(FixtureComponent.class);</span>
 
     /**
      * The game state.
@@ -33,25 +33,25 @@ public class PlayerInteractionSystem extends EntitySystem {
     private Entity playerEntity;
     private ImmutableArray&lt;Entity&gt; interactables;
 
-<span class="nc" id="L36">    public PlayerInteractionSystem(GameState gameState) {</span>
-<span class="nc" id="L37">        this.gameState = gameState;</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L36">    public PlayerInteractionSystem(GameState gameState) {</span>
+<span class="fc" id="L37">        this.gameState = gameState;</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     public void addedToEngine(Engine engine) {
-<span class="nc" id="L42">        playerEntity = engine.getEntitiesFor(Family.all(PlayerComponent.class, FixtureComponent.class)</span>
-<span class="nc" id="L43">                        .get())</span>
-<span class="nc" id="L44">                .first();</span>
-<span class="nc" id="L45">        interactables = engine.getEntitiesFor(</span>
-<span class="nc" id="L46">                Family.all(InteractionComponent.class, HitboxComponent.class).get());</span>
-<span class="nc" id="L47">    }</span>
+<span class="fc" id="L42">        playerEntity = engine.getEntitiesFor(Family.all(PlayerComponent.class, FixtureComponent.class)</span>
+<span class="fc" id="L43">                        .get())</span>
+<span class="fc" id="L44">                .first();</span>
+<span class="fc" id="L45">        interactables = engine.getEntitiesFor(</span>
+<span class="fc" id="L46">                Family.all(InteractionComponent.class, HitboxComponent.class).get());</span>
+<span class="fc" id="L47">    }</span>
 
     public ImmutableArray getInteractables() {
-<span class="nc" id="L50">        return interactables;</span>
+<span class="fc" id="L50">        return interactables;</span>
     }
 
     public Entity getPlayerEntity() {
-<span class="nc" id="L54">        return playerEntity;</span>
+<span class="fc" id="L54">        return playerEntity;</span>
     }
 
     @Override

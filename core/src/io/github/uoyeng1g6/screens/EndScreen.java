@@ -124,7 +124,7 @@ public class EndScreen implements Screen {
      * @param days the days to calculate the score for.
      * @return the computed game score.
      */
-    float calculateExamScore(List<GameState.Day> days) {
+    public float calculateExamScore(List<GameState.Day> days) {
         float totalScore = 0;
 
         for (var day : days) {

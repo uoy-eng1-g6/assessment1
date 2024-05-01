@@ -78,7 +78,7 @@ public class PlayerInteractionSystemTest {
         //Test the system has successfully found the player entity.
         assertEquals(playerEntity, engine.getSystem(PlayerInteractionSystem.class).getPlayerEntity());
 
-        //Test the array Interactables contains the correct Entities
+        //Test the array Interactables contains the correct Entities.
         assertEquals(1, engine.getSystem(PlayerInteractionSystem.class).getInteractables().size());
         assertEquals(interactableEntity, engine.getSystem(PlayerInteractionSystem.class).getInteractables().get(0));
     }

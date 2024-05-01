@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EndScreenTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">jvms.assessment2.gdxtesting</a> &gt; <span class="el_source">EndScreenTest.java</span></div><h1>EndScreenTest.java</h1><pre class="source lang-java linenums">package jvms.assessment2.gdxtesting;
+
+import io.github.uoyeng1g6.constants.ActivityType;
+import io.github.uoyeng1g6.constants.GameConstants;
+import io.github.uoyeng1g6.models.GameState;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.Before;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
+
+@RunWith(GdxTestRunner.class)
+<span class="fc" id="L15">public class EndScreenTest {</span>
+
+    GameState gameState;
+
+    @Before
+    public void initialiseGameState() {
+<span class="fc" id="L21">        gameState = new GameState();</span>
+<span class="fc" id="L22">    }</span>
+    @Test
+    public void scoreTest() {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        for (int day_count = 1; day_count &lt; 7; day_count++) {</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">            for (int i=1; i&lt;3; i++) {</span>
+<span class="fc" id="L27">                gameState.doActivity(1, 0, ActivityType.MEAL, new String());</span>
+            }
+<span class="fc bfc" id="L29" title="All 2 branches covered.">            for (int i=1; i&lt;8; i++) {</span>
+<span class="fc" id="L30">                gameState.doActivity(1, 0, ActivityType.STUDY, new String());</span>
+            }
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            for (int i=1; i&lt;3; i++) {</span>
+<span class="fc" id="L33">                gameState.doActivity(1, 0, ActivityType.RECREATION, new String());</span>
+            }
+<span class="fc" id="L35">            gameState.advanceDay();</span>
+        }
+<span class="fc" id="L37">        System.out.println(&quot;test&quot;);</span>
+<span class="fc" id="L38">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
