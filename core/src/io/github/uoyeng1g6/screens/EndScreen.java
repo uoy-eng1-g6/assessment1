@@ -65,6 +65,15 @@ public class EndScreen implements Screen {
         inner.add("Recreational Activities Done: " + endGameState.getTotalActivityCount(ActivityType.RECREATION));
         inner.row();
 
+        var leaderboardButton = new TextButton("Leaderboard", game.skin);
+        leaderboardButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.LEADERBOARD)));
+        inner.add(leaderboardButton)
+                .padTop(50)
+                .width(Value.percentWidth(0.4f, inner))
+                .height(Value.percentHeight(0.1f, inner));
+
+        inner.row();
+
         var mainMenuButton = new TextButton("Main Menu", game.skin);
         mainMenuButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.MAIN_MENU)));
         inner.add(mainMenuButton)
