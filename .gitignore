@@ -67,6 +67,7 @@ com_crashlytics_export_strings.xml
 /desktop/build/
 /html/build/
 /ios/build/
+/tests/build/
 
 /nbbuild/
 /android/nbbuild/
@@ -118,3 +119,4 @@ Thumbs.db
 /assets/scores.txt
 tests/test.txt
 tests/testValid.txt
+

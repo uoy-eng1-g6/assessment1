@@ -6,23 +6,27 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.uoyeng1g6.HeslingtonHustle;
 import io.github.uoyeng1g6.constants.GameConstants;
 import io.github.uoyeng1g6.utils.ChangeListener;
+import io.github.uoyeng1g6.utils.LeaderboardManager;
+import java.util.Objects;
 
-/**
- * The main menu screen for the game. Allows the player to start a new game, or quit to desktop.
- */
-public class MainMenu implements Screen {
+public class PlayerNameInput implements Screen {
     /**
      * The {@code scene2d.ui} stage used to render this screen.
      */
     Stage stage;
 
-    public MainMenu(HeslingtonHustle game) {
+    private TextField playerNameField; // New field for player name input
+
+    LeaderboardManager lm;
+
+    public PlayerNameInput(HeslingtonHustle game) {
         var camera = new OrthographicCamera();
         var viewport = new FitViewport(GameConstants.WORLD_WIDTH * 10, GameConstants.WORLD_HEIGHT * 10, camera);
 
@@ -36,30 +40,28 @@ public class MainMenu implements Screen {
         root.setDebug(game.debug);
         stage.addActor(root);
 
-        root.add("Heslington Hustle").getActor().setFontScale(2);
+        // root.add("Leaderboard").getActor().setFontScale(2);
         root.row();
+
+        lm = new LeaderboardManager("scores.txt");
 
         var inner = new Table(game.skin);
 
-        var startButton = new TextButton("Start Game", game.skin);
-        startButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.PLAYING)));
-        inner.add(startButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));
+        playerNameField = new TextField("", game.skin); // Initialize with an empty string
+        playerNameField.setMessageText("Enter your name"); // Display a placeholder text
+        inner.add(playerNameField)
+                .pad(10)
+                .width(Value.percentWidth(0.4f, inner))
+                .height(Value.percentHeight(0.1f, inner)); // Add the text field to the stage
 
         inner.row();
 
         var leaderboardButton = new TextButton("Leaderboard", game.skin);
-        leaderboardButton.addListener(
-                ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.MAIN_TO_LEADERBOARD)));
+        leaderboardButton.addListener(ChangeListener.of((e, a) -> game.setState(HeslingtonHustle.State.LEADERBOARD)));
         inner.add(leaderboardButton)
                 .pad(10)
                 .width(Value.percentWidth(0.4f, inner))
                 .height(Value.percentHeight(0.1f, inner));
-
-        inner.row();
-
-        var quitButton = new TextButton("Quit", game.skin);
-        quitButton.addListener(ChangeListener.of((e, a) -> game.quit()));
-        inner.add(quitButton).pad(10).width(Value.percentWidth(0.4f, inner)).height(Value.percentHeight(0.1f, inner));
 
         root.add(inner).grow();
     }
@@ -70,6 +72,11 @@ public class MainMenu implements Screen {
 
         stage.act();
         stage.draw();
+
+        String playerName = playerNameField.getText();
+        if (!Objects.equals(playerName, "")) {
+            lm.saveName(playerName);
+        }
     }
 
     @Override
@@ -94,5 +101,9 @@ public class MainMenu implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public LeaderboardManager getLeaderboardManager() {
+        return lm;
     }
 }
