@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="jvms.assessment2.gdxtesting.GameStateTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-04-29T14:57:21" hostname="LAPTOP-GLC9RNER" time="0.034">
-  <properties/>
-  <testcase name="testGetTotalActivityCount" classname="jvms.assessment2.gdxtesting.GameStateTest" time="0.01"/>
-  <testcase name="testAdvanceDay" classname="jvms.assessment2.gdxtesting.GameStateTest" time="0.001"/>
-  <testcase name="testDoActivity" classname="jvms.assessment2.gdxtesting.GameStateTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
