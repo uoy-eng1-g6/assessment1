@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.junit.Before;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 @RunWith(GdxTestRunner.class)
 
@@ -56,7 +57,7 @@ public class AnimationSystemTest {
                 new Animation<>(1f, playerTextureAtlas.createSprites("stationary"), Animation.PlayMode.LOOP));
         Entity testEntity = engine.createEntity().add(ac);
         Entity notAnimationEntity = engine.createEntity();
-        AnimationSystem as =  new AnimationSystem(new SpriteBatch(), gameState);
+        AnimationSystem as =  new AnimationSystem(mock(SpriteBatch.class), gameState);
 
         engine.addSystem(as);
         engine.addEntity(testEntity);
@@ -65,8 +66,8 @@ public class AnimationSystemTest {
         //Test the system has successfully added the system to the engine.
         assertEquals("Animation system successful addition to engine.", as, engine.getSystem(AnimationSystem.class));
 
-        //Test the entity with the animation component can be found from within the Animation system.
-        assertEquals("Animated entity acessable", testEntity, engine.getSystem(AnimationSystem.class).getAm().get(testEntity));
+        //Test the entity component with the animation component can be found from within the Animation system.
+        assertEquals("Animated entity acessable", ac, engine.getSystem(AnimationSystem.class).getAm().get(testEntity));
 
     }
 

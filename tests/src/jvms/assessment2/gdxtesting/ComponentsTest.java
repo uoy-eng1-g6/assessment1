@@ -121,7 +121,7 @@ public class ComponentsTest {
     public void InteractionComponentTest() {
 
         InteractionComponent ic = new InteractionComponent(state -> {
-            if (!state.doActivity(1, 10, ActivityType.STUDY, "Studying...")) {
+            if (!state.doActivity(1, 10, ActivityType.STUDY, "Studying...", "")) {
                 // Notify insufficient time/energy
             }});
 
