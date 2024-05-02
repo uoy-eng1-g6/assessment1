@@ -7,12 +7,15 @@ participant LeaderboardManager
 participant Leaderboard
 participant HeslingtonHustle
 participant EndScreen
-PlayerNameInput -> LeaderboardManager: Creates LeaderboardManager
+PlayerNameInput -> PlayerNameInput: Creates LeaderboardManager
 LeaderboardManager -> LeaderboardManager: Loads and sorts\nleaderboard file data
-PlayerNameInput -> LeaderboardManager: Saves player's name to memory
+PlayerNameInput -> PlayerNameInput: Saves player's name\nto LeaderboardManager
 PlayerNameInput -> HeslingtonHustle: Updates state to LEADERBOARD
 EndScreen <- HeslingtonHustle: Calls getExamScore()
 EndScreen -> HeslingtonHustle: Returns player's score
+HeslingtonHustle -> LeaderboardManager: Calls getLeaderboardManager()
+LeaderboardManager -> HeslingtonHustle: Returns LeaderboardManager object
+HeslingtonHustle -> Leaderboard: Passes LeaderboardManager\nand player score
 HeslingtonHustle -> Leaderboard: Sets screen to leaderboard
 Leaderboard -> LeaderboardManager: Calls addEntry()
 LeaderboardManager -> LeaderboardManager: Saves player's name\nand score to disk

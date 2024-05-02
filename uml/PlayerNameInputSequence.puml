@@ -4,9 +4,9 @@
 autonumber
 EndScreen -> HeslingtonHustle: Updates state to\nPLAYER_NAME_INPUT
 HeslingtonHustle -> PlayerNameInput: Sets screen to PlayerNameInput
-PlayerNameInput -> LeaderboardManager: Creates new leaderboard\nmanager object
+PlayerNameInput -> PlayerNameInput: Creates new leaderboard\nmanager object
 PlayerNameInput -> PlayerNameInput: Presents name input box
-PlayerNameInput -> LeaderboardManager: Saves entered name
+PlayerNameInput -> PlayerNameInput: Saves entered name\nto LeaderboardManager
 PlayerNameInput -> HeslingtonHustle: Updates state to LEADERBOARD\nupon name entry
 
 @enduml
