@@ -345,10 +345,10 @@ public class Playing implements Screen {
         var footballIcon = game.interactionIconsTextureAtlas.findRegion("football_icon");
         var sports = engine.createEntity()
                 .add(new TextureComponent(footballIcon, iconSize).show())
-                .add(new PositionComponent(10.5f, 26.5f))
+                .add(new PositionComponent(65.5f, 57.5f))
                 .add(new HitboxComponent(new Rectangle(
-                        10.5f,
-                        26.5f,
+                        65.5f,
+                        57.5f,
                         footballIcon.getRegionWidth() * iconSize,
                         footballIcon.getRegionHeight() * iconSize)))
                 .add(new InteractionComponent(state -> {
