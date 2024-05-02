@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+PlayerNameInput -> Leaderboard: Display leaderboard to player
+
+state PlayerNameInput {
+    [*] -> AwaitPlayerInput
+    AwaitPlayerInput --> Submission: User enters name and\npresses button
+    Submission -> [*]
+}
+
+state Leaderboard {
+    [*] -> DisplayLeaderboard
+    DisplayLeaderboard --> MainMenu: User presses main\nmenu button
+    DisplayLeaderboard -> Quit: User presses quit button
+    MainMenu -> [*]
+    Quit --> [*]
+}
+@enduml

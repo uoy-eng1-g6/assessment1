@@ -162,4 +162,42 @@ public class LeaderboardManagerTest {
                                       {"TestName", "32"}};
         assertEquals("Leaderboard should remove the original last entry", expectedRanking, lm.getRanking());
     }
+
+    @Test
+    public void testLeaderboardSaveName() {
+        LeaderboardManager lm = new LeaderboardManager("test.txt");
+        lm.saveName("Joe");
+        String expectedName = "Joe";
+        assertEquals("Current player name should be saved", expectedName, lm.getName());
+    }
+
+    @Test
+    public void testLeaderboardUpdateScore() {
+        LeaderboardManager lm = new LeaderboardManager("test.txt");
+        lm.saveName("Joe");
+        lm.addEntry(65);
+
+        String[][] expectedRanking = {{"Adam", "100"},
+                                      {"Joe", "65"},
+                                      {"Eva", "50"},
+                                      {"John", "0"}};
+        assertEquals("Current player score should be added properly", expectedRanking, lm.getRanking());
+    }
+
+    @Test
+    public void testLeaderboardNameReset() {
+        LeaderboardManager lm = new LeaderboardManager("test.txt");
+        lm.saveName("Joe");
+        lm.addEntry(65);
+
+        assertEquals("Name should be reset after an entry is added", "Unknown", lm.getName());
+    }
+
+    @Test
+    public void testLeaderboardNameValidation() {
+        LeaderboardManager lm = new LeaderboardManager("test.txt");
+        lm.saveName("toolongnamenow");
+
+        assertEquals("Name should be trimmed to 11 characters", "toolongname", lm.getName());
+    }
 }

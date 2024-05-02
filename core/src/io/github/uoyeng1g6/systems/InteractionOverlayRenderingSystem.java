@@ -61,7 +61,7 @@ public class InteractionOverlayRenderingSystem extends EntitySystem {
         if (elapsed == -1) {
             elapsed = 0;
         } else {
-            elapsed += deltaTime;
+            elapsed += deltaTime * 2;
         }
 
         shapeDrawer.filledRectangle(0, 0, GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT, OVERLAY_COLOR);

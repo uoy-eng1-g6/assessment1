@@ -1,7 +1,6 @@
 package io.github.uoyeng1g6.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +14,8 @@ public class LeaderboardManager {
         int score;
     }
 
+    String currentPlayer = "Unknown";
+
     ArrayList<Ranking> leaderboard = new ArrayList<Ranking>();
 
     File file;
@@ -26,6 +27,9 @@ public class LeaderboardManager {
     public LeaderboardManager(String filepath) {
         try {
             file = new File(filepath);
+
+            // Creates a new file if it doesn't exist
+            file.createNewFile();
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {
@@ -42,7 +46,7 @@ public class LeaderboardManager {
             if (leaderboard.size() > 10) {
                 leaderboard.subList(9, leaderboard.size() - 1).clear();
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -77,6 +81,37 @@ public class LeaderboardManager {
         return getRanking();
     }
 
+    public String[][] addEntry(int score) {
+        Ranking newEntry = new Ranking();
+
+        newEntry.player = currentPlayer;
+        newEntry.score = score;
+
+        if (leaderboard.size() < 10) {
+            leaderboard.add(newEntry);
+            sortLeaderboard();
+        } else {
+            leaderboard.add(newEntry);
+            sortLeaderboard();
+            leaderboard.remove(10);
+        }
+        writeToFile();
+        currentPlayer = "Unknown";
+        return getRanking();
+    }
+
+    public void saveName(String player) {
+        if (player.length() > 11) {
+            player = player.substring(0, 11);
+        }
+        player = player.replace(",", "");
+        currentPlayer = player;
+    }
+
+    public String getName() {
+        return currentPlayer;
+    }
+
     public void writeToFile() {
         try {
             FileWriter writer = new FileWriter(file.getPath());
@@ -100,7 +135,7 @@ public class LeaderboardManager {
 
         @Override
         public int compare(Ranking o1, Ranking o2) {
-            return o1.player.compareTo(o2.player);
+            return o1.player.toLowerCase().compareTo(o2.player.toLowerCase());
         }
     }
 }

@@ -56,7 +56,7 @@ public class PlayerInteractionSystemTest {
                 .add(new HitboxComponent(new Rectangle(
                         54, 2.5f, 10f, 10f)))
                 .add(new InteractionComponent(state -> {
-                    if (!state.doActivity(1, 5, ActivityType.MEAL, "Eating...")) {
+                    if (!state.doActivity(1, 5, ActivityType.MEAL, "Eating...", "food")) {
                         // Notify insufficient time/energy
                     }
                 }));
