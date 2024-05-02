@@ -158,6 +158,9 @@ public class HeslingtonHustle extends Game {
                 this.setScreen(mainMenu);
                 break;
             case PLAYING:
+                if (mainMenu != null) {
+                    mainMenu.dispose();
+                }
                 if (playing != null) {
                     playing.dispose();
                 }
