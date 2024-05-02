@@ -113,7 +113,7 @@ public class EndScreen implements Screen {
     float getDayScore(int studyCount, int mealCount, int recreationCount) {
         var studyPoints = 0;
         for (int i = 1; i <= studyCount; i++) {
-            studyPoints += i <= 5 ? 10 : -5;
+            studyPoints += i <= 8 ? 10 : -5;
         }
         studyPoints = Math.max(0, studyPoints);
 
@@ -127,7 +127,7 @@ public class EndScreen implements Screen {
         // Calculate recreation multiplier
         float recreationMultiplier = 1;
         for (var i = 1; i <= recreationCount; i++) {
-            recreationMultiplier += i <= 3 ? 0.15f : -0.025f;
+            recreationMultiplier += i <= 5 ? 0.15f : -0.025f;
         }
         recreationMultiplier = Math.max(1, recreationMultiplier);
 
