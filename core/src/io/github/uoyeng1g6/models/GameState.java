@@ -119,10 +119,10 @@ public class GameState {
         hoursRemaining -= timeUsage;
         energyRemaining -= energyUsage;
 
-        if (timeUsage > 1){
+        if (timeUsage > 1) {
             currentDay.activityNameStats.merge(activityName, 2, Integer::sum);
             currentDay.activityStats.merge(type, 2, Integer::sum);
-        } else{
+        } else {
             currentDay.activityStats.merge(type, 1, Integer::sum);
             currentDay.activityNameStats.merge(activityName, 1, Integer::sum);
         }

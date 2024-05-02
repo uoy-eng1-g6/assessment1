@@ -104,6 +104,7 @@ public class LeaderboardManager {
         if (player.length() > 11) {
             player = player.substring(0, 11);
         }
+        player = player.replace(",", "");
         currentPlayer = player;
     }
 

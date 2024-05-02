@@ -70,23 +70,32 @@ public class EndScreen implements Screen {
         inner.row();
         inner.row();
         List<Boolean> achievements = calculateAchievements(endGameState.days);
-        inner.add("Achievements").padBottom(20);
-        inner.row();
-        if (achievements.get(0)) {
-            inner.add("Movie Marathon: Watch at least 3 movies in a single day +5");
+
+        // If failed due to not catching up study, replace achievements section with failure
+        if (achievements.get(3)) {
+            inner.add("Failed").padBottom(20);
             inner.row();
-        }
-        if (achievements.get(1)) {
-            inner.add("You really went to town on that...: Go to town at least 5 times in a single day +5");
+            inner.add("You missed a day of study and didn't catch up :(");
             inner.row();
-        }
-        if (achievements.get(2)) {
-            inner.add("Gymbro: Go to the gym at least once a day, every day +5");
+        } else {
+            inner.add("Achievements").padBottom(20);
             inner.row();
-        }
-        if (!(achievements.get(0) || achievements.get(1) || achievements.get(2))) {
-            inner.add("You found no achievements.");
-            inner.row();
+            if (achievements.get(0)) {
+                inner.add("Movie Marathon: Watch at least 3 movies in a single day +5");
+                inner.row();
+            }
+            if (achievements.get(1)) {
+                inner.add("You really went to town on that...: Go to town at least 5 times in a single day +5");
+                inner.row();
+            }
+            if (achievements.get(2)) {
+                inner.add("Gymbro: Go to the gym at least once a day, every day +5");
+                inner.row();
+            }
+            if (!(achievements.get(0) || achievements.get(1) || achievements.get(2))) {
+                inner.add("You found no achievements.");
+                inner.row();
+            }
         }
 
         var nextButton = new TextButton("Next", game.skin);
@@ -161,6 +170,7 @@ public class EndScreen implements Screen {
         boolean movieAchievement = achievements.get(0);
         boolean townAchievement = achievements.get(1);
         boolean sportAchievement = achievements.get(2);
+        boolean studyFailure = achievements.get(3);
 
         // Add achievement bonuses
         if (movieAchievement) {
@@ -171,6 +181,10 @@ public class EndScreen implements Screen {
         }
         if (sportAchievement) {
             totalScore += 5;
+        }
+
+        if (studyFailure) {
+            totalScore = 0;
         }
 
         // Clamp total score from 0-100
@@ -189,6 +203,10 @@ public class EndScreen implements Screen {
         // Gymbro : Go to the gym at least once a day, every day
         boolean sportAchievement = true;
 
+        // Failure : You missed a day of study without catching up
+        boolean studyFailCheck = false;
+        boolean studyFailure = false;
+
         for (var day : days) {
 
             if (day.statForName("movie") >= 3 && !movieAchievement) {
@@ -200,13 +218,15 @@ public class EndScreen implements Screen {
             if (sportAchievement && day.statForName("sports") == 0) {
                 sportAchievement = false;
             }
+            if (studyFailCheck && day.statFor(ActivityType.STUDY) < 2) {
+                studyFailure = true;
+            }
+            if (day.statFor(ActivityType.STUDY) == 0 && !studyFailCheck) {
+                studyFailCheck = true;
+            }
         }
 
-        System.out.println(movieAchievement);
-        System.out.println(townAchievement);
-        System.out.println(sportAchievement);
-
-        return Arrays.asList(movieAchievement, townAchievement, sportAchievement);
+        return Arrays.asList(movieAchievement, townAchievement, sportAchievement, studyFailure);
     }
 
     public int getExamScore() {
