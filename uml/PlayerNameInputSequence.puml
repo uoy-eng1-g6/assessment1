@@ -1,0 +1,12 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+EndScreen -> HeslingtonHustle: Updates state to\nPLAYER_NAME_INPUT
+HeslingtonHustle -> PlayerNameInput: Sets screen to PlayerNameInput
+PlayerNameInput -> PlayerNameInput: Creates new leaderboard\nmanager object
+PlayerNameInput -> PlayerNameInput: Presents name input box
+PlayerNameInput -> PlayerNameInput: Saves entered name\nto LeaderboardManager
+PlayerNameInput -> HeslingtonHustle: Updates state to LEADERBOARD\nupon name entry
+
+@enduml
