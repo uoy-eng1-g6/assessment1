@@ -118,8 +118,14 @@ public class GameState {
 
         hoursRemaining -= timeUsage;
         energyRemaining -= energyUsage;
-        currentDay.activityStats.merge(type, 1, Integer::sum);
-        currentDay.activityNameStats.merge(activityName, 1, Integer::sum);
+
+        if (timeUsage > 1){
+            currentDay.activityNameStats.merge(activityName, 2, Integer::sum);
+            currentDay.activityStats.merge(type, 2, Integer::sum);
+        } else{
+            currentDay.activityStats.merge(type, 1, Integer::sum);
+            currentDay.activityNameStats.merge(activityName, 1, Integer::sum);
+        }
 
         interactionOverlay = new InteractionOverlay(overlayText, GameConstants.OVERLAY_SECONDS_PER_HOUR * timeUsage);
 
