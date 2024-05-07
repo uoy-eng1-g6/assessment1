@@ -505,7 +505,7 @@ public class Playing implements Screen {
     }
 
     @Override
-    public void show() {}
+    public void show() {Gdx.input.setInputProcessor(stage);}
 
     @Override
     public void pause() {}
